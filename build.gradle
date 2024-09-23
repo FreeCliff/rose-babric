@@ -1,0 +1,60 @@
+plugins {
+	id 'fabric-loom' version '1.7.2'
+	id 'babric-loom-extension' version '1.7.4'
+	id 'maven-publish'
+}
+
+sourceCompatibility = JavaVersion.VERSION_17
+targetCompatibility = JavaVersion.VERSION_17
+
+archivesBaseName = project.archives_base_name
+version = project.mod_version
+group = project.maven_group
+
+repositories {
+	maven { url = 'https://maven.glass-launcher.net/snapshots' }
+	maven { url = 'https://maven.glass-launcher.net/releases' }
+	maven { url = 'https://maven.glass-launcher.net/babric' }
+	maven { url = 'https://maven.minecraftforge.net/' }
+	maven { url = 'https://repo.wksh.org/releases' }
+	maven { url = 'https://jitpack.io' }
+	exclusiveContent {
+		forRepository {
+			maven { url = "https://api.modrinth.com/maven" }
+		}
+		filter { includeGroup "maven.modrinth" }
+	}
+	mavenCentral()
+}
+
+dependencies {
+	minecraft "com.mojang:minecraft:${project.minecraft_version}"
+	mappings "org.wksh:mcp:${project.mcp_mappings}:v2"
+	modImplementation "babric:fabric-loader:${project.loader_version}"
+	implementation "net.modificationstation:StationAPI:${project.stapi_version}"
+	modImplementation("net.glasslauncher.mods:ModMenu:${project.modmenu_version}") { transitive false }
+	modImplementation("net.glasslauncher.mods:GlassConfigAPI:${project.gcapi_version}") { transitive false }
+	modImplementation("net.glasslauncher:HowManyItems-Fabric-Unofficial:${project.howmanyitems_version}") { transitive false }
+
+	implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
+	implementation "org.slf4j:slf4j-api:1.8.0-beta4"
+	implementation 'com.google.code.gson:gson:2.8.9'
+	implementation "blue.endless:jankson:1.2.1"
+}
+
+processResources {
+	inputs.property "version", project.version
+
+	filesMatching("fabric.mod.json") { expand "version": project.version }
+}
+
+tasks.withType(JavaCompile).configureEach { it.options.release = 17 }
+
+java { withSourcesJar() }
+
+jar { from("LICENSE") { rename { "${it}_${project.archivesBaseName}"} } }
+
+publishing {
+	publications { mavenJava(MavenPublication) { from components.java } }
+	repositories {}
+}

@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "id": "rose",
+  "version": "${version}",
+  "name": "Rose",
+  "description": "The beginning.",
+  "authors": [
+    "ht9"
+  ],
+  "contact": {
+    "homepage": "https://pornhub.com/",
+    "sources": "stack overflow <3"
+  },
+  "license": "MPL-2.0",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "me.ht9.rose.Rose"
+    ]
+  },
+  "mixins": [
+    "rose.mixins.json"
+  ],
+  "depends": {
+    "minecraft": "1.0.0-beta.7.3"
+  }
+}
