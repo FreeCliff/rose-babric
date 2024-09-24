@@ -4,7 +4,7 @@ import me.ht9.rose.event.Event;
 import me.ht9.rose.event.factory.Factory;
 import me.ht9.rose.util.Globals;
 
-public final class PositionRotationUpdateEvent extends Event implements Globals
+public final class PosRotUpdateEvent extends Event implements Globals
 {
     private double packetX;
     private double packetY;
@@ -15,7 +15,7 @@ public final class PositionRotationUpdateEvent extends Event implements Globals
 
     private boolean setModelRotations;
 
-    public PositionRotationUpdateEvent(double packetX, double packetY, double packetZ, float yaw, float pitch, boolean onGround)
+    public PosRotUpdateEvent(double packetX, double packetY, double packetZ, float yaw, float pitch, boolean onGround)
     {
         this.packetX = packetX;
         this.packetY = packetY;

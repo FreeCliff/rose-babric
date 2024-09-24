@@ -7,12 +7,12 @@ public abstract class Feature implements Globals
     protected String name;
     protected String[] aliases;
 
-    public String getName()
+    public String name()
     {
         return this.name;
     }
 
-    public String[] getAliases()
+    public String[] aliases()
     {
         return this.aliases;
     }
