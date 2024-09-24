@@ -3,7 +3,6 @@ package me.ht9.rose.mixin.mixins;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.event.factory.Factory;
-import me.ht9.rose.util.Globals;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
@@ -14,7 +13,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityClientPlayerMP.class)
-public class MixinEntityClientPlayerMP extends EntityPlayer implements Globals
+public class MixinEntityClientPlayerMP extends EntityPlayer
 {
     @Unique
     private double oldX;

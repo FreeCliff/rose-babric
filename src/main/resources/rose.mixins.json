@@ -7,14 +7,15 @@
     "accessors.IGuiChat",
     "accessors.IMinecraft",
     "mixins.MixinEntityClientPlayerMP",
+    "mixins.MixinEntityPlayerSP",
+    "mixins.MixinEntity",
     "mixins.MixinGuiChat",
     "mixins.MixinGuiIngame",
-    "mixins.MixinMinecraft"
+    "mixins.MixinItemRenderer",
+    "mixins.MixinMinecraft",
+    "mixins.MixinNetworkManager"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "mixins.MixinNetworkManager"
-  ]
+  }
 }
