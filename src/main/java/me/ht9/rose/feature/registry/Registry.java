@@ -2,6 +2,7 @@ package me.ht9.rose.feature.registry;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.feature.command.Command;
+import me.ht9.rose.feature.command.commands.LagbackCommand;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.command.commands.SpawnCmd;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
@@ -47,6 +48,10 @@ public final class Registry
 
     public static void loadCommands()
     {
+        commands.add(new CommandBuilder("Lagback")
+                .withDescription("Send bed leave to force a lagback.")
+                .withExecutable(new LagbackCommand())
+                .asCommand());
         commands.add(new CommandBuilder("Spawn")
                 .withDescription("Send an invalid position packet to teleport you to spawn on bukkit servers.")
                 .withExecutable(new SpawnCmd())
