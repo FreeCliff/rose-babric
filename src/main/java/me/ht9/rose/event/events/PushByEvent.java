@@ -5,14 +5,14 @@ import net.minecraft.src.Entity;
 
 public final class PushByEvent extends Event
 {
-    private final Type type;
+    private final Pusher pusher;
 
     private final Entity pushee;
 
-    public PushByEvent(Entity pushee, Type type)
+    public PushByEvent(Entity pushee, Pusher pusher)
     {
         this.pushee = pushee;
-        this.type = type;
+        this.pusher = pusher;
     }
 
     public Entity pushee()
@@ -20,12 +20,12 @@ public final class PushByEvent extends Event
         return pushee;
     }
 
-    public Type type()
+    public Pusher pusher()
     {
-        return type;
+        return pusher;
     }
 
-    public enum Type
+    public enum Pusher
     {
         BLOCK,
         ENTITY,

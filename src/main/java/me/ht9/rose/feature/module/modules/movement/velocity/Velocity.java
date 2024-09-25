@@ -45,15 +45,18 @@ public class Velocity extends Module
     {
         if (this.noPush.value())
         {
-            switch (event.type())
+            switch (event.pusher())
             {
                 case BLOCK ->
                 {
                     if (blocks.value())
                     {
-                        if (event.type().equals(PushByEvent.Type.BLOCK))
+                        if (event.pusher().equals(PushByEvent.Pusher.BLOCK))
                         {
-                            event.setCancelled(true);
+                            if (event.pushee().equals(mc.thePlayer))
+                            {
+                                event.setCancelled(true);
+                            }
                         }
                     }
                 }
@@ -61,9 +64,12 @@ public class Velocity extends Module
                 {
                     if (entities.value())
                     {
-                        if (event.type().equals(PushByEvent.Type.ENTITY))
+                        if (event.pusher().equals(PushByEvent.Pusher.ENTITY))
                         {
-                            event.setCancelled(true);
+                            if (event.pushee().equals(mc.thePlayer))
+                            {
+                                event.setCancelled(true);
+                            }
                         }
                     }
                 }
@@ -71,13 +77,16 @@ public class Velocity extends Module
                 {
                     if (liquids.value())
                     {
-                        if (event.type().equals(PushByEvent.Type.LIQUID))
+                        if (event.pusher().equals(PushByEvent.Pusher.LIQUID))
                         {
-                            event.setCancelled(true);
+                            if (event.pushee().equals(mc.thePlayer))
+                            {
+                                event.setCancelled(true);
+                            }
                         }
                     }
                 }
-                default -> throw new IllegalStateException("Unexpected value: " + event.type());
+                default -> throw new IllegalStateException("Unexpected value: " + event.pusher());
             }
         }
     }

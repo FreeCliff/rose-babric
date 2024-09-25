@@ -27,7 +27,7 @@ public class MixinEntityPlayerSP extends EntityPlayer
     )
     public void pushOutOfBlocks(double x, double y, double z, CallbackInfoReturnable<Boolean> cir)
     {
-        PushByEvent event = new PushByEvent(this, PushByEvent.Type.BLOCK);
+        PushByEvent event = new PushByEvent(this, PushByEvent.Pusher.BLOCK);
         Rose.bus().post(event);
         if (event.cancelled())
         {

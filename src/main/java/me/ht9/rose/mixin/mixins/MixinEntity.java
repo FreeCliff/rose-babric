@@ -20,7 +20,7 @@ public abstract class MixinEntity
     )
     public void applyEntityCollision(Entity entity, CallbackInfo ci)
     {
-        PushByEvent event = new PushByEvent(entity, PushByEvent.Type.ENTITY);
+        PushByEvent event = new PushByEvent(entity, PushByEvent.Pusher.ENTITY);
         Rose.bus().post(event);
         if (event.cancelled())
         {
