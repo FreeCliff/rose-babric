@@ -18,7 +18,7 @@ public class NoOverlay extends Module
     @SubscribeEvent
     public void onRenderOverlay(RenderOverlayEvent event)
     {
-        switch (event.type())
+        switch (event.overlay())
         {
             case BLOCKS ->
             {
@@ -41,7 +41,11 @@ public class NoOverlay extends Module
                     event.setCancelled(true);
                 }
             }
-            default -> throw new IllegalStateException("Unexpected value: " + event.type());
+            case ALL ->
+            {
+                // blank realized it was spamming exceptions.
+            }
+            default -> throw new IllegalStateException("Unexpected value: " + event.overlay());
         }
     }
 

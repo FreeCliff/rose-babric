@@ -2,6 +2,7 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PushByEvent;
+import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
 import net.minecraft.src.World;
@@ -29,7 +30,7 @@ public class MixinEntityPlayerSP extends EntityPlayer
     {
         PushByEvent event = new PushByEvent(this, PushByEvent.Pusher.BLOCK);
         Rose.bus().post(event);
-        if (event.cancelled())
+        if (event.cancelled() || Freecam.instance().enabled())
         {
             cir.setReturnValue(false);
             cir.cancel();

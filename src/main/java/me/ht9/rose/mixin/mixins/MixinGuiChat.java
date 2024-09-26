@@ -18,19 +18,20 @@ public class MixinGuiChat extends GuiScreen
     @Shadow private int updateCounter = 0;
     @Shadow protected String message = "";
 
-    @ModifyArg(
+    @Inject(
             method = "drawScreen",
             at = @At(
                     value = "INVOKE",
                     target = "Lnet/minecraft/src/GuiChat;drawString(Lnet/minecraft/src/FontRenderer;Ljava/lang/String;III)V"
             ),
-            index = 1
+            cancellable = true
     )
-    private String drawStringText(String text)
+    private void drawScreen(int j, int f, float par3, CallbackInfo ci)
     {
-        ChatGuiRenderEvent event = new ChatGuiRenderEvent(text.replaceFirst("^> ", "").replaceFirst("_$", ""));
+        ci.cancel();
+        ChatGuiRenderEvent event = new ChatGuiRenderEvent(this.message);
         Rose.bus().post(event);
-        return "> " + event.text() + (updateCounter / 6 % 2 == 0 ? "_" : "");
+        fontRenderer.drawStringWithShadow("> " + this.message + (this.updateCounter / 6 % 2 == 0 ? "_" : ""), 4, this.height - 12, 14737632);
     }
 
     @Inject(

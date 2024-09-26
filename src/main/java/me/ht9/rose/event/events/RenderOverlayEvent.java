@@ -4,16 +4,16 @@ import me.ht9.rose.event.Event;
 
 public final class RenderOverlayEvent extends Event
 {
-    private final Overlay type;
+    private final Overlay overlay;
 
-    public RenderOverlayEvent(Overlay type)
+    public RenderOverlayEvent(Overlay overlay)
     {
-        this.type = type;
+        this.overlay = overlay;
     }
 
-    public Overlay type()
+    public Overlay overlay()
     {
-        return type;
+        return overlay;
     }
 
     public enum Overlay

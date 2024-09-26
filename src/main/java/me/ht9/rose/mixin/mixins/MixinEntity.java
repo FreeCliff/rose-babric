@@ -2,6 +2,7 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PushByEvent;
+import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
 import net.minecraft.src.Entity;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.injection.At;
@@ -22,7 +23,7 @@ public abstract class MixinEntity
     {
         PushByEvent event = new PushByEvent(entity, PushByEvent.Pusher.ENTITY);
         Rose.bus().post(event);
-        if (event.cancelled())
+        if (event.cancelled() || Freecam.instance().enabled())
         {
             ci.cancel();
         }

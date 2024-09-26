@@ -11,7 +11,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = ItemRenderer.class)
 public class MixinItemRenderer
 {
-    @Inject(method = "renderOverlays", at = @At(value = "HEAD"), cancellable = true)
+    @Inject(
+            method = "renderOverlays",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true
+    )
     public void renderOverlays(float partialTicks, CallbackInfo ci)
     {
         RenderOverlayEvent event = new RenderOverlayEvent(RenderOverlayEvent.Overlay.ALL);
