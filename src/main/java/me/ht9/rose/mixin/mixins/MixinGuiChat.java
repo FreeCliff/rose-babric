@@ -7,6 +7,7 @@ import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiScreen;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.ModifyArg;
@@ -15,8 +16,21 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = GuiChat.class)
 public class MixinGuiChat extends GuiScreen
 {
-    @Shadow private int updateCounter = 0;
+    @Unique private int updateCounter = 0;
     @Shadow protected String message = "";
+
+    /*
+    goyslop signamfix 30/09/2024
+     */
+    @Inject(
+            method = "updateScreen",
+            at = @At(
+                    "HEAD"
+            )
+    )
+    private void updateScreen(CallbackInfo ci) {
+        updateCounter++;
+    }
 
     @Inject(
             method = "drawScreen",
