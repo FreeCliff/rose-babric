@@ -10,7 +10,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.ModifyArg;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = GuiChat.class)
@@ -28,7 +27,8 @@ public class MixinGuiChat extends GuiScreen
                     "HEAD"
             )
     )
-    private void updateScreen(CallbackInfo ci) {
+    private void updateScreen(CallbackInfo ci)
+    {
         updateCounter++;
     }
 

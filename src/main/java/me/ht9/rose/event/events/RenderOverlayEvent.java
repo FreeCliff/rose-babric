@@ -20,7 +20,6 @@ public final class RenderOverlayEvent extends Event
     {
         FIRE,
         BLOCKS,
-        HAND,
-        ALL
+        HAND
     }
 }

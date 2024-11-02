@@ -8,6 +8,7 @@ import me.ht9.rose.feature.command.commands.SpawnCmd;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hud.HUD;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
+import me.ht9.rose.feature.module.modules.movement.speed.Speed;
 import me.ht9.rose.feature.module.modules.movement.velocity.Velocity;
 import me.ht9.rose.feature.module.modules.render.nooverlay.NoOverlay;
 import me.ht9.rose.feature.module.modules.render.norender.NoRender;
@@ -31,6 +32,7 @@ public final class Registry
         modules.add(HUD.instance());
 
         modules.add(Freecam.instance());
+        modules.add(Speed.instance());
         modules.add(Velocity.instance());
 
         modules.add(NoOverlay.instance());
@@ -61,7 +63,7 @@ public final class Registry
     public static void loadCommands()
     {
         commands.add(new CommandBuilder("Lagback")
-                .withDescription("Send bed leave to force a lagback.")
+                .withDescription("Sends bed leave to force a lagback.")
                 .withExecutable(new LagbackCommand())
                 .asCommand());
         commands.add(new CommandBuilder("Spawn")

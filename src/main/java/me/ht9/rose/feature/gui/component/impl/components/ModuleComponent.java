@@ -97,9 +97,9 @@ public final class ModuleComponent implements Component
         );
 
         Render2d.drawStringWithShadow(
-                "...",
-                this.parent.x() + this.WIDTH - 15.0F,
-                this.y + 1.0F,
+                this.opened ? "-" : "+",
+                this.parent.x() + this.WIDTH - 13.0F,
+                this.y + 3.0F,
                 this.module.enabled() ? new Color(1.0F, 1.0F, 1.0F, alpha) : textGrey
         );
 

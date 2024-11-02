@@ -41,10 +41,6 @@ public class NoOverlay extends Module
                     event.setCancelled(true);
                 }
             }
-            case ALL ->
-            {
-                // blank realized it was spamming exceptions.
-            }
             default -> throw new IllegalStateException("Unexpected value: " + event.overlay());
         }
     }

@@ -3,18 +3,22 @@ package me.ht9.rose.mixin.mixins;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.event.factory.Factory;
+import me.ht9.rose.feature.module.modules.movement.speed.Speed;
 import net.minecraft.src.EntityClientPlayerMP;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.World;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = EntityClientPlayerMP.class)
-public class MixinEntityClientPlayerMP extends EntityPlayer
+public abstract class MixinEntityClientPlayerMP extends EntityPlayer
 {
+    @Shadow public abstract void func_4056_N();
+
     @Unique
     private double oldX;
     @Unique
@@ -83,6 +87,47 @@ public class MixinEntityClientPlayerMP extends EntityPlayer
         this.rotationYaw = this.oldYaw;
         this.rotationPitch = this.oldPitch;
         this.onGround = this.oldOnGround;
+    }
+
+    @Inject(
+            method = "onUpdate",
+            at = @At(
+                    value = "TAIL"
+            )
+    )
+    public void onUpdate$Tick(CallbackInfo ci)
+    {
+        if (Speed.instance().enabled() && Speed.instance().type.value() == Speed.Type.NoCheat)
+        {
+            for (int i = 0; i < 20; ++i)
+            {
+                int hurtTimeBackup = this.hurtTime;
+                float prevSwingProgressBackup = this.prevSwingProgress;
+                float swingProgressBackup = this.swingProgress;
+                int swingProgressIntBackup = this.swingProgressInt;
+                float rotationYawBackup = this.rotationYaw;
+                float prevRotationYawBackup = this.prevRotationYaw;
+                float renderYawOffsetBackup = this.renderYawOffset;
+                float prevRenderYawOffsetBackup = this.prevRenderYawOffset;
+                float distanceWalkedBackup = this.distanceWalkedModified;
+                float prevDistanceWalkedBackup = this.prevDistanceWalkedModified;
+
+                super.onUpdate();
+
+                this.hurtTime = hurtTimeBackup;
+                this.prevSwingProgress = prevSwingProgressBackup;
+                this.swingProgress = swingProgressBackup;
+                this.swingProgressInt = swingProgressIntBackup;
+                this.rotationYaw = rotationYawBackup;
+                this.prevRotationYaw = prevRotationYawBackup;
+                this.renderYawOffset = renderYawOffsetBackup;
+                this.prevRenderYawOffset = prevRenderYawOffsetBackup;
+                this.distanceWalkedModified = distanceWalkedBackup;
+                this.prevDistanceWalkedModified = prevDistanceWalkedBackup;
+
+                this.func_4056_N();
+            }
+        }
     }
 
     @Override

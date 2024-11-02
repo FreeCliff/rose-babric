@@ -12,23 +12,6 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinItemRenderer
 {
     @Inject(
-            method = "renderOverlays",
-            at = @At(
-                    value = "HEAD"
-            ),
-            cancellable = true
-    )
-    public void renderOverlays(float partialTicks, CallbackInfo ci)
-    {
-        RenderOverlayEvent event = new RenderOverlayEvent(RenderOverlayEvent.Overlay.ALL);
-        Rose.bus().post(event);
-        if (event.cancelled())
-        {
-            ci.cancel();
-        }
-    }
-
-    @Inject(
             method = "renderInsideOfBlock",
             at = @At(
                     "HEAD"
