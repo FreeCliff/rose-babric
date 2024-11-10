@@ -3,15 +3,28 @@ package me.ht9.rose.feature.registry;
 import me.ht9.rose.Rose;
 import me.ht9.rose.feature.command.Command;
 import me.ht9.rose.feature.command.commands.LagbackCommand;
+import me.ht9.rose.feature.command.commands.VclipCommand;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.command.commands.SpawnCmd;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hud.HUD;
+import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
+import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
+import me.ht9.rose.feature.module.modules.exploit.lawnmower.Lawnmower;
+import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
+import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
+import me.ht9.rose.feature.module.modules.exploit.timer.Timer;
+import me.ht9.rose.feature.module.modules.movement.flight.Flight;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
+import me.ht9.rose.feature.module.modules.movement.noclip.NoClip;
+import me.ht9.rose.feature.module.modules.movement.nofall.NoFall;
 import me.ht9.rose.feature.module.modules.movement.speed.Speed;
 import me.ht9.rose.feature.module.modules.movement.velocity.Velocity;
+import me.ht9.rose.feature.module.modules.movement.yaw.Yaw;
+import me.ht9.rose.feature.module.modules.render.fullbright.FullBright;
 import me.ht9.rose.feature.module.modules.render.nooverlay.NoOverlay;
 import me.ht9.rose.feature.module.modules.render.norender.NoRender;
+import me.ht9.rose.feature.module.modules.render.xray.Xray;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.feature.module.Module;
 
@@ -31,12 +44,25 @@ public final class Registry
         modules.add(ClickGUI.instance());
         modules.add(HUD.instance());
 
+        modules.add(BoatTravel.instance());
+        modules.add(Instamine.instance());
+        modules.add(Lawnmower.instance());
+        modules.add(PacketLogger.instance());
+        modules.add(PacketMine.instance());
+        modules.add(Timer.instance());
+
+        modules.add(Flight.instance());
         modules.add(Freecam.instance());
+        modules.add(NoClip.instance());
+        modules.add(NoFall.instance());
         modules.add(Speed.instance());
         modules.add(Velocity.instance());
+        modules.add(Yaw.instance());
 
+        modules.add(FullBright.instance());
         modules.add(NoOverlay.instance());
         modules.add(NoRender.instance());
+        modules.add(Xray.instance());
 
         modules.forEach(module ->
         {
@@ -63,12 +89,16 @@ public final class Registry
     public static void loadCommands()
     {
         commands.add(new CommandBuilder("Lagback")
-                .withDescription("Sends bed leave to force a lagback.")
+                .withDescription("Send bed leave to force a lagback.")
                 .withExecutable(new LagbackCommand())
                 .asCommand());
         commands.add(new CommandBuilder("Spawn")
                 .withDescription("Send an invalid position packet to teleport you to spawn on bukkit servers.")
                 .withExecutable(new SpawnCmd())
+                .asCommand());
+        commands.add(new CommandBuilder("Vclip")
+                .withDescription("Teleport up and down")
+                .withExecutable(new VclipCommand())
                 .asCommand());
     }
 

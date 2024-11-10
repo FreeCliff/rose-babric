@@ -17,6 +17,7 @@ public class NoRender extends Module
     private final Setting<Boolean> rain = new Setting<>("Rain", false);
     private final Setting<Boolean> viewbob = new Setting<>("Viewbob", false);
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onRenderWorld(RenderWorldEvent event)
     {

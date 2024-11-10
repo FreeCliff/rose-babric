@@ -6,6 +6,7 @@
   "client": [
     "accessors.IGuiChat",
     "accessors.IMinecraft",
+    "mixins.MixinBlock",
     "mixins.MixinEntity",
     "mixins.MixinEntityClientPlayerMP",
     "mixins.MixinEntityPlayerSP",
@@ -15,7 +16,10 @@
     "mixins.MixinItemRenderer",
     "mixins.MixinMinecraft",
     "mixins.MixinNetworkManager",
-    "mixins.MixinRenderGlobal"
+    "mixins.MixinRenderGlobal",
+    "mixins.MixinRenderItem",
+    "mixins.MixinRenderList",
+    "mixins.MixinTimer"
   ],
   "injectors": {
     "defaultRequire": 1
