@@ -19,18 +19,12 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
 {
     @Shadow public abstract void func_4056_N();
 
-    @Unique
-    private double oldX;
-    @Unique
-    private double oldY;
-    @Unique
-    private double oldZ;
-    @Unique
-    private float oldYaw;
-    @Unique
-    private float oldPitch;
-    @Unique
-    private boolean oldOnGround;
+    @Unique private double oldX;
+    @Unique private double oldY;
+    @Unique private double oldZ;
+    @Unique private float oldYaw;
+    @Unique private float oldPitch;
+    @Unique private boolean oldOnGround;
 
     public MixinEntityClientPlayerMP(World world)
     {
@@ -99,19 +93,19 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
     {
         if (Speed.instance().enabled() && Speed.instance().type.value() == Speed.Type.NoCheat)
         {
-            for (int i = 0; i < Speed.instance().packets.value(); ++i)
-            {
-                int hurtTimeBackup = this.hurtTime;
-                float prevSwingProgressBackup = this.prevSwingProgress;
-                float swingProgressBackup = this.swingProgress;
-                int swingProgressIntBackup = this.swingProgressInt;
-                float rotationYawBackup = this.rotationYaw;
-                float prevRotationYawBackup = this.prevRotationYaw;
-                float renderYawOffsetBackup = this.renderYawOffset;
-                float prevRenderYawOffsetBackup = this.prevRenderYawOffset;
-                float distanceWalkedBackup = this.distanceWalkedModified;
-                float prevDistanceWalkedBackup = this.prevDistanceWalkedModified;
+            int hurtTimeBackup = this.hurtTime;
+            float prevSwingProgressBackup = this.prevSwingProgress;
+            float swingProgressBackup = this.swingProgress;
+            int swingProgressIntBackup = this.swingProgressInt;
+            float rotationYawBackup = this.rotationYaw;
+            float prevRotationYawBackup = this.prevRotationYaw;
+            float renderYawOffsetBackup = this.renderYawOffset;
+            float prevRenderYawOffsetBackup = this.prevRenderYawOffset;
+            float distanceWalkedBackup = this.distanceWalkedModified;
+            float prevDistanceWalkedBackup = this.prevDistanceWalkedModified;
 
+            for (int i = 0; i < Math.ceil(Speed.instance().speed.value()); ++i)
+            {
                 super.onUpdate();
 
                 this.hurtTime = hurtTimeBackup;

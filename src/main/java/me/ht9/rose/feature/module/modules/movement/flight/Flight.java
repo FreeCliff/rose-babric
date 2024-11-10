@@ -21,10 +21,10 @@ public final class Flight extends Module {
         mc.thePlayer.motionY = 0.0f;
 
         if (Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode) && mc.currentScreen == null) {
-            mc.thePlayer.motionY = 1d;
+            mc.thePlayer.motionY = 0.2d;
         }
         if (Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode) && mc.currentScreen == null) {
-            mc.thePlayer.motionY = 1d;
+            mc.thePlayer.motionY = 0.2d;
         }
 
         Movement.setSpeed(
