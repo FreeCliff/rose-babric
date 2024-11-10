@@ -99,7 +99,7 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
     {
         if (Speed.instance().enabled() && Speed.instance().type.value() == Speed.Type.NoCheat)
         {
-            for (int i = 0; i < 20; ++i)
+            for (int i = 0; i < Speed.instance().packets.value(); ++i)
             {
                 int hurtTimeBackup = this.hurtTime;
                 float prevSwingProgressBackup = this.prevSwingProgress;

@@ -17,6 +17,7 @@ public class Speed extends Module
     private static final Speed instance = new Speed();
 
     public final Setting<Type> type = new Setting<>("Type", Type.NoCheat);
+    public final Setting<Integer> packets = new Setting<>("Packets", 10, 20, 40, 1);
     public final Setting<Double> speed = new Setting<>("Speed", 0.0, 0.5, 1.0, 1);
 
     private final Timer timer = new Timer();
