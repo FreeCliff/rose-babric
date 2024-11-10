@@ -1,6 +1,6 @@
 # 🌹 Rose b1.7.3
 
-A modded experience for Minecraft Beta 1.7.3, bringing modern enhancements :trole: to a classic version.
+A modded experience for Minecraft Beta 1.7.3, bringing modern enhancements to a classic version.
 
 ---
 
@@ -47,6 +47,15 @@ Enhance your gameplay with these optional mods. They’re not required but can i
   👉 [Get Third-Person Fix](https://modrinth.com/mod/thirdpersonfix-babric/versions)
 
 ---
+
+## 📝 Precompiled Version
+
+If you'd prefer a precompiled version of Rose:
+
+1. Go to the **Actions** tab on this repository.
+2. Click on the latest successful build.
+3. Scroll all the way down to the **Artifacts** section.
+4. Download the `.zip` file and rename it to `.jar`.
 
 > 💡 **Tip**: Make sure to install the required mods at their specified versions before launching Rose b1.7.3 to avoid compatibility issues.
 
