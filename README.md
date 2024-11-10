@@ -63,7 +63,7 @@ If you'd prefer a precompiled version of Rose:
 1. Go to the **Actions** tab on this repository.
 2. Click on the latest successful build.
 3. Scroll all the way down to the **Artifacts** section.
-4. Download the `.zip` file and rename it to `.jar`.
+4. Download the `.zip` and extract it and the mod is ready to be added.
 
 > 💡 **Tip**: Make sure to install the required mods at their specified versions before launching Rose b1.7.3 to avoid compatibility issues.
 
