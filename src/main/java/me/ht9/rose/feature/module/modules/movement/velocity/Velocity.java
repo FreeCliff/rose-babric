@@ -6,9 +6,7 @@ import me.ht9.rose.event.events.PushByEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
-import net.minecraft.src.Explosion;
-import net.minecraft.src.Packet28EntityVelocity;
-import net.minecraft.src.Packet60Explosion;
+import net.minecraft.src.*;
 
 @Description("Cancels knockback from entities, liquids, and blocks.")
 public class Velocity extends Module

@@ -1,17 +1,24 @@
 package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
+import me.ht9.rose.event.events.PlayerMoveEvent;
 import me.ht9.rose.event.events.PushByEvent;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
 import net.minecraft.src.Entity;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
+import static me.ht9.rose.util.Globals.mc;
+
 @Mixin(value = Entity.class)
 public abstract class MixinEntity
 {
+    @Unique
+    private boolean shouldInject = true;
+
     @Inject(
             method = "applyEntityCollision",
             at = @At(
@@ -25,6 +32,28 @@ public abstract class MixinEntity
         Rose.bus().post(event);
         if (event.cancelled() || Freecam.instance().enabled())
         {
+            ci.cancel();
+        }
+    }
+
+    @Inject(
+            method = "moveEntity",
+            at = @At(
+                    "HEAD"
+            ),
+            cancellable = true
+    )
+    public void moveEntity(double x, double y, double z, CallbackInfo ci)
+    {
+        Entity $this = (Entity) (Object) this;
+        // noinspection ConstantConditions
+        if ($this == mc.thePlayer && this.shouldInject)
+        {
+            PlayerMoveEvent event = new PlayerMoveEvent(x, y, z);
+            Rose.bus().post(event);
+            this.shouldInject = false;
+            $this.moveEntity(event.x(), event.y(), event.z());
+            this.shouldInject = true;
             ci.cancel();
         }
     }

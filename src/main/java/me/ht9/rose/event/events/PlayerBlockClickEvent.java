@@ -2,13 +2,13 @@ package me.ht9.rose.event.events;
 
 import me.ht9.rose.event.Event;
 
-public final class BlockHitEvent extends Event {
+public final class PlayerBlockClickEvent extends Event {
     private final int x;
     private final int y;
     private final int z;
     private final int side;
 
-    public BlockHitEvent(int x, int y, int z, int side) {
+    public PlayerBlockClickEvent(int x, int y, int z, int side) {
         this.x = x;
         this.y = y;
         this.z = z;

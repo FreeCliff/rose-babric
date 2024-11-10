@@ -1,8 +1,9 @@
 package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
-import me.ht9.rose.event.events.BlockHitEvent;
+import me.ht9.rose.event.events.PlayerBlockClickEvent;
 import me.ht9.rose.event.events.InputEvent;
+import me.ht9.rose.event.events.TickEvent;
 import me.ht9.rose.event.events.WorldChangeEvent;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
@@ -21,6 +22,17 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinMinecraft
 {
     @Shadow public MovingObjectPosition objectMouseOver;
+
+    @Inject(
+            method = "runTick",
+            at = @At(
+                    "RETURN"
+            )
+    )
+    public void runTick(CallbackInfo ci)
+    {
+        Rose.bus().post(new TickEvent());
+    }
 
     @Redirect(
             method = "runTick",
@@ -68,6 +80,6 @@ public class MixinMinecraft
 
     @Inject(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerController;clickBlock(IIII)V"))
     public void clickBlock(int par1, CallbackInfo ci) {
-        Rose.bus().post(new BlockHitEvent(objectMouseOver.blockX, objectMouseOver.blockY, objectMouseOver.blockZ, objectMouseOver.sideHit));
+        Rose.bus().post(new PlayerBlockClickEvent(objectMouseOver.blockX, objectMouseOver.blockY, objectMouseOver.blockZ, objectMouseOver.sideHit));
     }
 }

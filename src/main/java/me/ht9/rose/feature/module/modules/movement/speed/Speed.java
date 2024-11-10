@@ -2,6 +2,7 @@ package me.ht9.rose.feature.module.modules.movement.speed;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
+import me.ht9.rose.event.events.TickEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
@@ -26,7 +27,7 @@ public class Speed extends Module
     }
 
     @SubscribeEvent
-    public void onUpdate(PosRotUpdateEvent event)
+    public void onTick(TickEvent event)
     {
         Movement.setSpeed(
                 mc.thePlayer.movementInput.moveForward != 0 || mc.thePlayer.movementInput.moveStrafe != 0

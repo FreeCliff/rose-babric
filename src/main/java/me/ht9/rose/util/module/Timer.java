@@ -4,7 +4,7 @@ import me.ht9.rose.util.Globals;
 
 public final class Timer implements Globals
 {
-    private long time;
+    private double time;
 
     public Timer()
     {
@@ -16,7 +16,16 @@ public final class Timer implements Globals
         return System.currentTimeMillis() - this.time >= ms;
     }
 
-    public long getTime()
+    public boolean hasReached(double ms, boolean reset)
+    {
+        if (reset)
+        {
+            this.reset();
+        }
+        return System.currentTimeMillis() - this.time >= ms;
+    }
+
+    public double getTime()
     {
         return System.currentTimeMillis() - this.time;
     }

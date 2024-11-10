@@ -4,6 +4,7 @@ import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.InputEvent;
 import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.event.events.Render2dEvent;
+import me.ht9.rose.event.events.RenderEntityEvent;
 import me.ht9.rose.feature.command.Command;
 import me.ht9.rose.feature.module.keybinding.Bind;
 import me.ht9.rose.feature.module.setting.Setting;
@@ -11,6 +12,7 @@ import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.util.Globals;
 import net.minecraft.src.Packet3Chat;
+import net.minecraft.src.RenderManager;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -154,6 +156,16 @@ public class Factory implements Globals
                     mc.ingameGUI.addChatMessage("Unknown command. Try .commands for a list of commands.");
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    private void onRenderEntity(RenderEntityEvent event)
+    {
+        if (event.entity().equals(mc.thePlayer) && RenderManager.instance.playerViewY != 180.0F && this.doSetModelRotations)
+        {
+            event.setHeadPitch(this.prevRotationRenderPitch + ((this.rotationRenderPitch - this.prevRotationRenderPitch) * event.partialTicks()));
+            this.prevRotationRenderPitch = this.rotationRenderPitch;
         }
     }
 

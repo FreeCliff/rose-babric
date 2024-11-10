@@ -280,7 +280,7 @@ public final class ModuleComponent implements Component
                 && mouseY <= this.y + this.HEIGHT;
     }
 
-    public float getTotalHeight()
+    public float totalHeight()
     {
         float totalHeight = this.HEIGHT + 1.0F;
         if (this.opened)
@@ -296,12 +296,12 @@ public final class ModuleComponent implements Component
         return totalHeight;
     }
 
-    public float getX()
+    public float x()
     {
         return this.parent.x();
     }
 
-    public float getY()
+    public float y()
     {
         return this.y;
     }

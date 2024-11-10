@@ -37,7 +37,7 @@ public abstract class SettingComponent<V> implements Component
 
     public float x()
     {
-        return this.parent.getX();
+        return this.parent.x();
     }
 
     public float y()

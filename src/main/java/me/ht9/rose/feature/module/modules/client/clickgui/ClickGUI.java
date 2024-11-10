@@ -9,7 +9,7 @@ import me.ht9.rose.feature.module.Module;
 import org.lwjgl.input.Keyboard;
 
 @Aliases({ "GUI" })
-@Description("The client user interface")
+@Description("The clients graphical user-interface.")
 public final class ClickGUI extends Module
 {
     private static final ClickGUI instance = new ClickGUI();

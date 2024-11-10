@@ -7,7 +7,7 @@ import me.ht9.rose.feature.command.commands.VclipCommand;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.command.commands.SpawnCmd;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
-import me.ht9.rose.feature.module.modules.client.hud.HUD;
+import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
 import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
 import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
 import me.ht9.rose.feature.module.modules.exploit.lawnmower.Lawnmower;
@@ -18,6 +18,7 @@ import me.ht9.rose.feature.module.modules.movement.flight.Flight;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
 import me.ht9.rose.feature.module.modules.movement.noclip.NoClip;
 import me.ht9.rose.feature.module.modules.movement.nofall.NoFall;
+import me.ht9.rose.feature.module.modules.movement.scaffold.Scaffold;
 import me.ht9.rose.feature.module.modules.movement.speed.Speed;
 import me.ht9.rose.feature.module.modules.movement.velocity.Velocity;
 import me.ht9.rose.feature.module.modules.movement.yaw.Yaw;
@@ -42,7 +43,7 @@ public final class Registry
     public static void loadModules()
     {
         modules.add(ClickGUI.instance());
-        modules.add(HUD.instance());
+        modules.add(HudEditor.instance());
 
         modules.add(BoatTravel.instance());
         modules.add(Instamine.instance());
@@ -55,6 +56,7 @@ public final class Registry
         modules.add(Freecam.instance());
         modules.add(NoClip.instance());
         modules.add(NoFall.instance());
+        modules.add(Scaffold.instance());
         modules.add(Speed.instance());
         modules.add(Velocity.instance());
         modules.add(Yaw.instance());

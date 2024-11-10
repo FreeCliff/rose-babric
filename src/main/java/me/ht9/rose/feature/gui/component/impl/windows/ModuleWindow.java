@@ -118,7 +118,7 @@ public final class ModuleWindow extends DraggableComponent
             {
                 component.setY(this.y() + currY);
                 component.drawScreen(mouseX, mouseY, partialTicks);
-                currY += component.getTotalHeight();
+                currY += component.totalHeight();
             }
         }
     }
@@ -249,7 +249,7 @@ public final class ModuleWindow extends DraggableComponent
         {
             for (ModuleComponent component : this.components)
             {
-                totalHeight += component.getTotalHeight();
+                totalHeight += component.totalHeight();
             }
         }
         return totalHeight;

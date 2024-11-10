@@ -118,4 +118,65 @@ public final class FileUtils
             Rose.logger().error("Failed to load clickgui: ", t);
         }
     }
+
+//    public static void saveHudEditor(List<HudComponent> components)
+//    {
+//        try
+//        {
+//            JsonObject hudEditor = new JsonObject();
+//            JsonArray elements = new JsonArray();
+//            for (HudComponent component : components)
+//            {
+//                JsonObject properties = new JsonObject();
+//                properties.add("name", new JsonPrimitive(component.hudElement().name()));
+//                properties.add("x", new JsonPrimitive(component.x()));
+//                properties.add("y", new JsonPrimitive(component.y()));
+//                properties.add("enabled", new JsonPrimitive(component.hudElement().enabled()));
+//                elements.add(properties);
+//            }
+//            hudEditor.add("elements", elements);
+//
+//            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(MAIN_FILE, "hudeditor.json")));
+//            bw.write(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(hudEditor.toString())));
+//            bw.close();
+//        } catch (Throwable t)
+//        {
+//            Rose.logger().error("Failed to save hudeditor: ", t);
+//        }
+//    }
+//
+//    public static void loadHudEditor(List<HudComponent> components)
+//    {
+//        try
+//        {
+//            File hudEditorConfig = new File(MAIN_FILE, "hudeditor.json");
+//            if (hudEditorConfig.exists())
+//            {
+//                JsonObject hudEditor = JsonParser.parseReader(new FileReader(hudEditorConfig)).getAsJsonObject();
+//                JsonArray elementsArray = hudEditor.get("elements").getAsJsonArray();
+//                for (HudComponent component : components)
+//                {
+//                    elementsArray.forEach(element ->
+//                    {
+//                        JsonObject object = element.getAsJsonObject();
+//                        if (component.hudElement().name().equalsIgnoreCase(object.get("name").getAsString()))
+//                        {
+//                            component.hudElement().setX(object.get("x").getAsFloat());
+//                            component.hudElement().setY(object.get("y").getAsFloat());
+//                            if (object.has("enabled"))
+//                            {
+//                                if (object.get("enabled").getAsBoolean())
+//                                {
+//                                    component.hudElement().toggle();
+//                                }
+//                            }
+//                        }
+//                    });
+//                }
+//            }
+//        } catch (Throwable t)
+//        {
+//            Rose.logger().error("Failed to load hudeditor: ", t);
+//        }
+//    }
 }
