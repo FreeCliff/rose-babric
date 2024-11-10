@@ -39,10 +39,12 @@ dependencies {
 	implementation 'blue.endless:jankson:1.2.1'
 }
 
-configurations.configureEach {
-	resolutionStrategy {
-		force 'org.lwjgl.lwjgl:lwjgl_util:2.9.3'
-		force 'org.lwjgl.lwjgl:lwjgl:2.9.3'
+if (gradle.startParameter.taskNames.contains('build')) {
+	configurations.configureEach {
+		resolutionStrategy {
+			force 'org.lwjgl.lwjgl:lwjgl_util:2.9.3'
+			force 'org.lwjgl.lwjgl:lwjgl:2.9.3'
+		}
 	}
 }
 

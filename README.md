@@ -4,6 +4,14 @@ A modded experience for Minecraft Beta 1.7.3, bringing modern enhancements to a 
 
 ---
 
+## 📖 Getting Started
+
+> **Note**: Rose b1.7.3 requires **JDK 17**. If you encounter any resolution issues, I recommend using the [**Temurin JDK**](https://adoptium.net/temurin/releases/?os=windows&arch=x64&package=jre&version=17).
+
+> 💡 **Need Babric for Beta 1.7.3?** Follow the [Babric setup guide](https://github.com/babric/prism-instance) to get started.
+
+---
+
 ## ⚙️ Required Mods
 
 To get started with Rose b1.7.3, you'll need to install the following essential mods. **Be sure to use the specified versions**, as other versions may not be compatible:
@@ -58,7 +66,5 @@ If you'd prefer a precompiled version of Rose:
 4. Download the `.zip` file and rename it to `.jar`.
 
 > 💡 **Tip**: Make sure to install the required mods at their specified versions before launching Rose b1.7.3 to avoid compatibility issues.
-
-> 📖 **Need Babric for Beta 1.7.3?** Follow the [Babric setup guide](https://github.com/babric/prism-instance) to get started.
 
 Happy skidding!!! 🌟

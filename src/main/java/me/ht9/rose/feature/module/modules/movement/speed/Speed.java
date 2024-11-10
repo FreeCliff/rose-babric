@@ -20,6 +20,7 @@ public class Speed extends Module
 
     private final Timer timer = new Timer();
 
+    @Override
     public void onEnable()
     {
         this.timer.reset();
@@ -28,6 +29,7 @@ public class Speed extends Module
     @SubscribeEvent
     public void onTick(TickEvent event)
     {
+        if(mc.thePlayer == null || mc.theWorld == null) return;
         if (this.type.value() == Type.Vanilla)
         {
             Movement.setSpeed(
