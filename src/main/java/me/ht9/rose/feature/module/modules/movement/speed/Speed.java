@@ -26,6 +26,12 @@ public class Speed extends Module
         this.timer.reset();
     }
 
+    @Override
+    public void onDisable() {
+        if (this.type.value() == Type.NoCheat)
+            mc.getSendQueue().addToSendQueue(new Packet19EntityAction(mc.thePlayer, 3));
+    }
+
     @SubscribeEvent
     public void onTick(TickEvent event)
     {

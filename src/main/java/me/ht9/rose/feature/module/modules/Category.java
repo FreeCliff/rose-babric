@@ -15,6 +15,7 @@ public enum Category
     Exploit("me.ht9.rose.feature.module.modules.exploit"),
     Movement("me.ht9.rose.feature.module.modules.movement"),
     Render("me.ht9.rose.feature.module.modules.render"),
+    Misc("me.ht9.rose.feature.module.modules.misc"),
     Hidden("me.ht9.rose.feature.module.modules.hidden");
 
     private final String packageName;
