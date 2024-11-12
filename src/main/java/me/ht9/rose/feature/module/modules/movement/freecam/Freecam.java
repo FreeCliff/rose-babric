@@ -64,6 +64,8 @@ public class Freecam extends Module
         if(mc.thePlayer == null || mc.theWorld == null || mc.currentScreen instanceof GuiDownloadTerrain)
             return;
 
+        if (!event.serverBound()) return;
+
         if(event.packet() instanceof Packet10Flying || event.packet() instanceof Packet11PlayerPosition || event.packet() instanceof Packet12PlayerLook)
         {
             mc.getSendQueue().addToSendQueue(new Packet0KeepAlive()); // this is to prevent the server from kicking us :pray:

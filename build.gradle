@@ -39,11 +39,12 @@ dependencies {
 	implementation 'blue.endless:jankson:1.2.1'
 }
 
-if (gradle.startParameter.taskNames.contains('build')) {
+if (!gradle.startParameter.taskNames.contains('MinecraftClient')) {
 	configurations.configureEach {
 		resolutionStrategy {
 			force 'org.lwjgl.lwjgl:lwjgl_util:2.9.3'
 			force 'org.lwjgl.lwjgl:lwjgl:2.9.3'
+			force 'org.lwjgl.lwjgl:lwjgl-platform:2.9.3'
 		}
 	}
 }
