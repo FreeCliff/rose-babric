@@ -4,6 +4,7 @@
   "package": "me.ht9.rose.mixin",
   "compatibilityLevel": "JAVA_17",
   "client": [
+    "accessors.IBlock",
     "accessors.IGuiChat",
     "accessors.IItemBlock",
     "accessors.IMinecraft",
