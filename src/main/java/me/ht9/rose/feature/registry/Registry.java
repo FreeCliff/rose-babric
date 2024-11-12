@@ -11,6 +11,7 @@ import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
 import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
 import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
 import me.ht9.rose.feature.module.modules.exploit.lawnmower.Lawnmower;
+import me.ht9.rose.feature.module.modules.exploit.nuker.Nuker;
 import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
 import me.ht9.rose.feature.module.modules.exploit.timer.Timer;
@@ -48,6 +49,7 @@ public final class Registry
         modules.add(BoatTravel.instance());
         modules.add(Instamine.instance());
         modules.add(Lawnmower.instance());
+        modules.add(Nuker.instance());
         modules.add(PacketLogger.instance());
         modules.add(PacketMine.instance());
         modules.add(Timer.instance());
