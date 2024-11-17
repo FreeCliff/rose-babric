@@ -17,7 +17,7 @@ public final class Framebuffer implements Globals
     private int height;
 
     private int fbo;
-    private int texture;
+    public int texture;
     private int renderbuffer;
     private final float[] color;
 
@@ -44,7 +44,7 @@ public final class Framebuffer implements Globals
         glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
     }
 
-    private void delete()
+    public void delete()
     {
         unbindFramebufferTexture();
         unbindFramebuffer();
@@ -89,7 +89,7 @@ public final class Framebuffer implements Globals
         glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
         glBindRenderbufferEXT(GL_RENDERBUFFER, renderbuffer);
-        glRenderbufferStorageEXT(GL_RENDERBUFFER, GL_DEPTH_COMPONENT24, width, height);
+        glRenderbufferStorageEXT(GL_RENDERBUFFER, 0x81A6, width, height);
         glFramebufferRenderbufferEXT(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
 
         clearFramebuffer();
@@ -171,6 +171,7 @@ public final class Framebuffer implements Globals
         unbindFramebufferTexture();
         glDepthMask(true);
         glColorMask(true, true, true, true);
+        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     private void clearFramebuffer()
