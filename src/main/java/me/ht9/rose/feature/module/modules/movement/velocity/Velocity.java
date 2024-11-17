@@ -18,10 +18,11 @@ public class Velocity extends Module
     private final Setting<Boolean> liquids   = new Setting<>("Liquids", true, this.noPush::value);
     private final Setting<Boolean> entities  = new Setting<>("Entities", true, this.noPush::value);
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onPacket(PacketEvent event)
     {
-        if (event.serverBound())
+        if (!event.serverBound())
         {
             if (event.packet() instanceof Packet28EntityVelocity packet)
             {
@@ -38,6 +39,7 @@ public class Velocity extends Module
         }
     }
 
+    @SuppressWarnings("unused")
     @SubscribeEvent
     public void onPushOutOfBlocks(PushByEvent event)
     {

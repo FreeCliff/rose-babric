@@ -40,7 +40,7 @@ public class Speed extends Module
         {
             Movement.setSpeed(
                     mc.thePlayer.movementInput.moveForward != 0 || mc.thePlayer.movementInput.moveStrafe != 0
-                            ? speed.value()
+                            ? speed.value() * .2
                             : 0
             );
         }

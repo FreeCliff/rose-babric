@@ -16,10 +16,12 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(value = PlayerControllerMP.class)
-public class MixinPlayerControllerMP
+public abstract class MixinPlayerControllerMP
 {
     @Shadow
     private int blockHitDelay;
+
+    @Shadow protected abstract void syncCurrentPlayItem();
 
     @Inject(
             method = "sendBlockRemoving",
@@ -41,13 +43,14 @@ public class MixinPlayerControllerMP
         }
     }
 
-    @Inject(method = "syncCurrentPlayItem", at = @At("HEAD"), cancellable = true)
-    public void onCurrentItemSync(CallbackInfo ci)
+    @Redirect(method = "sendBlockRemoving", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"))
+    public void syncCurrentPlayItem(PlayerControllerMP instance)
     {
-        SyncCurrentItemEvent event = new SyncCurrentItemEvent();
+        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.BREAK);
         Rose.bus().post(event);
         if (event.cancelled())
-            ci.cancel();
+            return;
+        syncCurrentPlayItem();
     }
 
     @Redirect(method = "sendBlockRemoving", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/Block;blockStrength(Lnet/minecraft/src/EntityPlayer;)F"))

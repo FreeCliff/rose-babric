@@ -12,7 +12,7 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RenderLiving.class)
-public abstract class MixinRendererLivingEntity<T extends EntityLiving> extends Render
+public abstract class MixinRenderLiving extends Render
 {
     @Shadow
     protected ModelBase mainModel;

@@ -26,6 +26,7 @@ import me.ht9.rose.feature.module.modules.movement.speed.Speed;
 import me.ht9.rose.feature.module.modules.movement.velocity.Velocity;
 import me.ht9.rose.feature.module.modules.movement.yaw.Yaw;
 import me.ht9.rose.feature.module.modules.render.fullbright.FullBright;
+import me.ht9.rose.feature.module.modules.render.nametags.NameTags;
 import me.ht9.rose.feature.module.modules.render.nooverlay.NoOverlay;
 import me.ht9.rose.feature.module.modules.render.norender.NoRender;
 import me.ht9.rose.feature.module.modules.render.xray.Xray;
@@ -69,6 +70,7 @@ public final class Registry
         modules.add(Yaw.instance());
 
         modules.add(FullBright.instance());
+        modules.add(NameTags.instance());
         modules.add(NoOverlay.instance());
         modules.add(NoRender.instance());
         modules.add(Xray.instance());

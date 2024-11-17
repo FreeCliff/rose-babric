@@ -19,10 +19,11 @@
     "mixins.MixinMinecraft",
     "mixins.MixinNetworkManager",
     "mixins.MixinPlayerControllerMP",
-    "mixins.MixinRendererLivingEntity",
     "mixins.MixinRenderGlobal",
     "mixins.MixinRenderItem",
-    "mixins.MixinRenderList"
+    "mixins.MixinRenderList",
+    "mixins.MixinRenderLiving",
+    "mixins.MixinRenderPlayer"
   ],
   "injectors": {
     "defaultRequire": 1
