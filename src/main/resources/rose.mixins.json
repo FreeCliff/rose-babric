@@ -15,6 +15,7 @@
     "mixins.MixinEntityRenderer",
     "mixins.MixinGuiChat",
     "mixins.MixinGuiIngame",
+    "mixins.MixinGuiMainMenu",
     "mixins.MixinItemRenderer",
     "mixins.MixinMinecraft",
     "mixins.MixinNetworkManager",
