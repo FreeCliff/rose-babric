@@ -8,6 +8,7 @@ import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.command.commands.SpawnCmd;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
+import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
 import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
 import me.ht9.rose.feature.module.modules.exploit.infdurability.InfDurability;
 import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
@@ -48,6 +49,7 @@ public final class Registry
     {
         modules.add(ClickGUI.instance());
         modules.add(HudEditor.instance());
+        modules.add(ToggleMsg.instance());
 
         modules.add(BoatTravel.instance());
         modules.add(InfDurability.instance());
