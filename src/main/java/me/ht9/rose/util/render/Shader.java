@@ -3,7 +3,6 @@ package me.ht9.rose.util.render;
 import me.ht9.rose.Rose;
 import me.ht9.rose.util.Globals;
 import net.minecraft.src.ScaledResolution;
-import org.lwjgl.opengl.GL11;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,6 +13,7 @@ import java.util.Map;
 import java.util.Objects;
 
 import static org.lwjgl.opengl.ARBShaderObjects.*;
+import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
 public final class Shader implements Globals
@@ -90,17 +90,17 @@ public final class Shader implements Globals
 
     public static void drawShader(Framebuffer framebuffer) {
         ScaledResolution scaledResolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        GL11.glBindTexture(GL11.GL_TEXTURE_2D, framebuffer.texture);
-        GL11.glBegin(GL11.GL_QUADS);
-        GL11.glTexCoord2d(0, 1);
-        GL11.glVertex2d(0, 0);
-        GL11.glTexCoord2d(0, 0);
-        GL11.glVertex2d(0, scaledResolution.getScaledHeight());
-        GL11.glTexCoord2d(1, 0);
-        GL11.glVertex2d(scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight());
-        GL11.glTexCoord2d(1, 1);
-        GL11.glVertex2d(scaledResolution.getScaledWidth(), 0);
-        GL11.glEnd();
+        glBindTexture(GL_TEXTURE_2D, framebuffer.texture);
+        glBegin(GL_QUADS);
+        glTexCoord2d(0, 1);
+        glVertex2d(0, 0);
+        glTexCoord2d(0, 0);
+        glVertex2d(0, scaledResolution.getScaledHeight());
+        glTexCoord2d(1, 0);
+        glVertex2d(scaledResolution.getScaledWidth(), scaledResolution.getScaledHeight());
+        glTexCoord2d(1, 1);
+        glVertex2d(scaledResolution.getScaledWidth(), 0);
+        glEnd();
     }
 
     public int programId() {

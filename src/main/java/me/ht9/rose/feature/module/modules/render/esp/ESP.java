@@ -5,11 +5,10 @@ import me.ht9.rose.event.events.RenderWorldPassEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
+import me.ht9.rose.mixin.accessors.IEntityRenderer;
 import me.ht9.rose.util.render.Framebuffer;
 import me.ht9.rose.util.render.Shader;
-import net.minecraft.src.Entity;
-import net.minecraft.src.RenderManager;
-import net.minecraft.src.ScaledResolution;
+import net.minecraft.src.*;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -27,6 +26,9 @@ public final class ESP extends Module
     private final Setting<Integer> green = new Setting<>("Green", 0, 159, 255, () -> !rainbow.value());
     private final Setting<Integer> blue = new Setting<>("Blue", 0, 78, 255, () -> !rainbow.value());
 
+    private final Setting<Boolean> players = new Setting<>("Players", true);
+    private final Setting<Boolean> animals = new Setting<>("Animals", true);
+    private final Setting<Boolean> mobs = new Setting<>("Mobs", true);
 
     private Shader shader;
 
@@ -45,16 +47,26 @@ public final class ESP extends Module
     {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
+        ((IEntityRenderer) mc.entityRenderer).invokeRenderHand(event.partialTicks(), 2);
+
+
         glPushMatrix();
         glPushAttrib(0x2040);
 
         Framebuffer framebuffer = shader.getFramebuffer();
+        framebuffer.clearFramebuffer();
         framebuffer.bindFramebuffer(true);
 
+        ((IEntityRenderer) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
         for (Object object : mc.theWorld.loadedEntityList)
         {
             if (!(object instanceof Entity entity)) continue;
             if (entity.equals(mc.thePlayer)) continue;
+
+            if (entity instanceof EntityPlayer && !players.value()) continue;
+            if ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && !animals.value()) continue;
+            if ((entity instanceof EntityMob || entity instanceof EntityFlying) && !mobs.value()) continue;
+
             if (entity.ticksExisted == 0)
             {
                 entity.lastTickPosX = entity.posX;

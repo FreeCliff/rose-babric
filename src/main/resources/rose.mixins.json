@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "client": [
     "accessors.IBlock",
+    "accessors.IEntityRenderer",
     "accessors.IGuiChat",
     "accessors.IItemBlock",
     "accessors.IMinecraft",

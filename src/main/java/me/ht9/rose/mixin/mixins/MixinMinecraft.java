@@ -47,12 +47,8 @@ public class MixinMinecraft
     {
         Framebuffer.framebuffer.unbindFramebuffer();
         Framebuffer.framebuffer.renderFramebuffer(displayWidth, displayHeight);
-    }
-
-    @Inject(method = "resize", at = @At("RETURN"))
-    public void refreshFramebuffer(int width, int height, CallbackInfo ci)
-    {
-        Framebuffer.framebuffer.createBindFramebuffer(width, height);
+        if (Framebuffer.framebuffer.width != displayWidth || Framebuffer.framebuffer.height != displayHeight)
+            Framebuffer.framebuffer.createBindFramebuffer(displayWidth, displayHeight);
     }
 
     @Inject(

@@ -12,8 +12,8 @@ public final class Framebuffer
 {
     public static Framebuffer framebuffer;
 
-    private int width;
-    private int height;
+    public int width;
+    public int height;
 
     private int fbo;
     public int texture;
@@ -169,7 +169,7 @@ public final class Framebuffer
         glColorMask(true, true, true, true);
     }
 
-    private void clearFramebuffer()
+    public void clearFramebuffer()
     {
         bindFramebuffer(true);
         glClearColor(color[0], color[1], color[2], color[3]);
