@@ -6,6 +6,7 @@ import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
+import me.ht9.rose.util.misc.FontColor;
 
 @Description("Shows a message in chat when you toggle a module.")
 public final class ToggleMsg extends Module
@@ -19,11 +20,11 @@ public final class ToggleMsg extends Module
         if (event.module() instanceof ClickGUI || event.module() instanceof HudEditor) return;
         if (event.type() == ModuleEvent.Type.ENABLE)
         {
-            mc.ingameGUI.addChatMessage("\u00a7aEnabled \u00a77" + event.module().name());
+            mc.ingameGUI.addChatMessage( FontColor.GREEN + "Enabled " + FontColor.GOLD + event.module().name());
         }
         else if (event.type() == ModuleEvent.Type.DISABLE)
         {
-            mc.ingameGUI.addChatMessage("\u00a7cDisabled \u00a77" + event.module().name());
+            mc.ingameGUI.addChatMessage(FontColor.RED + "Disabled " + FontColor.GOLD + event.module().name());
         }
     }
 

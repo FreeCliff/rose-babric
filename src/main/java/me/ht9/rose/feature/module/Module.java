@@ -80,6 +80,10 @@ public abstract class Module extends Feature
     {
     }
 
+    public void initGL()
+    {
+    }
+
     public void onDisable()
     {
     }

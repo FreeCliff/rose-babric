@@ -11,12 +11,14 @@ import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.util.Globals;
+import net.minecraft.src.Packet1Login;
 import net.minecraft.src.Packet3Chat;
 import net.minecraft.src.RenderManager;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+@SuppressWarnings("unused")
 public class Factory implements Globals
 {
     private static final Factory instance = new Factory();
@@ -24,6 +26,8 @@ public class Factory implements Globals
     public float rotationRenderPitch;
     public float prevRotationRenderPitch;
     public boolean doSetModelRotations;
+
+    public int protocolVersion;
 
     @SubscribeEvent
     public void onRender2d(Render2dEvent event)
@@ -131,30 +135,37 @@ public class Factory implements Globals
     @SubscribeEvent
     public void onPacket(PacketEvent event)
     {
-        if (event.serverBound() && event.packet() instanceof Packet3Chat packet)
+        if (event.serverBound())
         {
-            String message;
-            if ((message = packet.message).startsWith(Registry.prefix()))
+            if (event.packet() instanceof Packet3Chat packet)
             {
-                event.setCancelled(true);
-                String[] words = message.split(" ");
-                String[] args = ArrayUtils.remove(words, 0);
-                Command command = null;
-                for (Command cmd : Registry.commands())
+                String message;
+                if ((message = packet.message).startsWith(Registry.prefix()))
                 {
-                    if (cmd.name().equalsIgnoreCase(words[0].substring(1)))
+                    event.setCancelled(true);
+                    String[] words = message.split(" ");
+                    String[] args = ArrayUtils.remove(words, 0);
+                    Command command = null;
+                    for (Command cmd : Registry.commands())
                     {
-                        command = cmd;
-                        break;
+                        if (cmd.name().equalsIgnoreCase(words[0].substring(1)))
+                        {
+                            command = cmd;
+                            break;
+                        }
+                    }
+                    if (command != null)
+                    {
+                        command.execute(args);
+                    } else
+                    {
+                        mc.ingameGUI.addChatMessage("Unknown command. Try .commands for a list of commands.");
                     }
                 }
-                if (command != null)
-                {
-                    command.execute(args);
-                } else
-                {
-                    mc.ingameGUI.addChatMessage("Unknown command. Try .commands for a list of commands.");
-                }
+            }
+            else if (event.packet() instanceof Packet1Login packet)
+            {
+                this.protocolVersion = packet.protocolVersion;
             }
         }
     }

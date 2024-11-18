@@ -1,17 +1,16 @@
 package me.ht9.rose.util.render;
 
-import me.ht9.rose.util.Globals;
+import net.minecraft.src.Tessellator;
 
 import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.EXTFramebufferObject.*;
 import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL14.*;
 import static org.lwjgl.opengl.GL30.*;
 
-public final class Framebuffer implements Globals
+public final class Framebuffer
 {
-    private static Framebuffer framebuffer;
+    public static Framebuffer framebuffer;
 
     private int width;
     private int height;
@@ -157,21 +156,17 @@ public final class Framebuffer implements Globals
         glEnable(GL_COLOR_MATERIAL);
         bindFramebufferTexture();
 
-        glBegin(GL_QUADS);
-        glTexCoord2f(0.0f, 1.0f);
-        glVertex2f(0.0f, 0.0f);
-        glTexCoord2f(1.0f, 1.0f);
-        glVertex2f(width, 0.0f);
-        glTexCoord2f(1.0f, 0.0f);
-        glVertex2f(width, height);
-        glTexCoord2f(0.0f, 0.0f);
-        glVertex2f(0.0f, height);
-        glEnd();
+        Tessellator tessellator = Tessellator.instance;
+        tessellator.startDrawingQuads();
+        tessellator.addVertexWithUV(0.0d, height, 0.0d, 0.0d, 0.0d);
+        tessellator.addVertexWithUV(width, height, 0.0d, 1.0d, 0.0d);
+        tessellator.addVertexWithUV(width, 0.0d, 0.0d, 1.0d, 1.0d);
+        tessellator.addVertexWithUV(0.0d, 0.0d, 0.0d, 0.0d, 1.0d);
+        tessellator.draw();
 
         unbindFramebufferTexture();
         glDepthMask(true);
         glColorMask(true, true, true, true);
-        //glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
     }
 
     private void clearFramebuffer()
@@ -183,13 +178,5 @@ public final class Framebuffer implements Globals
 
         glClear(0x4200);
         unbindFramebuffer();
-    }
-
-    public static Framebuffer framebuffer() {
-        return framebuffer;
-    }
-
-    public static void setFramebuffer(Framebuffer framebuffer) {
-        Framebuffer.framebuffer = framebuffer;
     }
 }
