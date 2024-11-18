@@ -31,7 +31,7 @@ public class MixinMinecraft
         Framebuffer.framebuffer = new Framebuffer(displayWidth, displayHeight);
         Framebuffer.framebuffer.setFramebufferColor(0.0f, 0.0f, 0.0f, 0.0f);
 
-        Rose.bus().post(new CreateGLContextEvent());
+        Rose.bus().post(new GLContextCreatedEvent());
     }
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 0))

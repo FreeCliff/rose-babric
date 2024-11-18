@@ -1,10 +1,7 @@
 package me.ht9.rose.event.factory;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
-import me.ht9.rose.event.events.InputEvent;
-import me.ht9.rose.event.events.PacketEvent;
-import me.ht9.rose.event.events.Render2dEvent;
-import me.ht9.rose.event.events.RenderEntityEvent;
+import me.ht9.rose.event.events.*;
 import me.ht9.rose.feature.command.Command;
 import me.ht9.rose.feature.module.keybinding.Bind;
 import me.ht9.rose.feature.module.setting.Setting;
@@ -38,6 +35,12 @@ public class Factory implements Globals
                 .forEach(
                         m -> m.onRender2d(event.partialTicks())
                 );
+    }
+
+    @SubscribeEvent
+    private void onGLContextCreated(GLContextCreatedEvent event)
+    {
+        Registry.modules().forEach(Module::initGL);
     }
 
     @SubscribeEvent
