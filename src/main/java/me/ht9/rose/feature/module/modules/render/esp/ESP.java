@@ -36,7 +36,7 @@ public final class ESP extends Module
     public void initGL() {
         shader = new Shader(
                 "/assets/rose/shaders/vertex.vert",
-                "/assets/rose/shaders/esp.frag",
+                "/assets/rose/shaders/outline.frag",
                 "resolution", "time", "red", "green", "blue", "rainbow", "fill", "dotted"
         );
     }
@@ -97,7 +97,7 @@ public final class ESP extends Module
         glUniform1i(shader.getUniform("fill"), fill.value() ? 1 : 0);
         glUniform1i(shader.getUniform("dotted"), dotted.value() ? 1 : 0);
 
-        Shader.drawShader(framebuffer);
+        Shader.drawFramebuffer(framebuffer);
         glUseProgram(0);
         Framebuffer.framebuffer.bindFramebuffer(false);
 

@@ -17,6 +17,7 @@ public final class ToggleMsg extends Module
     @SubscribeEvent
     public void onModule(ModuleEvent event)
     {
+        if (mc.ingameGUI == null) return;
         if (event.module() instanceof ClickGUI || event.module() instanceof HudEditor) return;
         if (event.type() == ModuleEvent.Type.ENABLE)
         {

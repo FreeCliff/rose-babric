@@ -8,9 +8,9 @@ import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.util.Globals;
-import net.minecraft.src.Packet1Login;
-import net.minecraft.src.Packet3Chat;
-import net.minecraft.src.RenderManager;
+import me.ht9.rose.util.misc.MultiprotoIntegrationHelper;
+import net.fabricmc.loader.api.FabricLoader;
+import net.minecraft.src.*;
 import org.apache.commons.lang3.ArrayUtils;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
@@ -25,6 +25,8 @@ public class Factory implements Globals
     public boolean doSetModelRotations;
 
     public int protocolVersion;
+
+    public int[] lastChestCoords;
 
     @SubscribeEvent
     public void onRender2d(Render2dEvent event)
@@ -166,11 +168,23 @@ public class Factory implements Globals
                     }
                 }
             }
-            else if (event.packet() instanceof Packet1Login packet)
+            else if (event.packet() instanceof Packet15Place packet)
             {
-                this.protocolVersion = packet.protocolVersion;
+                if (mc.theWorld.getBlockId(packet.xPosition, packet.yPosition, packet.zPosition) == Block.chest.blockID)
+                {
+                    lastChestCoords = new int[]{packet.xPosition, packet.yPosition, packet.zPosition, packet.direction};
+                }
+                else
+                {
+                    lastChestCoords = null;
+                }
             }
         }
+
+        if (FabricLoader.getInstance().isModLoaded("multiproto"))
+            protocolVersion = MultiprotoIntegrationHelper.getProtocolVersionAsInt();
+        else
+            protocolVersion = 14;
     }
 
     @SubscribeEvent

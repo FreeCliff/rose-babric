@@ -88,7 +88,7 @@ public final class Shader implements Globals
         return this.framebuffer;
     }
 
-    public static void drawShader(Framebuffer framebuffer) {
+    public static void drawFramebuffer(Framebuffer framebuffer) {
         ScaledResolution scaledResolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         glBindTexture(GL_TEXTURE_2D, framebuffer.texture);
         glBegin(GL_QUADS);

@@ -15,6 +15,7 @@
     "mixins.MixinEntityPlayerSP",
     "mixins.MixinEntityRenderer",
     "mixins.MixinGuiChat",
+    "mixins.MixinGuiContainer",
     "mixins.MixinGuiIngame",
     "mixins.MixinGuiMainMenu",
     "mixins.MixinItemRenderer",
