@@ -15,12 +15,13 @@ public final class Xray extends Module {
 
     @Override
     public void onEnable() {
-        mc.theWorld.markBlocksDirty((int) mc.thePlayer.posX - 250, 0, (int) mc.thePlayer.posZ - 250, (int) mc.thePlayer.posX + 250, 130, (int) mc.thePlayer.posZ + 250);
+        //mc.theWorld.markBlocksDirty((int) mc.thePlayer.posX - 250, 0, (int) mc.thePlayer.posZ - 250, (int) mc.thePlayer.posX + 250, 130, (int) mc.thePlayer.posZ + 250);
+        mc.renderGlobal.loadRenderers();
     }
 
     @Override
     public void onDisable() {
-        mc.theWorld.markBlocksDirty((int) mc.thePlayer.posX - 250, 0, (int) mc.thePlayer.posZ - 250, (int) mc.thePlayer.posX + 250, 130, (int) mc.thePlayer.posZ + 250);
+        mc.renderGlobal.loadRenderers();
     }
 
     @SuppressWarnings("unused")

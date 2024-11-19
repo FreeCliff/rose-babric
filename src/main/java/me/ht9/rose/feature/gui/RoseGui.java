@@ -231,8 +231,9 @@ public class RoseGui extends GuiScreen implements Globals
 
         new Thread(() ->
         {
-            FileUtils.saveModules(FileUtils.MODULES_FILE);
+            FileUtils.saveModules();
             FileUtils.saveClickGUI();
+            FileUtils.saveFriends();
         }).start();
     }
 

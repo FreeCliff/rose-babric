@@ -1,4 +1,4 @@
-package me.ht9.rose.feature.module.modules.exploit.timer;
+package me.ht9.rose.feature.module.modules.misc.timer;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.TickEvent;

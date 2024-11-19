@@ -2,13 +2,16 @@ package me.ht9.rose.feature.registry;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.feature.command.Command;
+import me.ht9.rose.feature.command.commands.FriendsCommand;
 import me.ht9.rose.feature.command.commands.LagbackCommand;
 import me.ht9.rose.feature.command.commands.VclipCommand;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.command.commands.SpawnCmd;
+import me.ht9.rose.feature.friend.Friend;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
 import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
+import me.ht9.rose.feature.module.modules.combat.Aura;
 import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
 import me.ht9.rose.feature.module.modules.exploit.infdurability.InfDurability;
 import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
@@ -16,7 +19,8 @@ import me.ht9.rose.feature.module.modules.exploit.lawnmower.Lawnmower;
 import me.ht9.rose.feature.module.modules.exploit.nuker.Nuker;
 import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
-import me.ht9.rose.feature.module.modules.exploit.timer.Timer;
+import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
+import me.ht9.rose.feature.module.modules.misc.timer.Timer;
 import me.ht9.rose.feature.module.modules.misc.chatbomb.ChatBomb;
 import me.ht9.rose.feature.module.modules.movement.flight.Flight;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
@@ -45,6 +49,8 @@ public final class Registry
     private static final List<Module> modules = new ArrayList<>();
     private static final List<Command> commands = new ArrayList<>();
 
+    private static final List<Friend> friends = new ArrayList<>();
+
     private static final String prefix = String.valueOf('.');
 
     public static void loadModules()
@@ -53,6 +59,8 @@ public final class Registry
         modules.add(HudEditor.instance());
         modules.add(ToggleMsg.instance());
 
+        modules.add(Aura.instance());
+
         modules.add(BoatTravel.instance());
         modules.add(InfDurability.instance());
         modules.add(Instamine.instance());
@@ -60,9 +68,10 @@ public final class Registry
         modules.add(Nuker.instance());
         modules.add(PacketLogger.instance());
         modules.add(PacketMine.instance());
-        modules.add(Timer.instance());
+        modules.add(Sneak.instance());
 
         modules.add(ChatBomb.instance());
+        modules.add(Timer.instance());
 
         modules.add(Flight.instance());
         modules.add(Freecam.instance());
@@ -116,6 +125,13 @@ public final class Registry
         commands.add(new CommandBuilder("Vclip")
                 .withDescription("Teleport up and down")
                 .withExecutable(new VclipCommand())
+                .withSuggestion("<y>", () -> new String[]{})
+                .asCommand());
+        commands.add(new CommandBuilder("Friends")
+                .withDescription("Modify the friends list")
+                .withExecutable(new FriendsCommand())
+                .withSuggestion("<add/del/list>", () -> new String[]{"add", "del", "list"})
+                .withSuggestion("[name]", () -> (String[]) Registry.friends().stream().map(Friend::name).toArray())
                 .asCommand());
     }
 
@@ -132,5 +148,10 @@ public final class Registry
     public static List<Command> commands()
     {
         return commands;
+    }
+
+    public static List<Friend> friends()
+    {
+        return friends;
     }
 }

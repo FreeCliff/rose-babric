@@ -10,18 +10,23 @@ import java.util.Arrays;
 @Description("Make the world bright!")
 public final class FullBright extends Module {
     private static final FullBright instance = new FullBright();
-    private float[] lightBrightnessTable = new float[16];
 
     @Override
     public void onEnable() {
-        this.lightBrightnessTable = Arrays.copyOf(mc.theWorld.worldProvider.lightBrightnessTable, 16);
         Arrays.fill(mc.theWorld.worldProvider.lightBrightnessTable, 1.0f);
-        mc.theWorld.markBlocksDirty((int) mc.thePlayer.posX - 250, 0, (int) mc.thePlayer.posZ - 250, (int) mc.thePlayer.posX + 250, 130, (int) mc.thePlayer.posZ + 250);
+        mc.renderGlobal.loadRenderers();
     }
 
     @Override
     public void onDisable() {
-        mc.theWorld.worldProvider.lightBrightnessTable = Arrays.copyOf(this.lightBrightnessTable, 16);
+        float var1 = 0.05F;
+
+        for(int var2 = 0; var2 <= 15; ++var2) {
+            float var3 = 1.0F - (float)var2 / 15.0F;
+            mc.theWorld.worldProvider.lightBrightnessTable[var2] = (1.0F - var3) / (var3 * 3.0F + 1.0F) * (1.0F - var1) + var1;
+        }
+
+        mc.renderGlobal.loadRenderers();
     }
 
     @SuppressWarnings("unused")

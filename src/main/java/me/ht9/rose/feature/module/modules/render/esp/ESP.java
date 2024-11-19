@@ -26,9 +26,11 @@ public final class ESP extends Module
     private final Setting<Integer> green = new Setting<>("Green", 0, 159, 255, () -> !rainbow.value());
     private final Setting<Integer> blue = new Setting<>("Blue", 0, 78, 255, () -> !rainbow.value());
 
+    private final Setting<Boolean> all = new Setting<>("All", true);
     private final Setting<Boolean> players = new Setting<>("Players", true);
     private final Setting<Boolean> animals = new Setting<>("Animals", true);
     private final Setting<Boolean> mobs = new Setting<>("Mobs", true);
+    private final Setting<Boolean> items = new Setting<>("Items", true);
 
     private Shader shader;
 
@@ -49,7 +51,6 @@ public final class ESP extends Module
 
         ((IEntityRenderer) mc.entityRenderer).invokeRenderHand(event.partialTicks(), 2);
 
-
         glPushMatrix();
         glPushAttrib(0x2040);
 
@@ -63,19 +64,24 @@ public final class ESP extends Module
             if (!(object instanceof Entity entity)) continue;
             if (entity.equals(mc.thePlayer)) continue;
 
-            if (entity instanceof EntityPlayer && !players.value()) continue;
-            if ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && !animals.value()) continue;
-            if ((entity instanceof EntityMob || entity instanceof EntityFlying) && !mobs.value()) continue;
-
-            if (entity.ticksExisted == 0)
+            if (
+                    all.value()
+                    || (entity instanceof EntityPlayer && players.value())
+                    || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
+                    || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
+                    || (entity instanceof EntityItem && items.value())
+            )
             {
-                entity.lastTickPosX = entity.posX;
-                entity.lastTickPosY = entity.posY;
-                entity.lastTickPosZ = entity.posZ;
-            }
+                if (entity.ticksExisted == 0)
+                {
+                    entity.lastTickPosX = entity.posX;
+                    entity.lastTickPosY = entity.posY;
+                    entity.lastTickPosZ = entity.posZ;
+                }
 
-            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            RenderManager.instance.renderEntity(entity, event.partialTicks());
+                glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+                RenderManager.instance.renderEntity(entity, event.partialTicks());
+            }
         }
 
         glEnable(GL_BLEND);

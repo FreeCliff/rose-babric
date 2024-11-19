@@ -2,6 +2,7 @@ package me.ht9.rose.util.config;
 
 import com.google.gson.*;
 import me.ht9.rose.Rose;
+import me.ht9.rose.feature.friend.Friend;
 import me.ht9.rose.feature.gui.RoseGui;
 import me.ht9.rose.feature.gui.component.impl.windows.ModuleWindow;
 import me.ht9.rose.feature.registry.Registry;
@@ -13,14 +14,14 @@ import java.io.FileWriter;
 
 public final class FileUtils
 {
-    public static final File MAIN_FILE = new File("rose");
-    public static final File MODULES_FILE = new File(MAIN_FILE, "modules");
+    public static final File MAIN_FOLDER = new File("rose");
+    public static final File MODULES_FILE = new File(MAIN_FOLDER, "modules");
 
     static
     {
-        if (!MAIN_FILE.exists())
+        if (!MAIN_FOLDER.exists())
         {
-            MAIN_FILE.mkdir();
+            MAIN_FOLDER.mkdir();
         }
         if (!MODULES_FILE.exists())
         {
@@ -28,14 +29,14 @@ public final class FileUtils
         }
     }
 
-    public static void saveModules(File directory)
+    public static void saveModules()
     {
         Registry.modules().forEach(m ->
         {
             try
             {
                 JsonObject module = m.serialize();
-                BufferedWriter bw = new BufferedWriter(new FileWriter(new File(directory, m.name().toLowerCase() + ".json")));
+                BufferedWriter bw = new BufferedWriter(new FileWriter(new File(MODULES_FILE, m.name().toLowerCase() + ".json")));
                 bw.write(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(module.toString())));
                 bw.close();
             } catch (Throwable t)
@@ -45,13 +46,13 @@ public final class FileUtils
         });
     }
 
-    public static void loadModules(File directory)
+    public static void loadModules()
     {
         Registry.modules().forEach(m ->
         {
             try
             {
-                File modConfig = new File(directory, m.name().toLowerCase() + ".json");
+                File modConfig = new File(MODULES_FILE, m.name().toLowerCase() + ".json");
                 if (modConfig.exists())
                 {
                     JsonObject module = JsonParser.parseReader(new FileReader(modConfig)).getAsJsonObject();
@@ -81,7 +82,7 @@ public final class FileUtils
             }
             clickGUI.add("windows", windows);
 
-            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(MAIN_FILE, "clickgui.json")));
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(MAIN_FOLDER, "clickgui.json")));
             bw.write(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(clickGUI.toString())));
             bw.close();
         } catch (Throwable t)
@@ -94,7 +95,7 @@ public final class FileUtils
     {
         try
         {
-            File clickGUIConfig = new File(MAIN_FILE, "clickgui.json");
+            File clickGUIConfig = new File(MAIN_FOLDER, "clickgui.json");
             if (clickGUIConfig.exists())
             {
                 JsonObject clickGui = JsonParser.parseReader(new FileReader(clickGUIConfig)).getAsJsonObject();
@@ -119,64 +120,47 @@ public final class FileUtils
         }
     }
 
-//    public static void saveHudEditor(List<HudComponent> components)
-//    {
-//        try
-//        {
-//            JsonObject hudEditor = new JsonObject();
-//            JsonArray elements = new JsonArray();
-//            for (HudComponent component : components)
-//            {
-//                JsonObject properties = new JsonObject();
-//                properties.add("name", new JsonPrimitive(component.hudElement().name()));
-//                properties.add("x", new JsonPrimitive(component.x()));
-//                properties.add("y", new JsonPrimitive(component.y()));
-//                properties.add("enabled", new JsonPrimitive(component.hudElement().enabled()));
-//                elements.add(properties);
-//            }
-//            hudEditor.add("elements", elements);
-//
-//            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(MAIN_FILE, "hudeditor.json")));
-//            bw.write(new GsonBuilder().setPrettyPrinting().create().toJson(JsonParser.parseString(hudEditor.toString())));
-//            bw.close();
-//        } catch (Throwable t)
-//        {
-//            Rose.logger().error("Failed to save hudeditor: ", t);
-//        }
-//    }
-//
-//    public static void loadHudEditor(List<HudComponent> components)
-//    {
-//        try
-//        {
-//            File hudEditorConfig = new File(MAIN_FILE, "hudeditor.json");
-//            if (hudEditorConfig.exists())
-//            {
-//                JsonObject hudEditor = JsonParser.parseReader(new FileReader(hudEditorConfig)).getAsJsonObject();
-//                JsonArray elementsArray = hudEditor.get("elements").getAsJsonArray();
-//                for (HudComponent component : components)
-//                {
-//                    elementsArray.forEach(element ->
-//                    {
-//                        JsonObject object = element.getAsJsonObject();
-//                        if (component.hudElement().name().equalsIgnoreCase(object.get("name").getAsString()))
-//                        {
-//                            component.hudElement().setX(object.get("x").getAsFloat());
-//                            component.hudElement().setY(object.get("y").getAsFloat());
-//                            if (object.has("enabled"))
-//                            {
-//                                if (object.get("enabled").getAsBoolean())
-//                                {
-//                                    component.hudElement().toggle();
-//                                }
-//                            }
-//                        }
-//                    });
-//                }
-//            }
-//        } catch (Throwable t)
-//        {
-//            Rose.logger().error("Failed to load hudeditor: ", t);
-//        }
-//    }
+    public static void saveFriends()
+    {
+        try
+        {
+            JsonObject friends = new JsonObject();
+            JsonArray friendsArray = new JsonArray();
+            for (Friend friend : Registry.friends())
+            {
+                friendsArray.add(friend.name());
+            }
+            friends.add("friends", friendsArray);
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(MAIN_FOLDER, "friends.json")));
+            bw.write(new GsonBuilder()
+                    .setPrettyPrinting()
+                    .create()
+                    .toJson(JsonParser.parseString(friends.toString()))
+            );
+            bw.close();
+        }
+        catch (Throwable t)
+        {
+            Rose.logger().error("Failed to save friends: ", t);
+        }
+    }
+
+    public static void loadFriends()
+    {
+        try
+        {
+            File friendsFile = new File(MAIN_FOLDER, "friends.json");
+            if (friendsFile.exists())
+            {
+                JsonObject friends = JsonParser.parseReader(new FileReader(friendsFile)).getAsJsonObject();
+                JsonArray friendsArray = friends.get("friends").getAsJsonArray();
+                friendsArray.forEach(element -> Registry.friends().add(new Friend(element.getAsString())));
+            }
+        }
+        catch (Throwable t)
+        {
+            Rose.logger().error("Failed to load friends: ", t);
+        }
+    }
 }
