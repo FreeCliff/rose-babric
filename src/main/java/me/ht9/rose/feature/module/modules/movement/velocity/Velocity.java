@@ -22,6 +22,8 @@ public class Velocity extends Module
     @SubscribeEvent
     public void onPacket(PacketEvent event)
     {
+        if (mc.thePlayer == null || mc.theWorld == null) return;
+
         if (!event.serverBound())
         {
             if (event.packet() instanceof Packet28EntityVelocity packet)

@@ -2,7 +2,6 @@ package me.ht9.rose.util.config;
 
 import com.google.gson.*;
 import me.ht9.rose.Rose;
-import me.ht9.rose.feature.friend.Friend;
 import me.ht9.rose.feature.gui.RoseGui;
 import me.ht9.rose.feature.gui.component.impl.windows.ModuleWindow;
 import me.ht9.rose.feature.registry.Registry;
@@ -126,9 +125,9 @@ public final class FileUtils
         {
             JsonObject friends = new JsonObject();
             JsonArray friendsArray = new JsonArray();
-            for (Friend friend : Registry.friends())
+            for (String friend : Registry.friends())
             {
-                friendsArray.add(friend.name());
+                friendsArray.add(friend);
             }
             friends.add("friends", friendsArray);
 
@@ -155,7 +154,7 @@ public final class FileUtils
             {
                 JsonObject friends = JsonParser.parseReader(new FileReader(friendsFile)).getAsJsonObject();
                 JsonArray friendsArray = friends.get("friends").getAsJsonArray();
-                friendsArray.forEach(element -> Registry.friends().add(new Friend(element.getAsString())));
+                friendsArray.forEach(element -> Registry.friends().add(element.getAsString()));
             }
         }
         catch (Throwable t)

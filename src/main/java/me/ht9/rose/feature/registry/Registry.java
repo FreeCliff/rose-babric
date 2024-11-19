@@ -7,7 +7,6 @@ import me.ht9.rose.feature.command.commands.LagbackCommand;
 import me.ht9.rose.feature.command.commands.VclipCommand;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.command.commands.SpawnCmd;
-import me.ht9.rose.feature.friend.Friend;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
 import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
@@ -44,13 +43,14 @@ import me.ht9.rose.feature.module.Module;
 import java.lang.reflect.Field;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 public final class Registry
 {
     private static final List<Module> modules = new ArrayList<>();
     private static final List<Command> commands = new ArrayList<>();
 
-    private static final List<Friend> friends = new ArrayList<>();
+    private static final List<String> friends = new CopyOnWriteArrayList<>();
 
     private static final String prefix = String.valueOf('.');
 
@@ -133,7 +133,7 @@ public final class Registry
                 .withDescription("Modify the friends list")
                 .withExecutable(new FriendsCommand())
                 .withSuggestion("<add/del/list>", () -> new String[]{"add", "del", "list"})
-                .withSuggestion("[name]", () -> (String[]) Registry.friends().stream().map(Friend::name).toArray())
+                .withSuggestion("[name]", () -> Registry.friends().toArray(new String[0]))
                 .asCommand());
     }
 
@@ -152,7 +152,7 @@ public final class Registry
         return commands;
     }
 
-    public static List<Friend> friends()
+    public static List<String> friends()
     {
         return friends;
     }

@@ -3,6 +3,8 @@ package me.ht9.rose.feature.module.modules.render.nametags;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.RenderPlayerLabelEvent;
 import me.ht9.rose.feature.module.Module;
+import me.ht9.rose.feature.registry.Registry;
+import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.RenderManager;
 import net.minecraft.src.Tessellator;
 
@@ -18,18 +20,25 @@ public final class NameTags extends Module
     @SubscribeEvent
     public void onLabelRender(RenderPlayerLabelEvent event)
     {
-        float distance = event.entity().getDistanceToEntity(RenderManager.instance.livingPlayer);
+        float distance = RenderManager.instance.livingPlayer.getDistanceToEntity(event.entity());
         Color color = Color.WHITE;
         if (distance > (mc.thePlayer.isSneaking() ? 32f : 64f))
             color = Color.GREEN;
         if (event.entity().isSneaking())
             color = Color.RED;
 
+        for (String friend : Registry.friends())
+            if (friend.equalsIgnoreCase(event.name()))
+            {
+                color = Color.BLUE;
+                break;
+            }
+
         double y = event.y();
         if (event.entity().isPlayerSleeping())
             y -= 1.5;
 
-        float scale = Math.max(0.016666668f * 1.6f, 0.016666668f * distance * 0.115f);
+        float scale = Math.max(0.016666668f * 1.6f, 0.016666668f * distance * 0.135f);
 
         glPushMatrix();
         glTranslated(event.x(), y + 2.3, event.z());

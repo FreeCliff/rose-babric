@@ -60,10 +60,11 @@ Enhance your gameplay with these optional mods. They’re not required but can i
 
 If you'd prefer a precompiled version of Rose:
 
-1. Go to the **Actions** tab on this repository.
-2. Click on the latest successful build.
-3. Scroll all the way down to the **Artifacts** section.
-4. Download the `.zip` and extract it and the mod is ready to be added.
+1. Make sure you are logged in to a GitHub account.
+2. Go to the **Actions** tab on this repository.
+3. Click on the latest successful build.
+4. Scroll all the way down to the **Artifacts** section.
+5. Download the `.zip` and extract it and the mod is ready to be added.
 
 > 💡 **Tip**: Make sure to install the required mods at their specified versions before launching Rose b1.7.3 to avoid compatibility issues.
 

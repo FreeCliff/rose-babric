@@ -55,7 +55,7 @@ public final class ESP extends Module
         glPushAttrib(0x2040);
 
         Framebuffer framebuffer = shader.getFramebuffer();
-        framebuffer.clearFramebuffer();
+        //framebuffer.clearFramebuffer();
         framebuffer.bindFramebuffer(true);
 
         ((IEntityRenderer) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
@@ -107,7 +107,7 @@ public final class ESP extends Module
         glUseProgram(0);
         Framebuffer.framebuffer.bindFramebuffer(false);
 
-        glDisable(GL_LINE_SMOOTH);
+        //glDisable(GL_LINE_SMOOTH);
 
         glDisable(GL_BLEND);
 
