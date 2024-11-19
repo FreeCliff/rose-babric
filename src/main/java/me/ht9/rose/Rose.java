@@ -33,8 +33,16 @@ public class Rose implements ClientModInitializer, Globals
 		Registry.loadModules();
 		Registry.loadCommands();
 
-		FileUtils.loadModules(FileUtils.MODULES_FILE);
+		FileUtils.loadModules();
 		FileUtils.loadClickGUI();
+		FileUtils.loadFriends();
+
+		Runtime.getRuntime().addShutdownHook(new Thread(() ->
+		{
+			FileUtils.saveModules();
+			FileUtils.saveClickGUI();
+			FileUtils.saveFriends();
+		}));
 
 		double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0D;
 		logger.info("successfully loaded rose in {}s.", elapsedTime);

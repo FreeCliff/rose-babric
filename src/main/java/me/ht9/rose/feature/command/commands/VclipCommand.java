@@ -1,7 +1,9 @@
 package me.ht9.rose.feature.command.commands;
 
 import me.ht9.rose.feature.command.impl.Executable;
+import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.util.Globals;
+import me.ht9.rose.util.misc.FontColor;
 
 public final class VclipCommand extends Executable implements Globals {
     @Override
@@ -10,6 +12,10 @@ public final class VclipCommand extends Executable implements Globals {
             try {
                 mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + Integer.parseInt(args[0]), mc.thePlayer.posZ);
             } catch (NumberFormatException ignored) {}
+        }
+        else
+        {
+            mc.ingameGUI.addChatMessage(FontColor.RED + Registry.prefix() + "vclip <y>");
         }
     }
 }
