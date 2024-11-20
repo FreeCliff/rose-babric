@@ -17,6 +17,10 @@ public final class SyncCurrentItemEvent extends Event
 
     public enum Type
     {
-        BREAK
+        BREAK,
+        PLACE,
+        USE_ITEM,
+        ATTACK,
+        INTERACT_ENTITY
     }
 }

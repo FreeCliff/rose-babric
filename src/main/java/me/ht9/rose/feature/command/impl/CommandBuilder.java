@@ -1,7 +1,7 @@
 package me.ht9.rose.feature.command.impl;
 
-import com.llamalad7.mixinextras.lib.apache.commons.tuple.ImmutablePair;
 import me.ht9.rose.feature.command.Command;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.ArrayList;
 import java.util.List;

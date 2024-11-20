@@ -20,6 +20,7 @@ import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
 import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
 import me.ht9.rose.feature.module.modules.exploit.xcarry.XCarry;
+import me.ht9.rose.feature.module.modules.misc.retard.Retard;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
 import me.ht9.rose.feature.module.modules.misc.chatbomb.ChatBomb;
 import me.ht9.rose.feature.module.modules.movement.flight.Flight;
@@ -73,6 +74,7 @@ public final class Registry
         modules.add(XCarry.instance());
 
         modules.add(ChatBomb.instance());
+        modules.add(Retard.instance());
         modules.add(Timer.instance());
 
         modules.add(Flight.instance());

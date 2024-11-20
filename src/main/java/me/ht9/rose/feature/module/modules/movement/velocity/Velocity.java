@@ -45,7 +45,7 @@ public class Velocity extends Module
     @SubscribeEvent
     public void onPushOutOfBlocks(PushByEvent event)
     {
-        if (this.noPush.value())
+        if (this.noPush.value() && event.pushee().equals(mc.thePlayer))
         {
             switch (event.pusher())
             {
@@ -55,10 +55,7 @@ public class Velocity extends Module
                     {
                         if (event.pusher().equals(PushByEvent.Pusher.BLOCK))
                         {
-                            if (event.pushee().equals(mc.thePlayer))
-                            {
-                                event.setCancelled(true);
-                            }
+                            event.setCancelled(true);
                         }
                     }
                 }
@@ -68,10 +65,7 @@ public class Velocity extends Module
                     {
                         if (event.pusher().equals(PushByEvent.Pusher.ENTITY))
                         {
-                            if (event.pushee().equals(mc.thePlayer))
-                            {
-                                event.setCancelled(true);
-                            }
+                            event.setCancelled(true);
                         }
                     }
                 }
@@ -81,10 +75,7 @@ public class Velocity extends Module
                     {
                         if (event.pusher().equals(PushByEvent.Pusher.LIQUID))
                         {
-                            if (event.pushee().equals(mc.thePlayer))
-                            {
-                                event.setCancelled(true);
-                            }
+                            event.setCancelled(true);
                         }
                     }
                 }

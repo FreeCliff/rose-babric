@@ -1,8 +1,8 @@
 package me.ht9.rose.feature.command;
 
-import com.llamalad7.mixinextras.lib.apache.commons.tuple.ImmutablePair;
 import me.ht9.rose.feature.command.impl.ArgumentSupplier;
 import me.ht9.rose.feature.command.impl.Executable;
+import org.apache.commons.lang3.tuple.ImmutablePair;
 
 import java.util.List;
 

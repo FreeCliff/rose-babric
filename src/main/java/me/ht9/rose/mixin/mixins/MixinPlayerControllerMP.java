@@ -18,9 +18,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = PlayerControllerMP.class)
 public abstract class MixinPlayerControllerMP
 {
-    @Shadow
-    private int blockHitDelay;
-
+    @Shadow private int blockHitDelay;
     @Shadow protected abstract void syncCurrentPlayItem();
 
     @Inject(
@@ -44,9 +42,49 @@ public abstract class MixinPlayerControllerMP
     }
 
     @Redirect(method = "sendBlockRemoving", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"))
-    public void syncCurrentPlayItem(PlayerControllerMP instance)
+    public void sendBlockRemoving(PlayerControllerMP instance)
     {
         SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.BREAK);
+        Rose.bus().post(event);
+        if (event.cancelled())
+            return;
+        syncCurrentPlayItem();
+    }
+
+    @Redirect(method = "sendPlaceBlock", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"))
+    public void sendPlaceBlock(PlayerControllerMP instance)
+    {
+        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.PLACE);
+        Rose.bus().post(event);
+        if (event.cancelled())
+            return;
+        syncCurrentPlayItem();
+    }
+
+    @Redirect(method = "sendUseItem", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"))
+    public void sendUseItem(PlayerControllerMP instance)
+    {
+        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.USE_ITEM);
+        Rose.bus().post(event);
+        if (event.cancelled())
+            return;
+        syncCurrentPlayItem();
+    }
+
+    @Redirect(method = "attackEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"))
+    public void attackEntity(PlayerControllerMP instance)
+    {
+        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.ATTACK);
+        Rose.bus().post(event);
+        if (event.cancelled())
+            return;
+        syncCurrentPlayItem();
+    }
+
+    @Redirect(method = "interactWithEntity", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"))
+    public void interactWithEntity(PlayerControllerMP instance)
+    {
+        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.INTERACT_ENTITY);
         Rose.bus().post(event);
         if (event.cancelled())
             return;

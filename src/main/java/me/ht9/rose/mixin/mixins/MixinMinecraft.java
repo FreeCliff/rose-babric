@@ -38,8 +38,8 @@ public class MixinMinecraft
     public void bindFramebuffer(CallbackInfo ci)
     {
         Framebuffer.framebuffer.bindFramebuffer(true);
-        //glEnable(GL_ALPHA_TEST);
-        //glDisable(GL_DEPTH_TEST);
+        glEnable(GL_ALPHA_TEST);
+        glDisable(GL_DEPTH_TEST);
     }
 
     @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 1))
