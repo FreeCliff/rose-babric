@@ -7,6 +7,7 @@ import me.ht9.rose.feature.command.commands.LagbackCommand;
 import me.ht9.rose.feature.command.commands.VclipCommand;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.command.commands.SpawnCmd;
+import me.ht9.rose.feature.module.modules.client.background.Background;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
 import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
@@ -57,6 +58,7 @@ public final class Registry
 
     public static void loadModules()
     {
+        modules.add(Background.instance());
         modules.add(ClickGUI.instance());
         modules.add(HudEditor.instance());
         modules.add(ToggleMsg.instance());

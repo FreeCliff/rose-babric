@@ -124,6 +124,5 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         }
     }
 
-    @Override
-    public void func_6420_o() { }
+    @Override public void func_6420_o() {}
 }

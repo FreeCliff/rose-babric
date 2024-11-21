@@ -19,14 +19,17 @@ public final class NameTags extends Module
     @SubscribeEvent
     public void onLabelRender(RenderPlayerLabelEvent event)
     {
-        float distance = RenderManager.instance.livingPlayer.getDistanceToEntity(event.entity());
+        double dX = mc.thePlayer.posX - event.entity().posX;
+        double dY = mc.thePlayer.posY - event.entity().posY;
+        double dZ = mc.thePlayer.posZ - event.entity().posZ;
+        double distance = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
         Color color = Color.WHITE;
 
         for (String friend : Registry.friends())
         {
             if (friend.equalsIgnoreCase(event.name()))
             {
-                color = Color.BLUE;
+                color = new Color(0, 170, 200);
                 break;
             }
         }
@@ -40,14 +43,14 @@ public final class NameTags extends Module
         if (event.entity().isPlayerSleeping())
             y -= 1.5;
 
-        float scale = Math.max(0.016666668f * 1.6f, 0.016666668f * distance * 0.135f);
+        double scale = distance / 150;
 
         glPushMatrix();
         glTranslated(event.x(), y + 2.3, event.z());
         glNormal3f(0.0f, 1.0f, 0.0f);
         glRotatef(-RenderManager.instance.playerViewY, 0.0f, 1.0f, 0.0f);
         glRotatef(RenderManager.instance.playerViewX, 1.0f, 0.0f, 0.0f);
-        glScalef(-scale, -scale, scale);
+        glScaled(-scale, -scale, scale);
         glDisable(GL_LIGHTING);
         glDepthMask(false);
         glDisable(GL_DEPTH_TEST);

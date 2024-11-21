@@ -12,6 +12,9 @@ public final class Aura extends Module
 {
     private static final Aura instance = new Aura();
 
+    private final Setting<Boolean> rotate = new Setting<>("Rotate", true);
+    private final Setting<Boolean> swing = new Setting<>("Swing", false);
+
     private final Setting<Boolean> players = new Setting<>("Players", true);
     private final Setting<Boolean> animals = new Setting<>("Animals", false);
     private final Setting<Boolean> mobs = new Setting<>("Mobs", true);
@@ -25,6 +28,7 @@ public final class Aura extends Module
         {
             if (!(object instanceof Entity entity)) continue;
             if (entity.equals(mc.thePlayer)) continue;
+            if (mc.thePlayer.getDistanceToEntity(entity) > range.value()) continue;
 
             if (
                     (entity instanceof EntityPlayer && players.value())
@@ -32,8 +36,26 @@ public final class Aura extends Module
                     || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
             )
             {
-                if (mc.thePlayer.ticksExisted % 2 == 0 && mc.thePlayer.getDistanceToEntity(entity) <= range.value())
+                if (rotate.value())
                 {
+                    double dX = entity.posX - mc.thePlayer.posX;
+                    double dY = entity.posY - mc.thePlayer.posY;
+                    double dZ = entity.posZ - mc.thePlayer.posZ;
+                    double distance = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+
+                    float yaw = (float) (Math.atan2(dZ, dX) * (180 / Math.PI)) - 90;
+                    float pitch = (float) -(Math.atan2(dY, distance) * (180 / Math.PI));
+
+                    event.setYaw(yaw);
+                    event.setPitch(pitch);
+                    event.setModelRotations();
+                }
+
+                if (mc.thePlayer.ticksExisted % 2 == 0)
+                {
+                    if (swing.value())
+                        mc.thePlayer.swingItem();
+
                     mc.playerController.attackEntity(mc.thePlayer, entity);
                 }
             }

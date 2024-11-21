@@ -3,12 +3,16 @@ package me.ht9.rose.mixin.mixins;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PlayerMoveEvent;
 import me.ht9.rose.event.events.PushByEvent;
+import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
 import net.minecraft.src.Entity;
+import org.lwjgl.input.Keyboard;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.ht9.rose.util.Globals.mc;
@@ -56,5 +60,13 @@ public abstract class MixinEntity
             this.shouldInject = true;
             ci.cancel();
         }
+    }
+
+    @Redirect(method = "moveEntity", at = @At(value = "FIELD", target = "Lnet/minecraft/src/Entity;onGround:Z", opcode = Opcodes.GETFIELD, ordinal = 0))
+    public boolean sneak(Entity entity)
+    {
+        if (Sneak.instance().enabled() && !Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode))
+            return false;
+        return entity.onGround;
     }
 }

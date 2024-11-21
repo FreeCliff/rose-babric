@@ -193,6 +193,7 @@ public class Factory implements Globals
         if (event.entity().equals(mc.thePlayer) && RenderManager.instance.playerViewY != 180.0F && this.doSetModelRotations)
         {
             event.setHeadPitch(this.prevRotationRenderPitch + ((this.rotationRenderPitch - this.prevRotationRenderPitch) * event.partialTicks()));
+            event.setNetHeadYaw(0);
             this.prevRotationRenderPitch = this.rotationRenderPitch;
         }
     }

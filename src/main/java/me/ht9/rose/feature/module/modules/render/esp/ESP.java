@@ -27,10 +27,10 @@ public final class ESP extends Module
     private final Setting<Integer> blue = new Setting<>("Blue", 0, 78, 255, () -> !rainbow.value());
 
     private final Setting<Boolean> all = new Setting<>("All", true);
-    private final Setting<Boolean> players = new Setting<>("Players", true);
-    private final Setting<Boolean> animals = new Setting<>("Animals", true);
-    private final Setting<Boolean> mobs = new Setting<>("Mobs", true);
-    private final Setting<Boolean> items = new Setting<>("Items", true);
+    private final Setting<Boolean> players = new Setting<>("Players", true, () -> !all.value());
+    private final Setting<Boolean> animals = new Setting<>("Animals", true, () -> !all.value());
+    private final Setting<Boolean> mobs = new Setting<>("Mobs", true, () -> !all.value());
+    private final Setting<Boolean> items = new Setting<>("Items", true, () -> !all.value());
 
     private Shader shader;
 
@@ -80,7 +80,14 @@ public final class ESP extends Module
                 }
 
                 glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-                RenderManager.instance.renderEntity(entity, event.partialTicks());
+                double var3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) event.partialTicks();
+                double var5 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) event.partialTicks();
+                double var7 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) event.partialTicks();
+                float var9 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialTicks();
+                float brightness = entity.getEntityBrightness(event.partialTicks());
+                Render render = RenderManager.instance.getEntityRenderObject(entity);
+                glColor3f(brightness, brightness, brightness);
+                render.doRender(entity, var3 - RenderManager.renderPosX, var5 - RenderManager.renderPosY, var7 - RenderManager.renderPosZ, var9, event.partialTicks());
             }
         }
 
