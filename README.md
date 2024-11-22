@@ -1,6 +1,6 @@
 # 🌹 Rose b1.7.3
 
-A modded experience for Minecraft Beta 1.7.3, bringing modern enhancements to a classic version.
+A utility mod for Minecraft Beta 1.7.3
 
 ---
 
