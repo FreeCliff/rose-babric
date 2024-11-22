@@ -4,7 +4,6 @@ import net.minecraft.src.Tessellator;
 
 import java.nio.ByteBuffer;
 
-import static org.lwjgl.opengl.EXTFramebufferObject.*;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL30.*;
 
@@ -40,7 +39,7 @@ public final class Framebuffer
 
         createFramebuffer(width, height);
         checkFramebufferComplete();
-        glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     public void delete()
@@ -50,7 +49,7 @@ public final class Framebuffer
 
         if (renderbuffer > -1)
         {
-            glDeleteRenderbuffersEXT(renderbuffer);
+            glDeleteRenderbuffers(renderbuffer);
             renderbuffer = -1;
         }
 
@@ -62,8 +61,8 @@ public final class Framebuffer
 
         if (fbo > -1)
         {
-            glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
-            glDeleteFramebuffersEXT(fbo);
+            glBindFramebuffer(GL_FRAMEBUFFER, 0);
+            glDeleteFramebuffers(fbo);
             fbo = -1;
         }
     }
@@ -73,9 +72,9 @@ public final class Framebuffer
         this.width = width;
         this.height = height;
 
-        fbo = glGenFramebuffersEXT();
+        fbo = glGenFramebuffers();
         texture = glGenTextures();
-        renderbuffer = glGenRenderbuffersEXT();
+        renderbuffer = glGenRenderbuffers();
 
         glBindTexture(GL_TEXTURE_2D, texture);
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
@@ -84,12 +83,12 @@ public final class Framebuffer
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
-        glBindFramebufferEXT(GL_FRAMEBUFFER, fbo);
-        glFramebufferTexture2DEXT(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo);
+        glFramebufferTexture2D(GL_FRAMEBUFFER, GL_COLOR_ATTACHMENT0, GL_TEXTURE_2D, texture, 0);
 
-        glBindRenderbufferEXT(GL_RENDERBUFFER, renderbuffer);
-        glRenderbufferStorageEXT(GL_RENDERBUFFER, 0x81A6, width, height);
-        glFramebufferRenderbufferEXT(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
+        glBindRenderbuffer(GL_RENDERBUFFER, renderbuffer);
+        glRenderbufferStorage(GL_RENDERBUFFER, 0x81A6, width, height);
+        glFramebufferRenderbuffer(GL_FRAMEBUFFER, GL_DEPTH_ATTACHMENT, GL_RENDERBUFFER, renderbuffer);
 
         clearFramebuffer();
         unbindFramebufferTexture();
@@ -107,7 +106,7 @@ public final class Framebuffer
 
     public void bindFramebuffer(boolean setViewport)
     {
-        glBindFramebufferEXT(GL_FRAMEBUFFER, fbo);
+        glBindFramebuffer(GL_FRAMEBUFFER, fbo);
 
         if (setViewport)
             glViewport(0, 0, width, height);
@@ -115,16 +114,16 @@ public final class Framebuffer
 
     public void unbindFramebuffer()
     {
-        glBindFramebufferEXT(GL_FRAMEBUFFER, 0);
+        glBindFramebuffer(GL_FRAMEBUFFER, 0);
     }
 
     private void checkFramebufferComplete()
     {
-        int status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER);
+        int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
         if (status != GL_FRAMEBUFFER_COMPLETE)
         {
-            throw new RuntimeException("glCheckFramebufferStatusEXT returned status code " + status);
+            throw new RuntimeException("glCheckFramebufferStatus returned status code " + status);
         }
     }
 
