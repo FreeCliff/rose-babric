@@ -7,6 +7,10 @@ import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
 import net.minecraft.src.*;
 
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
+
 @Description("Attacks entities near you")
 public final class Aura extends Module
 {
@@ -24,40 +28,58 @@ public final class Aura extends Module
     @SubscribeEvent
     public void onUpdate(PosRotUpdateEvent event)
     {
+        boolean hasRotated = false;
+        List<Entity> entities = new ArrayList<>();
         for (Object object : mc.theWorld.loadedEntityList)
         {
-            if (!(object instanceof Entity entity)) continue;
-            if (entity.equals(mc.thePlayer)) continue;
-            if (mc.thePlayer.getDistanceToEntity(entity) > range.value()) continue;
-
-            if (
-                    (entity instanceof EntityPlayer && players.value())
-                    || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
-                    || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
-            )
+            if (object instanceof Entity entity)
             {
-                if (rotate.value())
+                if (entity instanceof EntityPlayerSP) continue;
+                if (mc.thePlayer.getDistanceToEntity(entity) > range.value()) continue;
+                if (
+                        (entity instanceof EntityPlayer && players.value())
+                                || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
+                                || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
+                )
                 {
-                    double dX = entity.posX - mc.thePlayer.posX;
-                    double dY = entity.posY - mc.thePlayer.posY;
-                    double dZ = entity.posZ - mc.thePlayer.posZ;
-                    double distance = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
-
-                    float yaw = (float) (Math.atan2(dZ, dX) * (180 / Math.PI)) - 90;
-                    float pitch = (float) -(Math.atan2(dY, distance) * (180 / Math.PI));
-
-                    event.setYaw(yaw);
-                    event.setPitch(pitch);
-                    event.setModelRotations();
+                    entities.add(entity);
                 }
+            }
+        }
 
-                if (mc.thePlayer.ticksExisted % 2 == 0)
-                {
-                    if (swing.value())
-                        mc.thePlayer.swingItem();
+        entities.sort(Comparator.comparingDouble(entity ->
+        {
+            double dX = entity.posX - mc.thePlayer.posX;
+            double dY = entity.posY + entity.getEyeHeight() - mc.thePlayer.posY;
+            double dZ = entity.posZ - mc.thePlayer.posZ;
+            return dX * dX + dY * dY + dZ * dZ;
+        }));
 
-                    mc.playerController.attackEntity(mc.thePlayer, entity);
-                }
+        for (Entity entity : entities)
+        {
+            if (rotate.value() && !hasRotated)
+            {
+                double dX = entity.posX - mc.thePlayer.posX;
+                double dY = entity.posY + entity.getEyeHeight() - mc.thePlayer.posY;
+                double dZ = entity.posZ - mc.thePlayer.posZ;
+                double distance = Math.sqrt(dX * dX + dY * dY + dZ * dZ);
+
+                float yaw = (float) (Math.atan2(dZ, dX) * (180 / Math.PI)) - 90;
+                float pitch = (float) -(Math.atan2(dY, distance) * (180 / Math.PI));
+
+                event.setYaw(yaw);
+                event.setPitch(pitch);
+                event.setModelRotations();
+
+                hasRotated = true;
+            }
+
+            if (mc.thePlayer.ticksExisted % 2 == 0)
+            {
+                if (swing.value())
+                    mc.thePlayer.swingItem();
+
+                mc.playerController.attackEntity(mc.thePlayer, entity);
             }
         }
     }
