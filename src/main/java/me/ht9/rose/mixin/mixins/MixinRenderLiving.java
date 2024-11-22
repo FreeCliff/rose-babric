@@ -14,11 +14,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(RenderLiving.class)
 public abstract class MixinRenderLiving extends Render
 {
-    @Shadow
-    protected ModelBase mainModel;
-
-    @Unique
-    private float lastPartialTicks;
+    @Shadow protected ModelBase mainModel;
+    @Unique private float lastPartialTicks;
 
     @Inject(
             method = "doRender(Lnet/minecraft/src/EntityLiving;DDDFF)V",
@@ -35,23 +32,25 @@ public abstract class MixinRenderLiving extends Render
             method = "doRender(Lnet/minecraft/src/EntityLiving;DDDFF)V",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/src/ModelBase;render(FFFFFF)V",
-                    ordinal = 0
+                    target = "Lnet/minecraft/src/ModelBase;render(FFFFFF)V"
             )
     )
     public void doRender$BeforeRenderModel(ModelBase instance, float limbSwing, float limbSwingAmount, float ageInTicks, float netHeadYaw, float headPitch, float scale, EntityLiving entityLiving)
     {
+        RenderEntityEvent.Type modelType = instance.equals(mainModel) ? RenderEntityEvent.Type.MAIN : RenderEntityEvent.Type.RENDERPASS;
+
         RenderEntityEvent event = new RenderEntityEvent(
-                this.mainModel,
+                instance,
                 entityLiving,
                 limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale,
                 RenderEntityEvent.Stage.PRE,
+                modelType,
                 this.lastPartialTicks
         );
 
         Rose.bus().post(event);
 
-        this.mainModel.render(
+        instance.render(
                 event.limbSwing(),
                 event.limbSwingAmount(),
                 event.ageInTicks(),
@@ -61,10 +60,11 @@ public abstract class MixinRenderLiving extends Render
         );
 
         RenderEntityEvent postEvent = new RenderEntityEvent(
-                this.mainModel,
+                instance,
                 entityLiving,
                 limbSwing, limbSwingAmount, ageInTicks, netHeadYaw, headPitch, scale,
                 RenderEntityEvent.Stage.POST,
+                modelType,
                 this.lastPartialTicks
         );
 

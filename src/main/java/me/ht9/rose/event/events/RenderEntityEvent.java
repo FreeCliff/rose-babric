@@ -6,7 +6,7 @@ import net.minecraft.src.ModelBase;
 
 public final class RenderEntityEvent extends Event
 {
-    private final ModelBase modelBase;
+    private final ModelBase modelInstance;
     private final Entity entity;
     private float limbSwing;
     private float limbSwingAmount;
@@ -15,9 +15,10 @@ public final class RenderEntityEvent extends Event
     private float headPitch;
     private float scale;
     private final Stage stage;
+    private final Type type;
     private final float partialTicks;
 
-    public RenderEntityEvent(ModelBase modelBase,
+    public RenderEntityEvent(ModelBase modelInstance,
                              Entity entityPlayer,
                              float limbSwing,
                              float limbSwingAmount,
@@ -26,9 +27,10 @@ public final class RenderEntityEvent extends Event
                              float headPitch,
                              float scale,
                              Stage stage,
+                             Type type,
                              float partialTicks)
     {
-        this.modelBase = modelBase;
+        this.modelInstance = modelInstance;
         this.entity = entityPlayer;
         this.limbSwing = limbSwing;
         this.limbSwingAmount = limbSwingAmount;
@@ -37,12 +39,13 @@ public final class RenderEntityEvent extends Event
         this.headPitch = headPitch;
         this.scale = scale;
         this.stage = stage;
+        this.type = type;
         this.partialTicks = partialTicks;
     }
 
-    public ModelBase modelBase()
+    public ModelBase modelInstance()
     {
-        return this.modelBase;
+        return this.modelInstance;
     }
 
     public Entity entity()
@@ -85,6 +88,11 @@ public final class RenderEntityEvent extends Event
         return this.stage;
     }
 
+    public Type type()
+    {
+        return type;
+    }
+
     public float partialTicks()
     {
         return this.partialTicks;
@@ -124,5 +132,11 @@ public final class RenderEntityEvent extends Event
     {
         PRE,
         POST
+    }
+
+    public enum Type
+    {
+        MAIN,
+        RENDERPASS
     }
 }
