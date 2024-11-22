@@ -62,10 +62,23 @@ public class RoseGui extends GuiScreen implements Globals
         Globals.mc.displayGuiScreen(instance);
     }
 
+    public void openGuiMainMenu()
+    {
+        this.lastOpenTime = System.currentTimeMillis();
+        this.universalTransparency = 0.0F;
+        this.lastTransparency = 0.0F;
+        this.lastScale = 0.0F;
+
+        GL11.glEnable(GL11.GL_BLEND);
+        GL11.glEnable(GL11.GL_ALPHA_TEST);
+        Globals.mc.displayGuiScreen(instance);
+    }
+
     @Override
     public void drawScreen(int mouseX, int mouseY, float partialTicks)
     {
         super.drawScreen(mouseX, mouseY, partialTicks);
+        super.drawDefaultBackground();
 
         long timeDiff = System.currentTimeMillis() - this.lastOpenTime;
         float currentTransparency = Easing.linear(timeDiff, 55.0F, 200.0F, 250L);

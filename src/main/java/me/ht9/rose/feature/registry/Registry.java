@@ -10,6 +10,7 @@ import me.ht9.rose.feature.command.commands.SpawnCmd;
 import me.ht9.rose.feature.module.modules.client.background.Background;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
+import me.ht9.rose.feature.module.modules.client.mainmenu.MainMenu;
 import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
 import me.ht9.rose.feature.module.modules.combat.Aura;
 import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
@@ -61,6 +62,7 @@ public final class Registry
         modules.add(Background.instance());
         modules.add(ClickGUI.instance());
         modules.add(HudEditor.instance());
+        modules.add(MainMenu.instance());
         modules.add(ToggleMsg.instance());
 
         modules.add(Aura.instance());

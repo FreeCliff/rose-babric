@@ -13,7 +13,13 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RenderPlayer.class)
 public class MixinRenderPlayer {
-    @Inject(method = "passSpecialRender(Lnet/minecraft/src/EntityPlayer;DDD)V", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "passSpecialRender(Lnet/minecraft/src/EntityPlayer;DDD)V",
+            at = @At(
+                    "HEAD"
+            ),
+            cancellable = true
+    )
     public void passSpecialRender(EntityPlayer player, double x, double y, double z, CallbackInfo ci)
     {
         if (!Minecraft.isGuiEnabled() || player == RenderManager.instance.livingPlayer) return;

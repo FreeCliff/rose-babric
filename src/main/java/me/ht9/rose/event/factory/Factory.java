@@ -3,7 +3,10 @@ package me.ht9.rose.event.factory;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.*;
 import me.ht9.rose.feature.command.Command;
+import me.ht9.rose.feature.gui.RoseGui;
 import me.ht9.rose.feature.module.keybinding.Bind;
+import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
+import me.ht9.rose.feature.module.modules.client.mainmenu.MainMenu;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.feature.module.Module;
@@ -27,6 +30,20 @@ public class Factory implements Globals
     public int protocolVersion;
 
     public int[] lastChestCoords;
+
+    @SubscribeEvent
+    public void onTick(TickEvent event)
+    {
+        if (Keyboard.isKeyDown(ClickGUI.instance().toggleBind().value().key()) && MainMenu.instance().enabled() && mc.currentScreen instanceof GuiMainMenu)
+        {
+            ClickGUI.instance().enable();
+            RoseGui.instance().openGuiMainMenu();
+        } else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && MainMenu.instance().enabled() && mc.currentScreen instanceof RoseGui && ClickGUI.instance().enabled())
+        {
+            mc.displayGuiScreen(new GuiMainMenu());
+            ClickGUI.instance().disable();
+        }
+    }
 
     @SubscribeEvent
     public void onRender2d(Render2dEvent event)

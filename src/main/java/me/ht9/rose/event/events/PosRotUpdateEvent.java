@@ -27,7 +27,7 @@ public final class PosRotUpdateEvent extends Event implements Globals
 
     public void setModelRotations()
     {
-        mc.thePlayer.renderYawOffset = this.yaw;
+        mc.thePlayer.renderYawOffset = mc.thePlayer.renderYawOffset + ((this.yaw - mc.thePlayer.renderYawOffset) % 360 + 540) % 360 - 180;
         Factory.instance().rotationRenderPitch = this.pitch;
 
         this.setModelRotations = true;
