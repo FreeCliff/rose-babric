@@ -39,6 +39,16 @@ public final class Shader implements Globals
             {
                 this.uniformMap.put(uniform, glGetUniformLocation(this.programId, uniform));
             }
+
+            if (glGetShaderi(vertexId, GL_COMPILE_STATUS) == GL_FALSE)
+            {
+                throw new RuntimeException("Failed to compile vertex shader:\n" + glGetShaderInfoLog(vertexId, GL_INFO_LOG_LENGTH));
+            }
+
+            if (glGetShaderi(fragmentId, GL_COMPILE_STATUS) == GL_FALSE)
+            {
+                throw new RuntimeException("Failed to compile fragment shader:\n" + glGetShaderInfoLog(fragmentId, GL_INFO_LOG_LENGTH));
+            }
         }
         catch (Throwable t)
         {
@@ -65,7 +75,7 @@ public final class Shader implements Globals
 
         while ((line = bufferedReader.readLine()) != null)
         {
-            builder.append(line);
+            builder.append(line).append("\n");
         }
 
         inputStreamReader.close();
