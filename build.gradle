@@ -21,9 +21,14 @@ repositories {
 	maven { url = 'https://maven.nathatpas.tel/releases' }
 	exclusiveContent {
 		forRepository {
-			maven { url = "https://api.modrinth.com/maven" }
+			maven {
+				name = "Modrinth"
+				url = "https://api.modrinth.com/maven"
+			}
 		}
-		filter { includeGroup "maven.modrinth" }
+		filter {
+			includeGroup "maven.modrinth"
+		}
 	}
 	mavenCentral()
 }
@@ -41,6 +46,8 @@ dependencies {
 	implementation 'blue.endless:jankson:1.2.1'
 
 	modImplementation 'com.github.zr0n1:multiproto:0.4.1'
+	modImplementation("net.modificationstation:StationAPI:2.0-alpha.2.1")
+	modImplementation("maven.modrinth:glass-config-api:2.0.2")
 }
 
 if (!gradle.startParameter.taskNames.contains('MinecraftClient')) {
