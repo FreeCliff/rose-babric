@@ -10,6 +10,12 @@ archivesBaseName = project.archives_base_name
 version = project.mod_version
 group = project.maven_group
 
+loom {
+	mixin {
+		defaultRefmapName = "${archivesBaseName}.refmap.json"
+	}
+}
+
 repositories {
 	maven { url = 'https://maven.glass-launcher.net/snapshots' }
 	maven { url = 'https://maven.glass-launcher.net/releases' }
@@ -45,8 +51,8 @@ dependencies {
 	implementation 'blue.endless:jankson:1.2.1'
 
 	modImplementation 'com.github.zr0n1:multiproto:0.4.1'
-	modImplementation("net.modificationstation:StationAPI:2.0-alpha.2.1")
-	modImplementation("maven.modrinth:glass-config-api:2.0.2")
+	modImplementation 'net.modificationstation:StationAPI:2.0-alpha.2.1'
+	modImplementation 'maven.modrinth:glass-config-api:2.0.2'
 }
 
 if (!gradle.startParameter.taskNames.contains('MinecraftClient')) {
@@ -60,9 +66,12 @@ if (!gradle.startParameter.taskNames.contains('MinecraftClient')) {
 }
 
 processResources {
-	inputs.property "version", project.version
-
-	filesMatching("fabric.mod.json") { expand "version": project.version }
+	filesMatching("fabric.mod.json") {
+		expand(
+				"version": project.version,
+				"refMap": "${archivesBaseName}.refmap.json"
+		)
+	}
 }
 
 tasks.withType(JavaCompile).configureEach { it.options.release = 17 }

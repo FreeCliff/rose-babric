@@ -48,6 +48,11 @@ public class Rose implements ClientModInitializer, Globals
 		logger.info("successfully loaded rose in {}s.", elapsedTime);
 	}
 
+	public static ExecutorService asyncExecutor()
+	{
+		return asyncExecutor;
+	}
+
 	public static EventBus bus()
 	{
 		return bus;
