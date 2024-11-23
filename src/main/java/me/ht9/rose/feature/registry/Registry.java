@@ -26,6 +26,7 @@ import me.ht9.rose.feature.module.modules.exploit.xcarry.XCarry;
 import me.ht9.rose.feature.module.modules.misc.retard.Retard;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
 import me.ht9.rose.feature.module.modules.misc.chatbomb.ChatBomb;
+import me.ht9.rose.feature.module.modules.movement.autowalk.AutoWalk;
 import me.ht9.rose.feature.module.modules.movement.flight.Flight;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
 import me.ht9.rose.feature.module.modules.movement.noclip.NoClip;
@@ -83,6 +84,7 @@ public final class Registry
         modules.add(Retard.instance());
         modules.add(Timer.instance());
 
+        modules.add(AutoWalk.instance());
         modules.add(Flight.instance());
         modules.add(Freecam.instance());
         modules.add(NoClip.instance());
