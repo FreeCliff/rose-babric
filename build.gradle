@@ -49,8 +49,6 @@ dependencies {
 	implementation 'com.google.code.gson:gson:2.8.9'
 	implementation 'blue.endless:jankson:1.2.1'
 
-	include implementation('org.kitteh.irc:client-lib:9.0.0')
-
 	modImplementation 'com.github.zr0n1:multiproto:0.4.1'
 	modImplementation 'net.modificationstation:StationAPI:2.0-alpha.2.1'
 	modImplementation 'maven.modrinth:glass-config-api:2.0.2'

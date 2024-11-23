@@ -7,22 +7,22 @@ import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.util.misc.FontColor;
-import net.engio.mbassy.listener.Handler;
 import net.minecraft.src.Packet3Chat;
-import org.kitteh.irc.client.library.Client;
-import org.kitteh.irc.client.library.event.channel.ChannelJoinEvent;
-import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
-import org.kitteh.irc.client.library.event.user.UserNickChangeEvent;
-import org.kitteh.irc.client.library.event.user.UserQuitEvent;
-import org.kitteh.irc.client.library.util.HostWithPort;
+
+import java.io.*;
+import java.net.Socket;
 
 @Description("Talk to other rose users.")
 public final class IRC extends Module
 {
     private static final IRC instance = new IRC();
 
-    private Client client;
+    private Socket socket;
+    private BufferedWriter writer;
+    private BufferedReader reader;
     private String channel;
+
+    private Thread listenerThread;
 
     @Override
     public void onEnable()
@@ -31,37 +31,64 @@ public final class IRC extends Module
             return;
 
         mc.ingameGUI.addChatMessage(FontColor.RED + "Connecting to Rose IRC, please wait a few seconds...");
-        Rose.asyncExecutor().submit(() -> {
-            client = Client.builder()
-                    .nick(mc.session.username)
-                    .server()
-                    .address(HostWithPort.of("irc.nathatpas.tel", 6697))
-                    .then()
-                    .buildAndConnect();
-            client.getEventManager().registerEventListener(new Listener());
-            channel = "#rose-babric";
-            client.addChannel(channel);
+        Rose.asyncExecutor().submit(() ->
+        {
+            try
+            {
+                socket = new Socket("irc.nathatpas.tel", 6667);
+                writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream()));
+                reader = new BufferedReader(new InputStreamReader(socket.getInputStream()));
+                String nick = mc.session.username;
+                sendRawMessage("NICK " + nick);
+                sendRawMessage("USER " + nick + " 8 * :Rose User");
+                channel = "#rose-babric";
+                sendRawMessage("JOIN " + channel);
+                mc.ingameGUI.addChatMessage(FontColor.GREEN + "Connected to Rose IRC!");
+                listenerThread = new Thread(this::listenForMessages);
+                listenerThread.start();
+            } catch (Exception e)
+            {
+                mc.ingameGUI.addChatMessage(FontColor.RED + "Failed to connect to IRC.");
+            }
         });
     }
 
     @Override
     public void onDisable()
     {
-        if (client == null)
-            return;
-
-        client.shutdown();
-        mc.ingameGUI.addChatMessage(FontColor.RED + "Disconnected from the IRC.");
-
+        try
+        {
+            if (writer != null)
+            {
+                sendRawMessage("QUIT :Leaving IRC");
+                writer.close();
+            }
+            if (reader != null)
+            {
+                reader.close();
+            }
+            if (socket != null)
+            {
+                socket.close();
+            }
+            if (listenerThread != null)
+            {
+                listenerThread.interrupt();
+            }
+            mc.ingameGUI.addChatMessage(FontColor.RED + "Disconnected from the IRC.");
+        }
+        catch (IOException ignored)
+        {
+        }
     }
 
     @SubscribeEvent
     public void onUsernameChange(ChangeUsernameEvent event)
     {
-        if (client == null)
-            return;
-
-        client.setNick(mc.session.username);
+        if (socket != null && socket.isConnected())
+        {
+            sendRawMessage("NICK " + mc.session.username);
+        }
     }
 
     @SubscribeEvent
@@ -76,49 +103,97 @@ public final class IRC extends Module
                 return;
 
             event.setCancelled(true);
-            this.sendMessage(packet.message.substring(1));
+            sendMessage(packet.message.substring(1));
         }
     }
 
     public void sendMessage(String message)
     {
-        if (client == null)
+        if (socket == null || !socket.isConnected())
         {
             mc.ingameGUI.addChatMessage("Not connected to IRC, please re-enable the module.");
             return;
         }
-        client.sendMessage(channel, message);
-        mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.WHITE + "<" + client.getNick() + "> " + FontColor.GRAY + message);
+        sendRawMessage("PRIVMSG " + channel + " :" + message);
+        mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.WHITE + "<" + mc.session.username + "> " + FontColor.GRAY + message);
     }
 
-    private static class Listener
+    private void sendRawMessage(String message)
     {
-        @Handler
-        public void onChannelJoinEvent(ChannelJoinEvent event)
+        try
         {
-            if (event.getUser().getNick().equalsIgnoreCase(mc.session.username))
+            if (writer != null)
             {
-                mc.ingameGUI.addChatMessage(FontColor.GREEN + "Successfully connected to the IRC.");
+                writer.write(message + "\r\n");
+                writer.flush();
             }
-            mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + event.getUser().getNick() + FontColor.GRAY + " just entered the IRC.");
         }
-
-        @Handler
-        public void onUserQuitEvent(UserQuitEvent event)
+        catch (IOException ignored)
         {
-            mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + event.getUser().getNick() + FontColor.GRAY + " just left the IRC.");
         }
+    }
 
-        @Handler
-        public void onChannelMessage(ChannelMessageEvent event)
+    private void listenForMessages()
+    {
+        try
         {
-            mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] <" + event.getActor().getNick() + "> " + FontColor.GRAY + event.getMessage());
+            String line;
+            while ((line = reader.readLine()) != null)
+            {
+                processServerMessage(line);
+                if (line.contains("005"))
+                {
+                    sendRawMessage("JOIN " + channel);
+                }
+            }
         }
-
-        @Handler
-        public void onUserNickChange(UserNickChangeEvent event)
+        catch (IOException ignored)
         {
-            mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + event.getOldUser().getNick() + FontColor.GRAY + " is now known as " + FontColor.RED + event.getNewUser().getNick());
+        }
+    }
+
+    private void processServerMessage(String line)
+    {
+        if (line.startsWith("PING"))
+        {
+            sendRawMessage("PONG " + line.substring(5));
+        } else if (line.contains("005"))
+        {
+            return;
+        } else if (line.contains("PRIVMSG"))
+        {
+            String[] parts = line.split(":", 3);
+            if (parts.length > 2)
+            {
+                String sender = parts[1].split("!")[0];
+                String message = parts[2];
+                mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] <" + sender + "> " + FontColor.GRAY + message);
+            }
+        } else if (line.contains("JOIN"))
+        {
+            String[] parts = line.split("!");
+            if (parts.length > 0)
+            {
+                String nick = parts[0].substring(1);
+                mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.GREEN + nick + FontColor.GRAY + " joined the channel.");
+            }
+        } else if (line.contains("PART") || line.contains("QUIT"))
+        {
+            String[] parts = line.split("!");
+            if (parts.length > 0)
+            {
+                String nick = parts[0].substring(1);
+                mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.GREEN + nick + FontColor.GRAY + " left the channel.");
+            }
+        } else if (line.contains("NICK"))
+        {
+            String[] parts = line.split("!");
+            if (parts.length > 0)
+            {
+                String oldNick = parts[0].substring(1);
+                String newNick = line.split("NICK :")[1].trim();
+                mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.GREEN + oldNick + FontColor.GRAY + " is now known as " + FontColor.GREEN + newNick);
+            }
         }
     }
 
