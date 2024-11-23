@@ -2,6 +2,7 @@ package me.ht9.rose.feature.module.modules.client.irc;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
+import me.ht9.rose.event.events.ChangeUsernameEvent;
 import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
@@ -11,6 +12,7 @@ import net.minecraft.src.Packet3Chat;
 import org.kitteh.irc.client.library.Client;
 import org.kitteh.irc.client.library.event.channel.ChannelJoinEvent;
 import org.kitteh.irc.client.library.event.channel.ChannelMessageEvent;
+import org.kitteh.irc.client.library.event.user.UserNickChangeEvent;
 import org.kitteh.irc.client.library.event.user.UserQuitEvent;
 import org.kitteh.irc.client.library.util.HostWithPort;
 
@@ -54,6 +56,15 @@ public final class IRC extends Module
     }
 
     @SubscribeEvent
+    public void onUsernameChange(ChangeUsernameEvent event)
+    {
+        if (client == null)
+            return;
+
+        client.setNick(mc.session.username);
+    }
+
+    @SubscribeEvent
     public void onPacket(PacketEvent event)
     {
         if (event.packet() instanceof Packet3Chat packet)
@@ -77,7 +88,7 @@ public final class IRC extends Module
             return;
         }
         client.sendMessage(channel, message);
-        mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.WHITE + "<" + mc.session.username + "> " + FontColor.GRAY + message);
+        mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.WHITE + "<" + client.getNick() + "> " + FontColor.GRAY + message);
     }
 
     private static class Listener
@@ -102,6 +113,12 @@ public final class IRC extends Module
         public void onChannelMessage(ChannelMessageEvent event)
         {
             mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] <" + event.getActor().getNick() + "> " + FontColor.GRAY + event.getMessage());
+        }
+
+        @Handler
+        public void onUserNickChange(UserNickChangeEvent event)
+        {
+            mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + event.getOldUser().getNick() + FontColor.GRAY + " is now known as " + FontColor.RED + event.getNewUser().getNick());
         }
     }
 

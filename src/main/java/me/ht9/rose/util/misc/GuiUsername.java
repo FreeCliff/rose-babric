@@ -1,5 +1,7 @@
 package me.ht9.rose.util.misc;
 
+import me.ht9.rose.Rose;
+import me.ht9.rose.event.events.ChangeUsernameEvent;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;
 import net.minecraft.src.GuiTextField;
@@ -45,6 +47,7 @@ public final class GuiUsername extends GuiScreen
             if (guiButton.id == 0)
             {
                 mc.session.username = textField.getText();
+                Rose.bus().post(new ChangeUsernameEvent());
                 mc.displayGuiScreen(parentScreen);
             }
             else if (guiButton.id == 1)
