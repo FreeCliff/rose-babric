@@ -14,29 +14,39 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
 
-@Mixin(GuiScreen.class)
+@Mixin(value = GuiScreen.class)
 public class MixinGuiScreen extends Gui
 {
     @Shadow protected Minecraft mc;
 
-    @Inject(method = "drawBackground", at = @At("HEAD"))
+    @Inject(
+            method = "drawBackground",
+            at = @At(
+                    value = "HEAD"
+            )
+    )
     public void drawBackground$Head(int par1, CallbackInfo ci)
     {
-        if (!Background.instance().enabled()) return;
+        if (!Background.instance().enabled())
+            return;
         glPushMatrix();
         glPushAttrib(8256);
 
         Shader shader = Background.instance().shader();
-
         glUseProgram(shader.programId());
-
         Background.instance().setupUniforms();
     }
 
-    @Inject(method = "drawBackground", at = @At("RETURN"))
+    @Inject(
+            method = "drawBackground",
+            at = @At(
+                    value = "RETURN"
+            )
+    )
     public void drawBackground$Return(int par1, CallbackInfo ci)
     {
-        if (!Background.instance().enabled()) return;
+        if (!Background.instance().enabled())
+            return;
         glUseProgram(0);
         glPopAttrib();
         glPopMatrix();

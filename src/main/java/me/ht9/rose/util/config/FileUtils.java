@@ -73,7 +73,7 @@ public final class FileUtils
             for (ModuleWindow window : RoseGui.instance().windows())
             {
                 JsonObject properties = new JsonObject();
-                properties.add("name", new JsonPrimitive(window.getName()));
+                properties.add("name", new JsonPrimitive(window.name()));
                 properties.add("x", new JsonPrimitive(window.x()));
                 properties.add("y", new JsonPrimitive(window.y()));
                 properties.add("open", new JsonPrimitive(window.isOpened()));
@@ -104,7 +104,7 @@ public final class FileUtils
                     clickguiArray.forEach(element ->
                     {
                         JsonObject object = element.getAsJsonObject();
-                        if (window.getName().equalsIgnoreCase(object.get("name").getAsString()))
+                        if (window.name().equalsIgnoreCase(object.get("name").getAsString()))
                         {
                             window.setX(object.get("x").getAsFloat());
                             window.setY(object.get("y").getAsFloat());

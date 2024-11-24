@@ -18,14 +18,20 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static org.lwjgl.opengl.GL11.*;
 
-@Mixin(Minecraft.class)
+@Mixin(value = Minecraft.class)
 public class MixinMinecraft
 {
     @Shadow public MovingObjectPosition objectMouseOver;
     @Shadow public int displayWidth;
     @Shadow public int displayHeight;
 
-    @Inject(method = "startGame", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;getMinecraftDir()Ljava/io/File;"))
+    @Inject(
+            method = "startGame",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/Minecraft;getMinecraftDir()Ljava/io/File;"
+            )
+    )
     public void glContextCreated(CallbackInfo ci)
     {
         Framebuffer.framebuffer = new Framebuffer(displayWidth, displayHeight);
@@ -34,7 +40,14 @@ public class MixinMinecraft
         Rose.bus().post(new GLContextCreatedEvent());
     }
 
-    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 0))
+    @Inject(
+            method = "run",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V",
+                    ordinal = 0
+            )
+    )
     public void bindFramebuffer(CallbackInfo ci)
     {
         Framebuffer.framebuffer.bindFramebuffer(true);
@@ -42,7 +55,14 @@ public class MixinMinecraft
         glDisable(GL_DEPTH_TEST);
     }
 
-    @Inject(method = "run", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V", ordinal = 1))
+    @Inject(
+            method = "run",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V",
+                    ordinal = 1
+            )
+    )
     public void renderFramebuffer(CallbackInfo ci)
     {
         Framebuffer.framebuffer.unbindFramebuffer();
@@ -54,7 +74,7 @@ public class MixinMinecraft
     @Inject(
             method = "runTick",
             at = @At(
-                    "RETURN"
+                    value = "RETURN"
             )
     )
     public void runTick(CallbackInfo ci)
@@ -72,12 +92,8 @@ public class MixinMinecraft
     public boolean runTick$Mouse()
     {
         boolean result = Mouse.next();
-
         if (result)
-        {
             Rose.bus().post(new InputEvent.MouseInputEvent());
-        }
-
         return result;
     }
 
@@ -91,23 +107,33 @@ public class MixinMinecraft
     public boolean runTick$Keyboard()
     {
         boolean result = Keyboard.next();
-
         if (result)
-        {
             Rose.bus().post(new InputEvent.KeyInputEvent());
-        }
-
         return result;
     }
 
-    @Inject(method = "changeWorld", at = @At("RETURN"))
-    public void onWorldChange(World world, String entityPlayer, EntityPlayer par3, CallbackInfo ci) {
-        if (world == null) return;
+    @Inject(
+            method = "changeWorld",
+            at = @At(
+                    value = "RETURN"
+            )
+    )
+    public void onWorldChange(World world, String entityPlayer, EntityPlayer par3, CallbackInfo ci)
+    {
+        if (world == null)
+            return;
         Rose.bus().post(new WorldChangeEvent());
     }
 
-    @Inject(method = "clickMouse", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/PlayerController;clickBlock(IIII)V"))
-    public void clickBlock(int par1, CallbackInfo ci) {
+    @Inject(
+            method = "clickMouse",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/src/PlayerController;clickBlock(IIII)V"
+            )
+    )
+    public void clickBlock(int par1, CallbackInfo ci)
+    {
         Rose.bus().post(new PlayerBlockClickEvent(objectMouseOver.blockX, objectMouseOver.blockY, objectMouseOver.blockZ, objectMouseOver.sideHit));
     }
 }

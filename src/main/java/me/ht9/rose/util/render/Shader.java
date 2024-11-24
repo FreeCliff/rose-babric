@@ -36,19 +36,13 @@ public final class Shader implements Globals
             glValidateProgramARB(this.programId);
 
             for (String uniform : uniforms)
-            {
                 this.uniformMap.put(uniform, glGetUniformLocation(this.programId, uniform));
-            }
 
             if (glGetShaderi(vertexId, GL_COMPILE_STATUS) == GL_FALSE)
-            {
                 throw new RuntimeException("Failed to compile vertex shader:\n" + glGetShaderInfoLog(vertexId, GL_INFO_LOG_LENGTH));
-            }
 
             if (glGetShaderi(fragmentId, GL_COMPILE_STATUS) == GL_FALSE)
-            {
                 throw new RuntimeException("Failed to compile fragment shader:\n" + glGetShaderInfoLog(fragmentId, GL_INFO_LOG_LENGTH));
-            }
         }
         catch (Throwable t)
         {
@@ -74,9 +68,7 @@ public final class Shader implements Globals
         String line;
 
         while ((line = bufferedReader.readLine()) != null)
-        {
             builder.append(line).append("\n");
-        }
 
         inputStreamReader.close();
         bufferedReader.close();
@@ -84,12 +76,13 @@ public final class Shader implements Globals
         return builder.toString();
     }
 
-    public int getUniform(String name)
+    public int uniform(String name)
     {
         return this.uniformMap.get(name);
     }
 
-    public Framebuffer getFramebuffer() {
+    public Framebuffer framebuffer()
+    {
         if (this.framebuffer != null)
         {
             this.framebuffer.delete();
@@ -98,7 +91,8 @@ public final class Shader implements Globals
         return this.framebuffer;
     }
 
-    public static void drawFramebuffer(Framebuffer framebuffer) {
+    public static void drawFramebuffer(Framebuffer framebuffer)
+    {
         ScaledResolution scaledResolution = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         glBindTexture(GL_TEXTURE_2D, framebuffer.texture);
         glBegin(GL_QUADS);
@@ -113,7 +107,8 @@ public final class Shader implements Globals
         glEnd();
     }
 
-    public int programId() {
+    public int programId()
+    {
         return programId;
     }
 }

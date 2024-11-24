@@ -33,9 +33,7 @@ public final class Framebuffer
         glEnable(GL_DEPTH_TEST);
 
         if (fbo > -1)
-        {
             delete();
-        }
 
         createFramebuffer(width, height);
         checkFramebufferComplete();
@@ -122,9 +120,7 @@ public final class Framebuffer
         int status = glCheckFramebufferStatus(GL_FRAMEBUFFER);
 
         if (status != GL_FRAMEBUFFER_COMPLETE)
-        {
             throw new RuntimeException("glCheckFramebufferStatus returned status code " + status);
-        }
     }
 
     public void setFramebufferColor(float r, float g, float b, float a)

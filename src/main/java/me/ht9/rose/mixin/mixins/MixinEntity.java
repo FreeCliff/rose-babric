@@ -35,9 +35,7 @@ public abstract class MixinEntity
         PushByEvent event = new PushByEvent(entity, PushByEvent.Pusher.ENTITY);
         Rose.bus().post(event);
         if (event.cancelled() || Freecam.instance().enabled())
-        {
             ci.cancel();
-        }
     }
 
     @Inject(

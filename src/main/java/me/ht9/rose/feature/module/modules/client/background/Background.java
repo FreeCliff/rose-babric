@@ -35,8 +35,8 @@ public final class Background extends Module
 
     public void setupUniforms()
     {
-        glUniform2f(shader.getUniform("resolution"), mc.displayWidth, mc.displayHeight);
-        glUniform1f(shader.getUniform("time"), System.currentTimeMillis() % 120000 / 1000.0f);
+        glUniform2f(shader.uniform("resolution"), mc.displayWidth, mc.displayHeight);
+        glUniform1f(shader.uniform("time"), System.currentTimeMillis() % 120000 / 1000.0f);
     }
 
     public Shader shader() {

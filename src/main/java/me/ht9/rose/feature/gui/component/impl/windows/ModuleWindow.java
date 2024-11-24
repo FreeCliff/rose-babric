@@ -48,7 +48,7 @@ public final class ModuleWindow extends DraggableComponent
                 this.x() - 2.0F,
                 this.y() - 2.0F,
                 0.5F,
-                this.getTotalHeight() + 1.0F,
+                this.totalHeight() + 1.0F,
                 new Color(1.0F, 1.0F, 1.0F, alpha)
         );
 
@@ -57,14 +57,14 @@ public final class ModuleWindow extends DraggableComponent
                 this.x() + this.WIDTH + 1.5F,
                 this.y() - 2.0F,
                 0.5F,
-                this.getTotalHeight() + 1.0F,
+                this.totalHeight() + 1.0F,
                 new Color(1.0F, 1.0F, 1.0F, alpha)
         );
 
         // bottom
         Render2d.drawRect(
                 this.x() - 2.0F,
-                this.y() + this.getTotalHeight() - 1.5F,
+                this.y() + this.totalHeight() - 1.5F,
                 this.WIDTH + 4.0F,
                 0.5F,
                 new Color(1.0F, 1.0F, 1.0F, alpha)
@@ -76,7 +76,7 @@ public final class ModuleWindow extends DraggableComponent
                 this.x() - 1.5F,
                 this.y() - 1.5F,
                 this.WIDTH + 3.0F,
-                this.getTotalHeight(),
+                this.totalHeight(),
                 grey
         );
 
@@ -239,10 +239,10 @@ public final class ModuleWindow extends DraggableComponent
         return mouseX >= this.x()
                 && mouseX <= this.x() + this.WIDTH
                 && mouseY >= this.y()
-                && mouseY <= this.y() + this.getTotalHeight();
+                && mouseY <= this.y() + this.totalHeight();
     }
 
-    private float getTotalHeight()
+    private float totalHeight()
     {
         float totalHeight = this.HEIGHT + 4.0F;
         if (this.opened)
@@ -255,7 +255,7 @@ public final class ModuleWindow extends DraggableComponent
         return totalHeight;
     }
 
-    public String getName()
+    public String name()
     {
         return this.category.name();
     }

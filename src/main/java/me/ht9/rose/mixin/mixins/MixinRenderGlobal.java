@@ -23,8 +23,6 @@ public class MixinRenderGlobal
         RenderWorldEvent event = new RenderWorldEvent(RenderWorldEvent.Type.CLOUD);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 }

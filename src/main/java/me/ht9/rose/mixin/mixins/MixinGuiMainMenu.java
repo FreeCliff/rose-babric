@@ -13,18 +13,26 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 public class MixinGuiMainMenu extends GuiScreen
 {
     @SuppressWarnings("unchecked")
-    @Inject(method = "initGui", at = @At("RETURN"))
+    @Inject(
+            method = "initGui",
+            at = @At(
+                    "RETURN"
+            )
+    )
     public void initGui(CallbackInfo ci)
     {
         controlList.add(new GuiButton(421, this.width - 100 - 2, 2, 100, 20, "Change Username"));
     }
 
-    @Inject(method = "actionPerformed", at = @At("RETURN"))
+    @Inject(
+            method = "actionPerformed",
+            at = @At(
+                    "RETURN"
+            )
+    )
     public void actionPerformed(GuiButton button, CallbackInfo ci)
     {
         if (button.enabled && button.id == 421)
-        {
             mc.displayGuiScreen(new GuiUsername((GuiMainMenu) (Object) this));
-        }
     }
 }

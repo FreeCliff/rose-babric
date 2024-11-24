@@ -8,9 +8,16 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 @Mixin(RenderItem.class)
-public class MixinRenderItem {
-    @Inject(method = "renderItemOverlayIntoGUI", at = @At("HEAD"))
-    public void renderItemOverlayIntoGUI(FontRenderer fontRenderer, RenderEngine renderEngine, ItemStack itemStack, int i, int j, CallbackInfo ci) {
+public class MixinRenderItem
+{
+    @Inject(
+            method = "renderItemOverlayIntoGUI",
+            at = @At(
+                    "HEAD"
+            )
+    )
+    public void renderItemOverlayIntoGUI(FontRenderer fontRenderer, RenderEngine renderEngine, ItemStack itemStack, int i, int j, CallbackInfo ci)
+    {
         if (itemStack == null) return;
         if (itemStack.stackSize >= 1) return;
 

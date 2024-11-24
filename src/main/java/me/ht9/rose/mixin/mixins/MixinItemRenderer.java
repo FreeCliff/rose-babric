@@ -23,9 +23,7 @@ public class MixinItemRenderer
         RenderOverlayEvent event = new RenderOverlayEvent(RenderOverlayEvent.Overlay.BLOCKS);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 
     @Inject(
@@ -40,9 +38,7 @@ public class MixinItemRenderer
         RenderOverlayEvent event = new RenderOverlayEvent(RenderOverlayEvent.Overlay.FIRE);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 
     @Inject(
@@ -57,8 +53,6 @@ public class MixinItemRenderer
         RenderOverlayEvent event = new RenderOverlayEvent(RenderOverlayEvent.Overlay.HAND);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 }

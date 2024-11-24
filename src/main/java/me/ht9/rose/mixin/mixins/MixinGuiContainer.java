@@ -26,9 +26,7 @@ public class MixinGuiContainer extends GuiScreen
         if (guiButton.id == 0)
         {
             if (mc.getSendQueue() == null || Factory.instance().lastChestCoords == null)
-            {
                 return;
-            }
             int[] lastChestCoords = Factory.instance().lastChestCoords;
             Freecam.instance().enable();
             Instamine.instance().mineBlock(lastChestCoords[0], lastChestCoords[1], lastChestCoords[2], lastChestCoords[3]);

@@ -25,7 +25,7 @@ public final class Timer implements Globals
         return System.currentTimeMillis() - this.time >= ms;
     }
 
-    public double getTime()
+    public double time()
     {
         return System.currentTimeMillis() - this.time;
     }

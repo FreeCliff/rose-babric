@@ -15,7 +15,13 @@ public class MixinMovementInputFromOptions
 {
     @Shadow private boolean[] movementKeyStates;
 
-    @Inject(method = "updatePlayerMoveState", at = @At("HEAD"), cancellable = true)
+    @Inject(
+            method = "updatePlayerMoveState",
+            at = @At(
+                    "HEAD"
+            ),
+            cancellable = true
+    )
     public void updatePlayerMoveState(EntityPlayer par1, CallbackInfo ci)
     {
         boolean moveForward = movementKeyStates[0];

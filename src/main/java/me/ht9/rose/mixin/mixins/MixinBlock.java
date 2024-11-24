@@ -9,17 +9,27 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(Block.class)
-public class MixinBlock {
-    @Inject(method = "shouldSideBeRendered", at = @At("HEAD"), cancellable = true)
-    public void shouldSideBeRendered(IBlockAccess i, int j, int k, int l, int par5, CallbackInfoReturnable<Boolean> cir) {
+@Mixin(value = Block.class)
+public class MixinBlock
+{
+    @Inject(
+            method = "shouldSideBeRendered",
+            at = @At(
+                    value = "HEAD"
+            ),
+            cancellable = true
+    )
+    public void shouldSideBeRendered(IBlockAccess i, int j, int k, int l, int par5, CallbackInfoReturnable<Boolean> cir)
+    {
         BlockRenderSideEvent event = new BlockRenderSideEvent((Block) (Object) this);
         Rose.bus().post(event);
-        if (event.cancelled()) {
+        if (event.cancelled())
+        {
             cir.setReturnValue(false);
             cir.cancel();
         }
-        if (event.forceRender()) {
+        if (event.forceRender())
+        {
             cir.setReturnValue(true);
             cir.cancel();
         }

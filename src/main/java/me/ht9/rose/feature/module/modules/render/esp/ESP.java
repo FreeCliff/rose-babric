@@ -54,7 +54,7 @@ public final class ESP extends Module
         glPushMatrix();
         glPushAttrib(0x2040);
 
-        Framebuffer framebuffer = shader.getFramebuffer();
+        Framebuffer framebuffer = shader.framebuffer();
         //framebuffer.clearFramebuffer();
         framebuffer.bindFramebuffer(true);
 
@@ -99,16 +99,16 @@ public final class ESP extends Module
         glUseProgram(shader.programId());
 
         ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        glUniform2f(shader.getUniform("resolution"), (float) sr.getScaledWidth() * 2.5f, (float) sr.getScaledHeight() * 2.5f);
-        glUniform1f(shader.getUniform("time"), ((System.currentTimeMillis() * 3) % 1000000) / 5000.0f);
+        glUniform2f(shader.uniform("resolution"), (float) sr.getScaledWidth() * 2.5f, (float) sr.getScaledHeight() * 2.5f);
+        glUniform1f(shader.uniform("time"), ((System.currentTimeMillis() * 3) % 1000000) / 5000.0f);
 
-        glUniform1f(shader.getUniform("red"), (float) red.value() / 255.0f);
-        glUniform1f(shader.getUniform("green"), (float) green.value() / 255.0f);
-        glUniform1f(shader.getUniform("blue"), (float) blue.value() / 255.0f);
+        glUniform1f(shader.uniform("red"), (float) red.value() / 255.0f);
+        glUniform1f(shader.uniform("green"), (float) green.value() / 255.0f);
+        glUniform1f(shader.uniform("blue"), (float) blue.value() / 255.0f);
 
-        glUniform1i(shader.getUniform("rainbow"), rainbow.value() ? 1 : 0);
-        glUniform1i(shader.getUniform("fill"), fill.value() ? 1 : 0);
-        glUniform1i(shader.getUniform("dotted"), dotted.value() ? 1 : 0);
+        glUniform1i(shader.uniform("rainbow"), rainbow.value() ? 1 : 0);
+        glUniform1i(shader.uniform("fill"), fill.value() ? 1 : 0);
+        glUniform1i(shader.uniform("dotted"), dotted.value() ? 1 : 0);
 
         Shader.drawFramebuffer(framebuffer);
         glUseProgram(0);

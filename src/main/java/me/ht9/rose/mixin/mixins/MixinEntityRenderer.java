@@ -19,7 +19,8 @@ public class MixinEntityRenderer
             method = "renderWorld",
             at = @At(
                     value = "INVOKE",
-                    target = "Lnet/minecraft/src/EntityRenderer;func_4135_b(FI)V"
+                    target = "Lnet/minecraft/src/EntityRenderer;func_4135_b(FI)V",
+                    shift = At.Shift.AFTER
             )
     )
     public void renderWorld(float partialTicks, long idk, CallbackInfo ci)
@@ -56,9 +57,7 @@ public class MixinEntityRenderer
         RenderWorldEvent event = new RenderWorldEvent(RenderWorldEvent.Type.HURTCAM);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 
     @Inject(
@@ -73,9 +72,7 @@ public class MixinEntityRenderer
         RenderWorldEvent event = new RenderWorldEvent(RenderWorldEvent.Type.RAIN);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 
     @Inject(
@@ -90,9 +87,7 @@ public class MixinEntityRenderer
         RenderWorldEvent event = new RenderWorldEvent(RenderWorldEvent.Type.RAIN);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 
     @Inject(
@@ -107,9 +102,7 @@ public class MixinEntityRenderer
         RenderWorldEvent event = new RenderWorldEvent(RenderWorldEvent.Type.VIEWBOB);
         Rose.bus().post(event);
         if (event.cancelled())
-        {
             ci.cancel();
-        }
     }
 
     @Inject(
