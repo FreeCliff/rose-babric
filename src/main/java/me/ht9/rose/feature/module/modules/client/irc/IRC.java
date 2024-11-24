@@ -6,6 +6,7 @@ import me.ht9.rose.event.events.ChangeUsernameEvent;
 import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
+import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.misc.FontColor;
 import net.minecraft.src.Packet3Chat;
 
@@ -16,6 +17,9 @@ import java.net.Socket;
 public final class IRC extends Module
 {
     private static final IRC instance = new IRC();
+
+    private final Setting<Mode> mode = new Setting<>("Mode", Mode.All);
+    private final Setting<String> ircChannel = new Setting<>("Channel", "rose-babric");
 
     private Socket socket;
     private BufferedWriter writer;
@@ -41,7 +45,8 @@ public final class IRC extends Module
                 String nick = mc.session.username;
                 sendRawMessage("NICK " + nick);
                 sendRawMessage("USER " + nick + " 8 * :Rose User");
-                channel = "#rose-babric";
+                channel = "#" + ircChannel.value();
+                System.out.println("IRC channel: " + channel);
                 sendRawMessage("JOIN " + channel);
                 mc.ingameGUI.addChatMessage(FontColor.GREEN + "Connected to Rose IRC!");
                 listenerThread = new Thread(this::listenForMessages);
@@ -99,11 +104,25 @@ public final class IRC extends Module
             if (!event.serverBound())
                 return;
 
-            if (!packet.message.startsWith("#"))
-                return;
+            String message = packet.message;
+            if (mode.value().equals(Mode.Hashtag))
+            {
+                if (!message.startsWith("#"))
+                    return;
 
-            event.setCancelled(true);
-            sendMessage(packet.message.substring(1));
+                event.setCancelled(true);
+                sendMessage(message.substring(1));
+            } else if (mode.value().equals(Mode.All))
+            {
+                if (message.startsWith("#"))
+                {
+                    packet.message = message.substring(1);
+                    return;
+                }
+
+                event.setCancelled(true);
+                sendMessage(message);
+            }
         }
     }
 
@@ -196,6 +215,13 @@ public final class IRC extends Module
             }
         }
     }
+
+    public enum Mode
+    {
+        All,      // Capture all chat packets.
+        Hashtag   // Capture only packets starting with a hashtag.
+    }
+
 
     public static IRC instance()
     {

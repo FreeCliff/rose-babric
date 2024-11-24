@@ -29,9 +29,11 @@ public final class ModuleComponent implements Component
         this.parent = parent;
         for (Setting<?> setting : module.settings())
         {
-            if (setting.value() instanceof Boolean)
-            {
+            if (setting.value() instanceof Boolean) {
                 this.components.add(new BooleanComponent((Setting<Boolean>) setting, this));
+            } else if (setting.value() instanceof String)
+            {
+            this.components.add(new StringComponent((Setting<String>) setting, this));
             } else if (setting.value() instanceof Enum<?>)
             {
                 this.components.add(new EnumComponent((Setting<Enum<?>>) setting, this));

@@ -156,6 +156,9 @@ public abstract class Module extends Feature
             } else if (setting.value() instanceof Float)
             {
                 settings.add(setting.name(), new JsonPrimitive((Float) setting.value()));
+            } else if (setting.value() instanceof String)
+            {
+                settings.add(setting.name(), new JsonPrimitive((String) setting.value()));
             } else if (setting.value() instanceof Enum<?>)
             {
                 settings.add(setting.name(), new JsonPrimitive(((Enum<?>) setting.value()).name()));
@@ -171,13 +174,14 @@ public abstract class Module extends Feature
         return module;
     }
 
-    @SuppressWarnings(value = "unchecked")
+    @SuppressWarnings("unchecked")
     public void deserialize(JsonObject object)
     {
         if (object.get("enabled").getAsBoolean())
         {
             this.enable();
-        } else
+        }
+        else
         {
             this.disable();
         }
@@ -199,6 +203,9 @@ public abstract class Module extends Feature
                 } else if (setting.value() instanceof Float)
                 {
                     ((Setting<Float>) setting).setValue(element.getAsFloat());
+                } else if (setting.value() instanceof String)
+                {
+                    ((Setting<String>) setting).setValue(element.getAsString());
                 } else if (setting.value() instanceof Enum<?>)
                 {
                     String enumName = element.getAsString();
