@@ -23,7 +23,7 @@ public class Scaffold extends Module
     private final List<Block> INVALID_BLOCKS = Arrays.asList(Block.waterMoving, Block.waterStill, Block.fire, Block.lavaMoving, Block.lavaStill, Block.chest, Block.workbench, Block.gravel, Block.sand);
 
     private final Setting<Tower> towerMode = new Setting<>("Tower", Tower.Motion);
-    private final Setting<Swap> swap = new Setting<Swap>("Swap", Swap.Server);
+    private final Setting<Swap> swap = new Setting<>("Swap", Swap.Server);
     private final Setting<Boolean> swing = new Setting<>("Swing", true);
     private final Setting<Boolean> safeWalk = new Setting<>("SafeWalk", false);
 
@@ -57,7 +57,7 @@ public class Scaffold extends Module
         switch (swap.value())
         {
             case Manual:
-                if (!isValidBlockStack(mc.thePlayer.getHeldItem())) return;
+                if (!isValidBlockStack(getHeldItem())) return;
 
                 slot = mc.thePlayer.inventory.currentItem;
                 break;
@@ -205,7 +205,7 @@ public class Scaffold extends Module
 
     private int getBlockSlot()
     {
-        if (isValidBlockStack(mc.thePlayer.getHeldItem()))
+        if (isValidBlockStack(getHeldItem()))
             return mc.thePlayer.inventory.currentItem;
 
         int slot = -1, count = 0;
@@ -215,7 +215,7 @@ public class Scaffold extends Module
             {
                 // auto return infinities because they're well, infinite
                 // TODO: this could be an option?
-                if (isInfinite(itemStack)) return i;
+                if (isUnderstacked(itemStack)) return i;
 
                 if (itemStack.stackSize > count)
                 {
@@ -243,7 +243,7 @@ public class Scaffold extends Module
         return new float[] { yaw, pitch };
     }
 
-    private boolean isInfinite(ItemStack itemStack)
+    private boolean isUnderstacked(ItemStack itemStack)
     {
         return itemStack.stackSize < 0;
     }
@@ -255,6 +255,11 @@ public class Scaffold extends Module
         Block block = Block.blocksList[((IItemBlock) itemBlock).blockId()];
 
         return block != null && block.isCollidable() && !INVALID_BLOCKS.contains(block);
+    }
+
+    private ItemStack getHeldItem()
+    {
+        return mc.thePlayer.inventory.getCurrentItem();
     }
 
     private BlockPair getPlacement()
