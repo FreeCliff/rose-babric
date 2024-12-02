@@ -18,6 +18,7 @@ import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
 import me.ht9.rose.feature.module.modules.exploit.infdurability.InfDurability;
 import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
 import me.ht9.rose.feature.module.modules.exploit.lawnmower.Lawnmower;
+import me.ht9.rose.feature.module.modules.exploit.newchunks.NewChunks;
 import me.ht9.rose.feature.module.modules.exploit.nuker.Nuker;
 import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
@@ -74,6 +75,7 @@ public final class Registry
         modules.add(InfDurability.instance());
         modules.add(Instamine.instance());
         modules.add(Lawnmower.instance());
+        modules.add(NewChunks.instance());
         modules.add(Nuker.instance());
         modules.add(PacketLogger.instance());
         modules.add(PacketMine.instance());

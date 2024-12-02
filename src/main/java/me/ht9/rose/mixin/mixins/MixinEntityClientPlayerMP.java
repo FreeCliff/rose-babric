@@ -1,6 +1,7 @@
 package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
+import me.ht9.rose.event.events.ChatEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.event.factory.Factory;
 import me.ht9.rose.feature.module.modules.movement.speed.Speed;
@@ -122,6 +123,20 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
                 this.func_4056_N();
             }
         }
+    }
+
+    @Inject(
+            method = "sendChatMessage",
+            at = @At("HEAD"),
+            cancellable = true
+    )
+    public void sendChatMessage(String message, CallbackInfo ci)
+    {
+        ChatEvent event = new ChatEvent(message);
+        Rose.bus().post(event);
+        if (event.cancelled())
+            ci.cancel();
+        message = event.message();
     }
 
     @Override public void func_6420_o() {}

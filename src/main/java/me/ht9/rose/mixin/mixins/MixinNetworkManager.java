@@ -6,14 +6,20 @@ import me.ht9.rose.event.events.PacketEvent;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = NetworkManager.class)
-public class MixinNetworkManager
+public abstract class MixinNetworkManager
 {
+    @Shadow public abstract void addToSendQueue(Packet packet);
+
+    @Unique public boolean postSendEvent = true;
+
     @Inject(
             method = "addToSendQueue",
             at = @At(
@@ -23,6 +29,8 @@ public class MixinNetworkManager
     )
     private void send(Packet packet, CallbackInfo ci)
     {
+        if (!postSendEvent) return;
+
         PacketEvent event = new PacketEvent(packet, true);
         Rose.bus().post(event);
         if (event.cancelled())
@@ -48,5 +56,13 @@ public class MixinNetworkManager
             cir.setReturnValue(true);
             cir.cancel();
         }
+    }
+
+    @Unique
+    public void sendWithoutEvent(Packet packet)
+    {
+        postSendEvent = false;
+        addToSendQueue(packet);
+        postSendEvent = true;
     }
 }

@@ -155,37 +155,40 @@ public class Factory implements Globals
     }
 
     @SubscribeEvent
+    public void onChat(ChatEvent event)
+    {
+        String message;
+        if ((message = event.message()).startsWith(Registry.prefix()))
+        {
+            event.setCancelled(true);
+            String[] words = message.split(" ");
+            String[] args = ArrayUtils.remove(words, 0);
+            Command command = null;
+            for (Command cmd : Registry.commands())
+            {
+                if (cmd.name().equalsIgnoreCase(words[0].substring(1)))
+                {
+                    command = cmd;
+                    break;
+                }
+            }
+            if (command != null)
+            {
+                command.execute(args);
+            }
+            else
+            {
+                mc.ingameGUI.addChatMessage("Unknown command. Try .commands for a list of commands.");
+            }
+        }
+    }
+
+    @SubscribeEvent
     public void onPacket(PacketEvent event)
     {
         if (event.serverBound())
         {
-            if (event.packet() instanceof Packet3Chat packet)
-            {
-                String message;
-                if ((message = packet.message).startsWith(Registry.prefix()))
-                {
-                    event.setCancelled(true);
-                    String[] words = message.split(" ");
-                    String[] args = ArrayUtils.remove(words, 0);
-                    Command command = null;
-                    for (Command cmd : Registry.commands())
-                    {
-                        if (cmd.name().equalsIgnoreCase(words[0].substring(1)))
-                        {
-                            command = cmd;
-                            break;
-                        }
-                    }
-                    if (command != null)
-                    {
-                        command.execute(args);
-                    } else
-                    {
-                        mc.ingameGUI.addChatMessage("Unknown command. Try .commands for a list of commands.");
-                    }
-                }
-            }
-            else if (event.packet() instanceof Packet15Place packet)
+            if (event.packet() instanceof Packet15Place packet)
             {
                 if (mc.theWorld.getBlockId(packet.xPosition, packet.yPosition, packet.zPosition) == Block.chest.blockID)
                 {
@@ -199,9 +202,13 @@ public class Factory implements Globals
         }
 
         if (FabricLoader.getInstance().isModLoaded("multiproto"))
+        {
             protocolVersion = MultiprotoIntegrationHelper.getProtocolVersionAsInt();
+        }
         else
+        {
             protocolVersion = 14;
+        }
     }
 
     @SubscribeEvent
