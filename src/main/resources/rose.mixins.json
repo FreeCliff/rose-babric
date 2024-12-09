@@ -23,6 +23,7 @@
     "mixins.MixinItemRenderer",
     "mixins.MixinMinecraft",
     "mixins.MixinMovementInputFromOptions",
+    "mixins.MixinNetClientHandler",
     "mixins.MixinNetworkManager",
     "mixins.MixinPlayerControllerMP",
     "mixins.MixinRenderGlobal",

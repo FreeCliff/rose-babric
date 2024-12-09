@@ -66,8 +66,6 @@ public final class StringComponent extends SettingComponent<String>
                     new Color(255, 255, 255, 255)
             );
         }
-
-        this.setting().setValue(this.textBoxText);
     }
 
     @Override
@@ -129,6 +127,7 @@ public final class StringComponent extends SettingComponent<String>
             } else if (keyCode == Keyboard.KEY_RETURN)
             {
                 this.textBoxFocused = false;
+                this.setting().setValue(this.textBoxText);
             } else if (Character.isLetterOrDigit(typedChar) || typedChar == '-')
             {
                 this.textBoxText += typedChar;

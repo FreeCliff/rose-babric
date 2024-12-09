@@ -1,6 +1,7 @@
 package me.ht9.rose.mixin.mixins;
 
-import me.ht9.rose.util.misc.GuiUsername;
+import me.ht9.rose.util.misc.GuiProxy;
+import me.ht9.rose.util.misc.GuiSession;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
@@ -21,7 +22,8 @@ public class MixinGuiMainMenu extends GuiScreen
     )
     public void initGui(CallbackInfo ci)
     {
-        controlList.add(new GuiButton(421, this.width - 100 - 2, 2, 100, 20, "Change Username"));
+        controlList.add(new GuiButton(421, this.width - 75 - 2, 2, 75, 20, "Session"));
+        controlList.add(new GuiButton(422, this.width - 75 - 2, 2 + 20 + 2, 75, 20, "Proxy"));
     }
 
     @Inject(
@@ -32,7 +34,13 @@ public class MixinGuiMainMenu extends GuiScreen
     )
     public void actionPerformed(GuiButton button, CallbackInfo ci)
     {
-        if (button.enabled && button.id == 421)
-            mc.displayGuiScreen(new GuiUsername((GuiMainMenu) (Object) this));
+        if (button.enabled)
+        {
+            switch (button.id)
+            {
+                case 421 -> mc.displayGuiScreen(new GuiSession(this));
+                case 422 -> mc.displayGuiScreen(new GuiProxy(this));
+            }
+        }
     }
 }

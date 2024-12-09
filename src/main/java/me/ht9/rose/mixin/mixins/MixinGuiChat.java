@@ -45,7 +45,7 @@ public class MixinGuiChat extends GuiScreen
         ci.cancel();
         ChatGuiRenderEvent event = new ChatGuiRenderEvent(this.message);
         Rose.bus().post(event);
-        fontRenderer.drawStringWithShadow("> " + this.message + (this.updateCounter / 6 % 2 == 0 ? "_" : ""), 4, this.height - 12, 14737632);
+        fontRenderer.drawStringWithShadow("> " + event.text() + (this.updateCounter / 6 % 2 == 0 ? "_" : ""), 4, this.height - 12, 14737632);
     }
 
     @Inject(

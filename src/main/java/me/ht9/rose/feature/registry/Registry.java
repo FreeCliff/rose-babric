@@ -2,13 +2,11 @@ package me.ht9.rose.feature.registry;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.feature.command.Command;
-import me.ht9.rose.feature.command.commands.FriendsCommand;
-import me.ht9.rose.feature.command.commands.LagbackCommand;
-import me.ht9.rose.feature.command.commands.VclipCommand;
+import me.ht9.rose.feature.command.commands.*;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
-import me.ht9.rose.feature.command.commands.SpawnCmd;
 import me.ht9.rose.feature.module.modules.client.background.Background;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
+import me.ht9.rose.feature.module.modules.client.hidelogin.HideLogin;
 import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
 import me.ht9.rose.feature.module.modules.client.irc.IRC;
 import me.ht9.rose.feature.module.modules.client.mainmenu.MainMenu;
@@ -26,7 +24,7 @@ import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
 import me.ht9.rose.feature.module.modules.exploit.xcarry.XCarry;
 import me.ht9.rose.feature.module.modules.misc.retard.Retard;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
-import me.ht9.rose.feature.module.modules.misc.chatbomb.ChatBomb;
+import me.ht9.rose.feature.module.modules.misc.chatbomb.Spammer;
 import me.ht9.rose.feature.module.modules.movement.autowalk.AutoWalk;
 import me.ht9.rose.feature.module.modules.movement.flight.Flight;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
@@ -64,6 +62,7 @@ public final class Registry
     {
         modules.add(Background.instance());
         modules.add(ClickGUI.instance());
+        modules.add(HideLogin.instance());
         modules.add(HudEditor.instance());
         modules.add(IRC.instance());
         modules.add(MainMenu.instance());
@@ -82,7 +81,7 @@ public final class Registry
         modules.add(Sneak.instance());
         modules.add(XCarry.instance());
 
-        modules.add(ChatBomb.instance());
+        modules.add(Spammer.instance());
         modules.add(Retard.instance());
         modules.add(Timer.instance());
 
@@ -146,6 +145,11 @@ public final class Registry
                 .withExecutable(new FriendsCommand())
                 .withSuggestion("<add/del/list>", () -> new String[]{"add", "del", "list"})
                 .withSuggestion("[name]", () -> Registry.friends().toArray(new String[0]))
+                .asCommand());
+        commands.add(new CommandBuilder("Spam")
+                .withDescription("Spam a message multiple times")
+                .withExecutable(new SpamCommand())
+                .withSuggestion("<amount>", () -> new String[]{})
                 .asCommand());
     }
 

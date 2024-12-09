@@ -4,7 +4,7 @@ import me.ht9.rose.event.Event;
 
 public final class ChatGuiRenderEvent extends Event
 {
-    private final String text;
+    private String text;
 
     public ChatGuiRenderEvent(String text)
     {
@@ -14,5 +14,10 @@ public final class ChatGuiRenderEvent extends Event
     public String text()
     {
         return this.text;
+    }
+
+    public void setText(String text)
+    {
+        this.text = text;
     }
 }

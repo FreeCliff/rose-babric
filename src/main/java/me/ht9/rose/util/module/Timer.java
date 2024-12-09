@@ -1,8 +1,6 @@
 package me.ht9.rose.util.module;
 
-import me.ht9.rose.util.Globals;
-
-public final class Timer implements Globals
+public final class Timer
 {
     private double time;
 
@@ -13,16 +11,20 @@ public final class Timer implements Globals
 
     public boolean hasReached(double ms)
     {
-        return System.currentTimeMillis() - this.time >= ms;
+        return this.hasReached(ms, false);
     }
 
     public boolean hasReached(double ms, boolean reset)
     {
-        if (reset)
+        if (System.currentTimeMillis() - this.time >= ms)
         {
-            this.reset();
+            if (reset)
+            {
+                this.reset();
+            }
+            return true;
         }
-        return System.currentTimeMillis() - this.time >= ms;
+        return false;
     }
 
     public double time()

@@ -46,9 +46,8 @@ public class Speed extends Module
         }
         else if (this.type.value() == Type.NoCheat)
         {
-            if (!this.timer.hasReached(450)) return;
+            if (!this.timer.hasReached(450, true)) return;
             mc.getSendQueue().addToSendQueue(new Packet19EntityAction(mc.thePlayer, 3));
-            this.timer.reset();
         }
     }
 
