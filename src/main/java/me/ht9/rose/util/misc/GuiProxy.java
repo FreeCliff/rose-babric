@@ -38,7 +38,7 @@ public final class GuiProxy extends GuiScreen
         textField.isFocused = true;
         textField.setMaxStringLength(30);
 
-        ((GuiButton) this.controlList.get(1)).enabled = this.textField.getText().split(":").length == 2 && this.textField.getText().length() > 8;
+        ((GuiButton) this.controlList.get(1)).enabled = this.textField.getText().isEmpty() || (this.textField.getText().split(":").length == 2 && this.textField.getText().length() > 8);
     }
 
     @Override
@@ -60,7 +60,7 @@ public final class GuiProxy extends GuiScreen
                 {
                     type = Type.HTTP;
                 }
-                initGui();
+                ((GuiButton) controlList.get(0)).displayString = "Type: " + type;
             }
             else if (guiButton.id == 1)
             {
@@ -79,10 +79,10 @@ public final class GuiProxy extends GuiScreen
         this.textField.textboxKeyTyped(c, i);
         if (c == '\r')
         {
-            this.actionPerformed((GuiButton) this.controlList.get(0));
+            this.actionPerformed((GuiButton) this.controlList.get(1));
         }
 
-        ((GuiButton) this.controlList.get(1)).enabled = this.textField.getText().split(":").length == 2 && this.textField.getText().length() > 8;
+        ((GuiButton) this.controlList.get(1)).enabled = this.textField.getText().isEmpty() || (this.textField.getText().split(":").length == 2 && this.textField.getText().length() > 8);
     }
 
     @Override

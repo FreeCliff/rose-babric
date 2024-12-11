@@ -3,12 +3,11 @@ package me.ht9.rose.feature.module.modules.client.irc;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.ChangeUsernameEvent;
-import me.ht9.rose.event.events.PacketEvent;
+import me.ht9.rose.event.events.ChatEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.misc.FontColor;
-import net.minecraft.src.Packet3Chat;
 
 import java.io.*;
 import java.net.Socket;
@@ -97,32 +96,26 @@ public final class IRC extends Module
     }
 
     @SubscribeEvent
-    public void onPacket(PacketEvent event)
+    public void onChat(ChatEvent event)
     {
-        if (event.packet() instanceof Packet3Chat packet)
+        String message = event.message();
+        if (mode.value().equals(Mode.Hashtag))
         {
-            if (!event.serverBound())
+            if (!message.startsWith("#"))
                 return;
 
-            String message = packet.message;
-            if (mode.value().equals(Mode.Hashtag))
+            event.setCancelled(true);
+            sendMessage(message.substring(1));
+        } else if (mode.value().equals(Mode.All))
+        {
+            if (message.startsWith("#"))
             {
-                if (!message.startsWith("#"))
-                    return;
-
-                event.setCancelled(true);
-                sendMessage(message.substring(1));
-            } else if (mode.value().equals(Mode.All))
-            {
-                if (message.startsWith("#"))
-                {
-                    packet.message = message.substring(1);
-                    return;
-                }
-
-                event.setCancelled(true);
-                sendMessage(message);
+                event.setMessage(message.substring(1));
+                return;
             }
+
+            event.setCancelled(true);
+            sendMessage(message);
         }
     }
 
@@ -176,10 +169,8 @@ public final class IRC extends Module
         if (line.startsWith("PING"))
         {
             sendRawMessage("PONG " + line.substring(5));
-        } else if (line.contains("005"))
-        {
-            return;
-        } else if (line.contains("PRIVMSG"))
+        }
+        else if (line.contains("PRIVMSG"))
         {
             String[] parts = line.split(":", 3);
             if (parts.length > 2)
@@ -188,7 +179,8 @@ public final class IRC extends Module
                 String message = parts[2];
                 mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] <" + sender + "> " + FontColor.GRAY + message);
             }
-        } else if (line.contains("JOIN"))
+        }
+        else if (line.contains("JOIN"))
         {
             String[] parts = line.split("!");
             if (parts.length > 0)
@@ -196,7 +188,8 @@ public final class IRC extends Module
                 String nick = parts[0].substring(1);
                 mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.GREEN + nick + FontColor.GRAY + " joined the channel.");
             }
-        } else if (line.contains("PART") || line.contains("QUIT"))
+        }
+        else if (line.contains("PART") || line.contains("QUIT"))
         {
             String[] parts = line.split("!");
             if (parts.length > 0)
@@ -204,7 +197,8 @@ public final class IRC extends Module
                 String nick = parts[0].substring(1);
                 mc.ingameGUI.addChatMessage(FontColor.RED + "[IRC] " + FontColor.GREEN + nick + FontColor.GRAY + " left the channel.");
             }
-        } else if (line.contains("NICK"))
+        }
+        else if (line.contains("NICK"))
         {
             String[] parts = line.split("!");
             if (parts.length > 0)

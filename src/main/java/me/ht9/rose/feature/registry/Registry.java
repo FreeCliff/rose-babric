@@ -30,6 +30,7 @@ import me.ht9.rose.feature.module.modules.movement.flight.Flight;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
 import me.ht9.rose.feature.module.modules.movement.noclip.NoClip;
 import me.ht9.rose.feature.module.modules.movement.nofall.NoFall;
+import me.ht9.rose.feature.module.modules.movement.norotate.NoRotate;
 import me.ht9.rose.feature.module.modules.movement.scaffold.Scaffold;
 import me.ht9.rose.feature.module.modules.movement.speed.Speed;
 import me.ht9.rose.feature.module.modules.movement.velocity.Velocity;
@@ -90,6 +91,7 @@ public final class Registry
         modules.add(Freecam.instance());
         modules.add(NoClip.instance());
         modules.add(NoFall.instance());
+        modules.add(NoRotate.instance());
         modules.add(Scaffold.instance());
         modules.add(Speed.instance());
         modules.add(Velocity.instance());

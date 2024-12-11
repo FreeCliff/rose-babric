@@ -10,6 +10,7 @@
     "accessors.IGuiChat",
     "accessors.IItemBlock",
     "accessors.IMinecraft",
+    "accessors.INetClientHandler",
     "mixins.MixinBlock",
     "mixins.MixinEntity",
     "mixins.MixinEntityClientPlayerMP",

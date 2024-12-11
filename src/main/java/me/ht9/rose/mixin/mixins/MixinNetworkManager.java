@@ -3,6 +3,7 @@ package me.ht9.rose.mixin.mixins;
 import com.llamalad7.mixinextras.sugar.Local;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PacketEvent;
+import me.ht9.rose.util.misc.CNetworkManager;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -14,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = NetworkManager.class)
-public abstract class MixinNetworkManager
+public abstract class MixinNetworkManager implements CNetworkManager
 {
     @Shadow public abstract void addToSendQueue(Packet packet);
 
@@ -58,9 +59,8 @@ public abstract class MixinNetworkManager
         }
     }
 
-    @Unique
-    public void sendWithoutEvent(Packet packet)
-    {
+    @Override
+    public void rose_Babric$sendWithoutPacket(Packet packet) {
         postSendEvent = false;
         addToSendQueue(packet);
         postSendEvent = true;

@@ -62,10 +62,8 @@ Enhance your gameplay with these optional mods. They’re not required but can i
 
 If you'd prefer a precompiled version of Rose:
 
-1. Make sure you are logged in to a GitHub account.
-2. Go to the **Actions** tab on this repository.
-3. Click on the latest successful build.
-4. Scroll all the way down to the **Artifacts** section.
-5. Download the `.zip` and extract it and the mod is ready to be added.
+1. Go to [this page](https://nightly.link/paperoll/Rose-Babric/workflows/gradle/master).
+2. Download the `.zip` using the first download link on the page.
+3. Extract the mod jar from the `.zip` and add it to your mods.
 
 Happy skidding!!! 🌟

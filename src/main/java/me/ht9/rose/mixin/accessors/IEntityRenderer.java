@@ -8,6 +8,5 @@ import org.spongepowered.asm.mixin.gen.Invoker;
 public interface IEntityRenderer
 {
     @Invoker("func_4135_b") void invokeRenderHand(float partialTicks, int pass);
-
     @Invoker("setupCameraTransform") void invokeSetupCameraTransform(float partialTicks, int pass);
 }

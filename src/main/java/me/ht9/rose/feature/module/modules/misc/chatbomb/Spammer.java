@@ -42,6 +42,7 @@ public final class Spammer extends Module
 
     private final Setting<String> fileName = new Setting<>("File", "spam.txt", () -> mode.value().equals(Mode.File))
             .withOnChange(value -> updateMessages());
+    private final Setting<Boolean> fillRest = new Setting<>("Fill Rest", false, () -> mode.value().equals(Mode.File));
 
     private final Setting<Integer> delay = new Setting<>("Delay", 0, 0, 2000);
     private final Setting<Integer> amount = new Setting<>("Amount", 1, 1, 100);
@@ -63,13 +64,7 @@ public final class Spammer extends Module
 
             if (mode.value().equals(Mode.Random))
             {
-                StringBuilder stringBuilder = new StringBuilder();
-                for (int i = 0; i < randomLength.value(); i++)
-                {
-                    char randomChar = allowedChars.charAt(random.nextInt(allowedChars.length()));
-                    stringBuilder.append(randomChar);
-                }
-                spamString = stringBuilder.toString();
+                spamString = getRandom(randomLength.value());
             }
             else if (mode.value().equals(Mode.File))
             {
@@ -77,7 +72,17 @@ public final class Spammer extends Module
                 {
                     messageIndex = 0;
                 }
-                spamString = messages.get(messageIndex++);
+                String msg = messages.get(messageIndex++);
+
+                if (fillRest.value())
+                {
+                    if (msg.length() < 99)
+                    {
+                        msg = msg + " " + getRandom(99 - msg.length());
+                    }
+                }
+
+                spamString = msg;
             }
 
             if (!spamString.isEmpty())
@@ -85,6 +90,17 @@ public final class Spammer extends Module
                 mc.getSendQueue().addToSendQueue(new Packet3Chat(spamString));
             }
         }
+    }
+
+    private String getRandom(int length)
+    {
+        StringBuilder stringBuilder = new StringBuilder();
+        for (int i = 0; i < length; i++)
+        {
+            char randomChar = allowedChars.charAt(random.nextInt(allowedChars.length()));
+            stringBuilder.append(randomChar);
+        }
+        return stringBuilder.toString();
     }
 
     private void updateMessages()
