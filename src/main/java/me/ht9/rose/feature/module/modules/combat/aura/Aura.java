@@ -1,4 +1,4 @@
-package me.ht9.rose.feature.module.modules.combat;
+package me.ht9.rose.feature.module.modules.combat.aura;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;

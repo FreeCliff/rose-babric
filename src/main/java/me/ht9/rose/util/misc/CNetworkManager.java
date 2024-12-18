@@ -4,5 +4,5 @@ import net.minecraft.src.Packet;
 
 public interface CNetworkManager
 {
-    void rose_Babric$sendWithoutPacket(Packet packet);
+    void rose_Babric$sendWithoutEvent(Packet packet);
 }

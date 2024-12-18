@@ -1,9 +1,11 @@
 package me.ht9.rose.feature.gui;
 
 import me.ht9.rose.feature.gui.component.impl.components.ModuleComponent;
+import me.ht9.rose.feature.gui.component.impl.components.SettingComponent;
 import me.ht9.rose.feature.gui.component.impl.windows.ModuleWindow;
 import me.ht9.rose.feature.module.modules.Category;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
+import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.Globals;
 import me.ht9.rose.util.config.FileUtils;
 import me.ht9.rose.util.render.Easing;
@@ -110,26 +112,48 @@ public class RoseGui extends GuiScreen implements Globals
         {
             ModuleWindow window = iter.next();
 
-            ModuleComponent hoveredComponent = null;
-            for (ModuleComponent component : window.components())
+            Component hoveredComponent = null;
+            for (ModuleComponent moduleComponent : window.components())
             {
-                if (component.isMouseOverThis(mouseX, mouseY))
+                if (moduleComponent.isMouseOverThis(mouseX, mouseY))
                 {
-                    hoveredComponent = component;
+                    hoveredComponent = moduleComponent;
                     break;
+                }
+                for (SettingComponent<?> settingComponent : moduleComponent.components())
+                {
+                    if (settingComponent.isMouseOverThis(mouseX, mouseY))
+                    {
+                        hoveredComponent = settingComponent;
+                        break;
+                    }
                 }
             }
 
             if (hoveredComponent != null)
             {
-                Module module = hoveredComponent.module();
+                if (hoveredComponent instanceof ModuleComponent component)
+                {
+                    Module module = component.module();
 
-                Render2d.drawStringWithShadow(
-                        module.description(),
-                        2.0F,
-                        sr.getScaledHeight() - 10.0F,
-                        new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, this.universalTransparency / 255.0F)
-                );
+                    Render2d.drawStringWithShadow(
+                            module.description(),
+                            2.0F,
+                            sr.getScaledHeight() - 10.0F,
+                            new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, this.universalTransparency / 255.0F)
+                    );
+                }
+                else if (hoveredComponent instanceof SettingComponent<?> component)
+                {
+                    Setting<?> setting = component.setting();
+
+                    Render2d.drawStringWithShadow(
+                            setting.description(),
+                            2.0F,
+                            sr.getScaledHeight() - 10.0F,
+                            new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, this.universalTransparency / 255.0F)
+                    );
+                }
             }
 
             window.drawScreen(mouseX, mouseY, partialTicks);

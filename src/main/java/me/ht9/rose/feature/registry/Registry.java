@@ -11,7 +11,7 @@ import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
 import me.ht9.rose.feature.module.modules.client.irc.IRC;
 import me.ht9.rose.feature.module.modules.client.mainmenu.MainMenu;
 import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
-import me.ht9.rose.feature.module.modules.combat.Aura;
+import me.ht9.rose.feature.module.modules.combat.aura.Aura;
 import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
 import me.ht9.rose.feature.module.modules.exploit.infdurability.InfDurability;
 import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
@@ -22,6 +22,7 @@ import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
 import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
 import me.ht9.rose.feature.module.modules.exploit.xcarry.XCarry;
+import me.ht9.rose.feature.module.modules.misc.autotnt.AutoTNT;
 import me.ht9.rose.feature.module.modules.misc.retard.Retard;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
 import me.ht9.rose.feature.module.modules.misc.chatbomb.Spammer;
@@ -82,6 +83,7 @@ public final class Registry
         modules.add(Sneak.instance());
         modules.add(XCarry.instance());
 
+        modules.add(AutoTNT.instance());
         modules.add(Spammer.instance());
         modules.add(Retard.instance());
         modules.add(Timer.instance());
@@ -152,6 +154,10 @@ public final class Registry
                 .withDescription("Spam a message multiple times")
                 .withExecutable(new SpamCommand())
                 .withSuggestion("<amount>", () -> new String[]{})
+                .asCommand());
+        commands.add(new CommandBuilder("Crash")
+                .withDescription("Vehicle crash exploit")
+                .withExecutable(new CrashCommand())
                 .asCommand());
     }
 

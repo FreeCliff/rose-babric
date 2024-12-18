@@ -317,4 +317,8 @@ public final class ModuleComponent implements Component
     {
         return this.module;
     }
+
+    public List<SettingComponent<?>> components() {
+        return components;
+    }
 }

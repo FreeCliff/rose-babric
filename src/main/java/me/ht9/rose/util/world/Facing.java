@@ -1,4 +1,4 @@
-package me.ht9.rose.feature.module.modules.movement.scaffold.util;
+package me.ht9.rose.util.world;
 
 public enum Facing
 {
@@ -18,7 +18,7 @@ public enum Facing
     /** List of all values in EnumFacing. Order is D-U-N-S-E-W. */
     private static final Facing[] faceList = new Facing[6];
 
-    private Facing(int par3, int par4, int par5, int par6, int par7)
+    Facing(int par3, int par4, int par5, int par6, int par7)
     {
         this.order_a = par3;
         this.order_b = par4;
@@ -28,7 +28,7 @@ public enum Facing
     }
 
     /**
-     * Returns a offset that addresses the block in front of this facing.
+     * Returns an offset that addresses the block in front of this facing.
      */
     public int getFrontOffsetX()
     {
@@ -41,7 +41,7 @@ public enum Facing
     }
 
     /**
-     * Returns a offset that addresses the block in front of this facing.
+     * Returns an offset that addresses the block in front of this facing.
      */
     public int getFrontOffsetZ()
     {
@@ -58,13 +58,11 @@ public enum Facing
 
     static
     {
-        Facing[] var0 = values();
-        int var1 = var0.length;
+        Facing[] values = values();
 
-        for (int var2 = 0; var2 < var1; ++var2)
+        for (Facing facing : values)
         {
-            Facing var3 = var0[var2];
-            faceList[var3.order_a] = var3;
+            faceList[facing.order_a] = facing;
         }
     }
 }

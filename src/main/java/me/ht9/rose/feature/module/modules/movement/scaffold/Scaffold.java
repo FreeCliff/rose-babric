@@ -6,7 +6,7 @@ import me.ht9.rose.event.events.PlayerMoveEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
-import me.ht9.rose.feature.module.modules.movement.scaffold.util.Facing;
+import me.ht9.rose.util.world.Facing;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.mixin.accessors.IItemBlock;
 import net.minecraft.src.*;
@@ -22,8 +22,10 @@ public class Scaffold extends Module
 
     private final List<Block> INVALID_BLOCKS = Arrays.asList(Block.waterMoving, Block.waterStill, Block.fire, Block.lavaMoving, Block.lavaStill, Block.chest, Block.workbench, Block.gravel, Block.sand);
 
+    private final Setting<Integer> size = new Setting<>("Size", 1, 1, 5);
     private final Setting<Tower> towerMode = new Setting<>("Tower", Tower.Motion);
     private final Setting<Swap> swap = new Setting<>("Swap", Swap.Server);
+    private final Setting<Boolean> understacked = new Setting<>("Swap To Infinites", false, () -> !swap.value().equals(Swap.Manual));
     private final Setting<Boolean> swing = new Setting<>("Swing", true);
     private final Setting<Boolean> safeWalk = new Setting<>("SafeWalk", false);
 
@@ -120,6 +122,36 @@ public class Scaffold extends Module
             mc.getSendQueue().addToSendQueue(
                     new Packet16BlockItemSwitch(mc.thePlayer.inventory.currentItem));
         }
+
+        if (size.value() > 1)
+        {
+            int size = this.size.value() - 1;
+            for (int x = -size; x <= size; x++)
+            {
+                for (int z = -size; z <= size; z++)
+                {
+                    if (x == 0 && z == 0) continue;
+                    Vec3D pos = Vec3D.createVectorHelper(placement.pos.xCoord + x, mc.thePlayer.boundingBox.minY - 1, placement.pos.zCoord + z);
+                    if (isReplaceable(pos))
+                    {
+                        for (Facing direction : Facing.values())
+                        {
+                            Vec3D neighbor = offset(pos, direction);
+                            if (!isReplaceable(neighbor))
+                            {
+                                mc.playerController.sendPlaceBlock(mc.thePlayer,
+                                        mc.theWorld,
+                                        mc.thePlayer.inventory.getStackInSlot(slot),
+                                        (int) neighbor.xCoord,
+                                        (int) neighbor.yCoord,
+                                        (int) neighbor.zCoord,
+                                        opposite(direction).ordinal());
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
 
     @SubscribeEvent
@@ -214,8 +246,7 @@ public class Scaffold extends Module
             if (isValidBlockStack(itemStack))
             {
                 // auto return infinities because they're well, infinite
-                // TODO: this could be an option?
-                if (isUnderstacked(itemStack)) return i;
+                if (understacked.value() && isUnderstacked(itemStack)) return i;
 
                 if (itemStack.stackSize > count)
                 {
@@ -245,7 +276,7 @@ public class Scaffold extends Module
 
     private boolean isUnderstacked(ItemStack itemStack)
     {
-        return itemStack.stackSize < 0;
+        return itemStack.stackSize < 1;
     }
 
     private boolean isValidBlockStack(ItemStack itemStack)

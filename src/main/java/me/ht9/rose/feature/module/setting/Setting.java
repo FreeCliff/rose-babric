@@ -6,6 +6,7 @@ import java.util.function.Supplier;
 public final class Setting<V>
 {
     private final String name;
+    private String description;
     private final Number min;
     private V value;
     private final V defaultValue;
@@ -18,6 +19,7 @@ public final class Setting<V>
     public <N extends Number> Setting(String name, N min, V value, N max, int roundingScale, Supplier<Boolean> visibility)
     {
         this.name = name;
+        this.description = "";
         this.min = min;
         this.value = value;
         this.defaultValue = value;
@@ -54,6 +56,12 @@ public final class Setting<V>
     public Setting<V> withOnChange(Consumer<V> action)
     {
         this.onChange = action;
+        return this;
+    }
+
+    public Setting<V> withDescription(String description)
+    {
+        this.description = description;
         return this;
     }
 
@@ -108,6 +116,11 @@ public final class Setting<V>
     public String name()
     {
         return this.name;
+    }
+
+    public String description()
+    {
+        return description;
     }
 
     public Number min()
