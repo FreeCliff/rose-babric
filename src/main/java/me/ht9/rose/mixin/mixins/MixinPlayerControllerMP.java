@@ -15,11 +15,10 @@ import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
-@Mixin(value = PlayerControllerMP.class)
+@Mixin(value = PlayerControllerMP.class, priority = 1001) // Fuck you StAPI
 public abstract class MixinPlayerControllerMP
 {
     @Shadow private int blockHitDelay;
-    @Shadow protected abstract void syncCurrentPlayItem();
 
     @Unique private SyncCurrentItemEvent.Type type;
 
@@ -101,5 +100,38 @@ public abstract class MixinPlayerControllerMP
     public void interactWithEntity(EntityPlayer entity, Entity par2, CallbackInfo ci)
     {
         type = SyncCurrentItemEvent.Type.INTERACT_ENTITY;
+    }
+
+    @Redirect(
+            method = "sendBlockRemoving",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/src/Block;blockStrength(Lnet/minecraft/src/EntityPlayer;)F"
+            )
+    )
+    public float blockStrength(Block block, EntityPlayer player)
+    {
+        if (!InfDurability.instance().enabled()) return block.blockStrength(player);
+
+        if (((IBlock) block).blockHardness() < 0.0f) return 0.0f;
+
+        boolean canHarvestBlock = block.blockMaterial.getIsHarvestable() ||
+                (player.inventory.mainInventory[9] != null && player.inventory.mainInventory[9].canHarvestBlock(block));
+
+        if (canHarvestBlock)
+        {
+            float strVsBlock = 1.0f;
+
+            if (player.inventory.mainInventory[9] != null) strVsBlock *= player.inventory.mainInventory[9].getStrVsBlock(block);
+
+            //if (player.isInWater()) strVsBlock /= 5.0f;
+
+            //if (!player.onGround) strVsBlock /= 5.0f;
+
+            return strVsBlock / ((IBlock) block).blockHardness() / 30.0f;
+        } else
+        {
+            return 1.0f / ((IBlock) block).blockHardness() / 100.0f;
+        }
     }
 }

@@ -7,13 +7,10 @@ import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MovingObjectPosition;
 import net.minecraft.src.World;
-import org.lwjgl.input.Keyboard;
-import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
-import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static org.lwjgl.opengl.GL11.*;
@@ -80,6 +77,36 @@ public class MixinMinecraft
     public void runTick(CallbackInfo ci)
     {
         Rose.bus().post(new TickEvent());
+    }
+
+    @Redirect(
+            method = "runTick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lorg/lwjgl/input/Mouse;next()Z"
+            )
+    )
+    public boolean runTick$Mouse()
+    {
+        boolean result = Mouse.next();
+        if (result)
+            Rose.bus().post(new InputEvent.MouseInputEvent());
+        return result;
+    }
+
+    @Redirect(
+            method = "runTick",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lorg/lwjgl/input/Keyboard;next()Z"
+            )
+    )
+    public boolean runTick$Keyboard()
+    {
+        boolean result = Keyboard.next();
+        if (result)
+            Rose.bus().post(new InputEvent.KeyInputEvent());
+        return result;
     }
 
     @Inject(

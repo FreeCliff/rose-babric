@@ -1,6 +1,5 @@
 package me.ht9.rose.mixin.mixins;
 
-import com.llamalad7.mixinextras.sugar.Local;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.util.misc.CNetworkManager;

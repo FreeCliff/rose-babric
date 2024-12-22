@@ -2,7 +2,6 @@ package me.ht9.rose.feature.module.modules.movement.norotate;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.PacketEvent;
-import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import net.minecraft.src.Packet10Flying;

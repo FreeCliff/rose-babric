@@ -35,7 +35,8 @@ public class MixinRenderList
             method = "func_860_a",
             at = @At(
                     value = "INVOKE",
-                    target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V"
+                    target = "Lorg/lwjgl/opengl/GL11;glTranslatef(FFF)V",
+                    remap = false
             ),
             cancellable = true
     )
