@@ -2,6 +2,7 @@ package me.ht9.rose.feature.module.modules.movement.norotate;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.PacketEvent;
+import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import net.minecraft.src.Packet10Flying;
@@ -17,11 +18,7 @@ public final class NoRotate extends Module
         if (event.serverBound()) return;
         if (event.packet() instanceof Packet10Flying packet)
         {
-            if (packet.rotating)
-            {
-                packet.yaw = mc.thePlayer.rotationYaw;
-                packet.pitch = mc.thePlayer.rotationPitch;
-            }
+            packet.rotating = false;
         }
     }
 

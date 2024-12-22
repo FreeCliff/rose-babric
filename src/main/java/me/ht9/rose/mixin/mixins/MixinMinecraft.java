@@ -82,36 +82,6 @@ public class MixinMinecraft
         Rose.bus().post(new TickEvent());
     }
 
-    @Redirect(
-            method = "runTick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lorg/lwjgl/input/Mouse;next()Z"
-            )
-    )
-    public boolean runTick$Mouse()
-    {
-        boolean result = Mouse.next();
-        if (result)
-            Rose.bus().post(new InputEvent.MouseInputEvent());
-        return result;
-    }
-
-    @Redirect(
-            method = "runTick",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lorg/lwjgl/input/Keyboard;next()Z"
-            )
-    )
-    public boolean runTick$Keyboard()
-    {
-        boolean result = Keyboard.next();
-        if (result)
-            Rose.bus().post(new InputEvent.KeyInputEvent());
-        return result;
-    }
-
     @Inject(
             method = "changeWorld",
             at = @At(

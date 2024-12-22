@@ -13,6 +13,7 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(value = NetworkManager.class)
 public abstract class MixinNetworkManager implements CNetworkManager
@@ -46,9 +47,10 @@ public abstract class MixinNetworkManager implements CNetworkManager
                     value = "INVOKE",
                     target = "Ljava/util/List;add(Ljava/lang/Object;)Z"
             ),
+            locals = LocalCapture.CAPTURE_FAILSOFT,
             cancellable = true
     )
-    public void receive(CallbackInfoReturnable<Boolean> cir, @Local Packet packet)
+    public void receive(CallbackInfoReturnable<Boolean> cir, int packetId, Packet packet)
     {
         PacketEvent event = new PacketEvent(packet, false);
         Rose.bus().post(event);

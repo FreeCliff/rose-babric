@@ -20,8 +20,7 @@ import static me.ht9.rose.util.Globals.mc;
 @Mixin(value = Entity.class)
 public abstract class MixinEntity
 {
-    @Unique
-    private boolean shouldInject = true;
+    @Unique private boolean shouldInject = true;
 
     @Inject(
             method = "applyEntityCollision",
@@ -58,13 +57,5 @@ public abstract class MixinEntity
             this.shouldInject = true;
             ci.cancel();
         }
-    }
-
-    @Redirect(method = "moveEntity", at = @At(value = "FIELD", target = "Lnet/minecraft/src/Entity;onGround:Z", opcode = Opcodes.GETFIELD, ordinal = 0))
-    public boolean sneak(Entity entity)
-    {
-        if (Sneak.instance().enabled() && !Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode))
-            return false;
-        return entity.onGround;
     }
 }

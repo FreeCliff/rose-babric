@@ -5,22 +5,23 @@ import me.ht9.rose.event.events.PlayerDamageBlockEvent;
 import me.ht9.rose.event.events.SyncCurrentItemEvent;
 import me.ht9.rose.feature.module.modules.exploit.infdurability.InfDurability;
 import me.ht9.rose.mixin.accessors.IBlock;
-import net.minecraft.src.Block;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.PlayerControllerMP;
+import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = PlayerControllerMP.class)
 public abstract class MixinPlayerControllerMP
 {
     @Shadow private int blockHitDelay;
-
     @Shadow protected abstract void syncCurrentPlayItem();
+
+    @Unique private SyncCurrentItemEvent.Type type;
 
     @Inject(
             method = "sendBlockRemoving",
@@ -39,111 +40,66 @@ public abstract class MixinPlayerControllerMP
         }
     }
 
-    @Redirect(
+    @Inject(
             method = "sendBlockRemoving",
             at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"
+                    value = "HEAD"
             )
     )
-    public void sendBlockRemoving(PlayerControllerMP instance)
+    public void sendBlockRemoving(int j, int k, int l, int par4, CallbackInfo ci)
     {
-        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.BREAK);
-        Rose.bus().post(event);
-        if (event.cancelled()) return;
-        syncCurrentPlayItem();
+        type = SyncCurrentItemEvent.Type.BREAK;
     }
 
-    @Redirect(
+    @Inject(
             method = "sendPlaceBlock",
             at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"
+                    value = "HEAD"
             )
     )
-    public void sendPlaceBlock(PlayerControllerMP instance)
+    public void sendPlaceBlock(EntityPlayer world, World itemStack, ItemStack i, int j, int k, int l, int par7, CallbackInfoReturnable<Boolean> cir)
     {
-        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.PLACE);
-        Rose.bus().post(event);
-        if (event.cancelled()) return;
-        syncCurrentPlayItem();
+        type = SyncCurrentItemEvent.Type.PLACE;
     }
 
-    @Redirect(
+    @Inject(
             method = "sendUseItem",
             at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"
+                    value = "HEAD"
             )
     )
-    public void sendUseItem(PlayerControllerMP instance)
+    public void sendUseItem(EntityPlayer world, World itemStack, ItemStack par3, CallbackInfoReturnable<Boolean> cir)
     {
-        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.USE_ITEM);
-        Rose.bus().post(event);
-        if (event.cancelled()) return;
-        syncCurrentPlayItem();
+        type = SyncCurrentItemEvent.Type.USE_ITEM;
     }
 
-    @Redirect(
+    @Inject(method = "syncCurrentPlayItem", at = @At("HEAD"), cancellable = true)
+    public void syncCurrentPlayItem$Head(CallbackInfo ci)
+    {
+        SyncCurrentItemEvent event = new SyncCurrentItemEvent(type);
+        Rose.bus().post(event);
+        if (event.cancelled()) ci.cancel();
+    }
+
+    @Inject(
             method = "attackEntity",
             at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"
+                    value = "HEAD"
             )
     )
-    public void attackEntity(PlayerControllerMP instance)
+    public void attackEntity(EntityPlayer entity, Entity par2, CallbackInfo ci)
     {
-        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.ATTACK);
-        Rose.bus().post(event);
-        if (event.cancelled()) return;
-        syncCurrentPlayItem();
+        type = SyncCurrentItemEvent.Type.ATTACK;
     }
 
-    @Redirect(
+    @Inject(
             method = "interactWithEntity",
             at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/src/PlayerControllerMP;syncCurrentPlayItem()V"
+                    value = "HEAD"
             )
     )
-    public void interactWithEntity(PlayerControllerMP instance)
+    public void interactWithEntity(EntityPlayer entity, Entity par2, CallbackInfo ci)
     {
-        SyncCurrentItemEvent event = new SyncCurrentItemEvent(SyncCurrentItemEvent.Type.INTERACT_ENTITY);
-        Rose.bus().post(event);
-        if (event.cancelled()) return;
-        syncCurrentPlayItem();
-    }
-
-    @Redirect(
-            method = "sendBlockRemoving",
-            at = @At(
-                    value = "INVOKE",
-                    target = "Lnet/minecraft/src/Block;blockStrength(Lnet/minecraft/src/EntityPlayer;)F"
-            )
-    )
-    public float blockStrength(Block block, EntityPlayer player)
-    {
-        if (!InfDurability.instance().enabled()) return block.blockStrength(player);
-
-        if (((IBlock) block).getBlockHardness() < 0.0f) return 0.0f;
-
-        boolean canHarvestBlock = block.blockMaterial.getIsHarvestable() ||
-                (player.inventory.mainInventory[9] != null && player.inventory.mainInventory[9].canHarvestBlock(block));
-
-        if (canHarvestBlock)
-        {
-            float strVsBlock = 1.0f;
-
-            if (player.inventory.mainInventory[9] != null) strVsBlock *= player.inventory.mainInventory[9].getStrVsBlock(block);
-
-            if (player.isInWater()) strVsBlock /= 5.0f;
-
-            if (!player.onGround) strVsBlock /= 5.0f;
-
-            return strVsBlock / ((IBlock) block).getBlockHardness() / 30.0f;
-        } else
-        {
-            return 1.0f / ((IBlock) block).getBlockHardness() / 100.0f;
-        }
+        type = SyncCurrentItemEvent.Type.INTERACT_ENTITY;
     }
 }

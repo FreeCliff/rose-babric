@@ -7,6 +7,5 @@ import net.minecraft.src.ItemBlock;
 @Mixin(ItemBlock.class)
 public interface IItemBlock
 {
-    @Accessor("blockID")
-    int blockId();
+    @Accessor("blockID") int blockId();
 }

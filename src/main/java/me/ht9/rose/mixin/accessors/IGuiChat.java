@@ -7,6 +7,5 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 @Mixin(value = GuiChat.class)
 public interface IGuiChat
 {
-    @Accessor("message")
-    void setMessage(String message);
+    @Accessor("message") void setMessage(String message);
 }

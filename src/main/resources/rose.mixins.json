@@ -37,6 +37,8 @@
     "defaultRequire": 1
   },
   "mixins": [
-    "mixins.MixinEntityPlayer"
+    "mixins.MixinEntityPlayer",
+    "mixins.MixinKeyboard",
+    "mixins.MixinMouse"
   ]
 }
