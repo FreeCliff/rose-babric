@@ -36,6 +36,7 @@ public abstract class MixinEntityPlayer extends EntityLiving
         if (mc.isMultiplayerWorld())
         {
             ItemStack item = this.getCurrentEquippedItem();
+            if (item == null) return;
             this.originalStackSize = item.stackSize;
             item.stackSize = Math.max(item.stackSize, 1);
         }
@@ -46,7 +47,7 @@ public abstract class MixinEntityPlayer extends EntityLiving
     )
     public void resetStackSizeForAttack(Entity entity, CallbackInfo ci)
     {
-        if (mc.isMultiplayerWorld())
+        if (mc.isMultiplayerWorld() && this.getCurrentEquippedItem() != null)
         {
             this.getCurrentEquippedItem().stackSize = this.originalStackSize;
         }
@@ -65,6 +66,7 @@ public abstract class MixinEntityPlayer extends EntityLiving
         if (mc.isMultiplayerWorld())
         {
             ItemStack item = this.getCurrentEquippedItem();
+            if (item == null) return;
             this.originalStackSize = item.stackSize;
             item.stackSize = Math.max(item.stackSize, 1);
         }
@@ -75,7 +77,7 @@ public abstract class MixinEntityPlayer extends EntityLiving
     )
     public void resetStackSizeForUse(Entity par1, CallbackInfo ci)
     {
-        if (mc.isMultiplayerWorld())
+        if (mc.isMultiplayerWorld() && this.getCurrentEquippedItem() != null)
         {
             this.getCurrentEquippedItem().stackSize = this.originalStackSize;
         }

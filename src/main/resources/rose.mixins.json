@@ -14,6 +14,7 @@
     "mixins.MixinBlock",
     "mixins.MixinEntity",
     "mixins.MixinEntityClientPlayerMP",
+    "mixins.MixinEntityPlayer",
     "mixins.MixinEntityPlayerSP",
     "mixins.MixinEntityRenderer",
     "mixins.MixinGuiChat",
@@ -35,10 +36,5 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "mixins.MixinEntityPlayer",
-    "mixins.MixinKeyboard",
-    "mixins.MixinMouse"
-  ]
+  }
 }

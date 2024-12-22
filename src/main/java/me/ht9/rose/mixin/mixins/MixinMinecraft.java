@@ -86,7 +86,8 @@ public class MixinMinecraft
             method = "runTick",
             at = @At(
                     value = "INVOKE",
-                    target = "Lorg/lwjgl/input/Mouse;next()Z"
+                    target = "Lorg/lwjgl/input/Mouse;next()Z",
+                    remap = false
             )
     )
     public boolean runTick$Mouse()
@@ -101,7 +102,8 @@ public class MixinMinecraft
             method = "runTick",
             at = @At(
                     value = "INVOKE",
-                    target = "Lorg/lwjgl/input/Keyboard;next()Z"
+                    target = "Lorg/lwjgl/input/Keyboard;next()Z",
+                    remap = false
             )
     )
     public boolean runTick$Keyboard()
