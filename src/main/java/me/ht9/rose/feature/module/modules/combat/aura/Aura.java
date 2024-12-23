@@ -5,6 +5,7 @@ import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
+import me.ht9.rose.feature.registry.Registry;
 import net.minecraft.src.*;
 
 import java.util.ArrayList;
@@ -37,7 +38,7 @@ public final class Aura extends Module
                 if (entity instanceof EntityPlayerSP) continue;
                 if (mc.thePlayer.getDistanceToEntity(entity) > range.value()) continue;
                 if (
-                        (entity instanceof EntityPlayer && players.value())
+                        (entity instanceof EntityPlayer player && players.value() && !Registry.friends().contains(player.username))
                                 || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
                                 || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
                 )

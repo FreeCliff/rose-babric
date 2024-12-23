@@ -19,7 +19,13 @@ public class MixinNetClientHandler
 {
     @Shadow private NetworkManager netManager;
 
-    @Redirect(method = "<init>", at = @At(value = "NEW", target = "(Ljava/net/InetAddress;I)Ljava/net/Socket;"))
+    @Redirect(
+            method = "<init>",
+            at = @At(
+                    value = "NEW",
+                    target = "(Ljava/net/InetAddress;I)Ljava/net/Socket;"
+            )
+    )
     public Socket initSocket(InetAddress address, int port) throws IOException
     {
         if (GuiProxy.proxyIp.isEmpty())

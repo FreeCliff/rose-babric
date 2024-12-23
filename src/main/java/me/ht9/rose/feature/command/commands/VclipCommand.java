@@ -10,7 +10,7 @@ public final class VclipCommand extends Executable implements Globals {
     public void accept(String[] args) {
         if (mc.thePlayer != null && args.length == 1) {
             try {
-                mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + Integer.parseInt(args[0]), mc.thePlayer.posZ);
+                mc.thePlayer.setPosition(mc.thePlayer.posX, mc.thePlayer.posY + Double.parseDouble(args[0]), mc.thePlayer.posZ);
             } catch (NumberFormatException ignored) {}
         }
         else
