@@ -62,7 +62,7 @@ Enhance your gameplay with these optional mods. They’re not required but can i
 
 If you'd prefer a precompiled version of Rose:
 
-1. Go to [this page](https://nightly.link/paperoll/Rose-Babric/workflows/gradle/master).
+1. Go to [this page](https://nightly.link/skibidiware/Rose-Babric/workflows/gradle/master).
 2. Download the `.zip` using the first download link on the page.
 3. Extract the mod jar from the `.zip` and add it to your mods.
 
