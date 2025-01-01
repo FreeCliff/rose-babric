@@ -1,4 +1,4 @@
-package me.ht9.rose.feature.gui;
+package me.ht9.rose.feature.gui.clickgui;
 
 import me.ht9.rose.feature.gui.component.impl.components.ModuleComponent;
 import me.ht9.rose.feature.gui.component.impl.components.SettingComponent;

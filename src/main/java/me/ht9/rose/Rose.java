@@ -3,7 +3,6 @@ package me.ht9.rose;
 import me.ht9.rose.event.bus.EventBus;
 import me.ht9.rose.event.factory.Factory;
 import me.ht9.rose.feature.command.impl.Prediction;
-import me.ht9.rose.feature.module.modules.client.irc.IRC;
 import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.util.Globals;
 import me.ht9.rose.util.config.FileUtils;
@@ -33,6 +32,7 @@ public class Rose implements ClientModInitializer, Globals
 
 		Registry.loadModules();
 		Registry.loadCommands();
+		Registry.finishLoad();
 
 		FileUtils.loadModules();
 		FileUtils.loadClickGUI();

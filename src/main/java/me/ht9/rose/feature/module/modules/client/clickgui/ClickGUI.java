@@ -1,6 +1,6 @@
 package me.ht9.rose.feature.module.modules.client.clickgui;
 
-import me.ht9.rose.feature.gui.RoseGui;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.module.annotation.Aliases;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.keybinding.Bind;

@@ -1,6 +1,7 @@
 package me.ht9.rose.feature.registry;
 
 import me.ht9.rose.Rose;
+import me.ht9.rose.feature.Feature;
 import me.ht9.rose.feature.command.Command;
 import me.ht9.rose.feature.command.commands.*;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
@@ -48,6 +49,7 @@ import me.ht9.rose.feature.module.Module;
 
 import java.lang.reflect.Field;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 import java.util.concurrent.CopyOnWriteArrayList;
 
@@ -106,27 +108,6 @@ public final class Registry
         modules.add(NoOverlay.instance());
         modules.add(NoRender.instance());
         modules.add(Xray.instance());
-
-        modules.forEach(module ->
-        {
-            for (Field field : module.getClass().getDeclaredFields())
-            {
-                if (Setting.class.isAssignableFrom(field.getType()))
-                {
-                    try
-                    {
-                        field.setAccessible(true);
-                        module.settings().add((Setting<?>) field.get(module));
-                    } catch (Throwable t)
-                    {
-                        Rose.logger().error("Failed to instantiate setting {}", field.getName());
-                    }
-                }
-            }
-            module.settings().add(module.drawn());
-            module.settings().add(module.bindMode());
-            module.settings().add(module.toggleBind());
-        });
     }
 
     public static void loadCommands()
@@ -159,6 +140,33 @@ public final class Registry
                 .withDescription("Vehicle crash exploit")
                 .withExecutable(new CrashCommand())
                 .asCommand());
+    }
+
+    public static void finishLoad()
+    {
+        modules.forEach(module ->
+        {
+            for (Field field : module.getClass().getDeclaredFields())
+            {
+                if (Setting.class.isAssignableFrom(field.getType()))
+                {
+                    try
+                    {
+                        field.setAccessible(true);
+                        module.settings().add((Setting<?>) field.get(module));
+                    } catch (Throwable t)
+                    {
+                        Rose.logger().error("Failed to instantiate setting {}", field.getName());
+                    }
+                }
+            }
+            module.settings().add(module.drawn());
+            module.settings().add(module.bindMode());
+            module.settings().add(module.toggleBind());
+        });
+
+        modules.sort(Comparator.comparing(Feature::name));
+        commands.sort(Comparator.comparing(Command::name));
     }
 
     public static String prefix()

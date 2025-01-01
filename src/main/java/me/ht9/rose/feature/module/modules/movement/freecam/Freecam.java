@@ -3,6 +3,7 @@ package me.ht9.rose.feature.module.modules.movement.freecam;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
+import me.ht9.rose.event.events.PushByEvent;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.setting.Setting;
@@ -94,6 +95,12 @@ public class Freecam extends Module
                         ? speed.value()
                         : 0
         );
+    }
+
+    @SubscribeEvent
+    public void onPush(PushByEvent event)
+    {
+        event.setCancelled(true);
     }
 
     public void copy(Entity entity)

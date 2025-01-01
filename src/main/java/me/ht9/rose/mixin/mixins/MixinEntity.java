@@ -3,12 +3,14 @@ package me.ht9.rose.mixin.mixins;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PlayerMoveEvent;
 import me.ht9.rose.event.events.PushByEvent;
-import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
+import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
 import net.minecraft.src.Entity;
+import org.lwjgl.input.Keyboard;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
 import static me.ht9.rose.util.Globals.mc;
@@ -29,7 +31,7 @@ public abstract class MixinEntity
     {
         PushByEvent event = new PushByEvent(entity, PushByEvent.Pusher.ENTITY);
         Rose.bus().post(event);
-        if (event.cancelled() || Freecam.instance().enabled())
+        if (event.cancelled())
             ci.cancel();
     }
 
@@ -53,5 +55,21 @@ public abstract class MixinEntity
             this.shouldInject = true;
             ci.cancel();
         }
+    }
+
+    @Redirect(
+            method = "moveEntity",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/src/Entity;isSneaking()Z"
+            )
+    )
+    public boolean isSneaking$Head(Entity instance)
+    {
+        if (Sneak.instance().enabled() && !Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode))
+        {
+            return false;
+        }
+        return instance.isSneaking();
     }
 }

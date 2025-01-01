@@ -1,6 +1,6 @@
 package me.ht9.rose.feature.gui.component.impl.components;
 
-import me.ht9.rose.feature.gui.RoseGui;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.gui.component.Component;
 import me.ht9.rose.feature.gui.component.impl.windows.ModuleWindow;
 import me.ht9.rose.feature.module.keybinding.Bind;

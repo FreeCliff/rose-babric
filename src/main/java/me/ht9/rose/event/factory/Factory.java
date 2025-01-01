@@ -3,7 +3,7 @@ package me.ht9.rose.event.factory;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.*;
 import me.ht9.rose.feature.command.Command;
-import me.ht9.rose.feature.gui.RoseGui;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.module.keybinding.Bind;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.mainmenu.MainMenu;

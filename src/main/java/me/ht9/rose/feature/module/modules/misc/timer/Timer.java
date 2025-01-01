@@ -12,7 +12,7 @@ public final class Timer extends Module
 {
     private static final Timer instance = new Timer();
 
-    public final Setting<Float> timer = new Setting<>("Timer", 0.1f, 1f, 25f);
+    public final Setting<Float> timer = new Setting<>("Timer", 1f, 1f, 25f);
 
     @SuppressWarnings("unused")
     @SubscribeEvent

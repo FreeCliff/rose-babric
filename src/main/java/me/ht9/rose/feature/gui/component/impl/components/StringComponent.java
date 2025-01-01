@@ -1,6 +1,6 @@
 package me.ht9.rose.feature.gui.component.impl.components;
 
-import me.ht9.rose.feature.gui.RoseGui;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.render.Render2d;
 import org.lwjgl.input.Keyboard;

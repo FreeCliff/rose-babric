@@ -1,6 +1,6 @@
 package me.ht9.rose.feature.gui.component;
 
-import me.ht9.rose.feature.gui.RoseGui;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.util.Globals;
 

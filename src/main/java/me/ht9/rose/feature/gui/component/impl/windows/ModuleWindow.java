@@ -1,6 +1,6 @@
 package me.ht9.rose.feature.gui.component.impl.windows;
 
-import me.ht9.rose.feature.gui.RoseGui;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.gui.component.DraggableComponent;
 import me.ht9.rose.feature.gui.component.impl.components.ModuleComponent;
 import me.ht9.rose.feature.module.modules.Category;

@@ -2,7 +2,7 @@ package me.ht9.rose.util.config;
 
 import com.google.gson.*;
 import me.ht9.rose.Rose;
-import me.ht9.rose.feature.gui.RoseGui;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.gui.component.impl.windows.ModuleWindow;
 import me.ht9.rose.feature.registry.Registry;
 
