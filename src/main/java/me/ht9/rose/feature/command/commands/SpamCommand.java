@@ -10,7 +10,7 @@ import org.apache.commons.lang3.ArrayUtils;
 public final class SpamCommand extends Executable implements Globals {
     @Override
     public void accept(String[] args) {
-        if (mc.thePlayer != null && args.length == 1) {
+        if (mc.thePlayer != null && args.length >= 1) {
             try {
                 for (int i = 0; i < Integer.parseInt(args[0]); i++)
                 {

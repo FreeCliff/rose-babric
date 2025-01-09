@@ -8,7 +8,7 @@ import me.ht9.rose.feature.command.impl.CommandBuilder;
 import me.ht9.rose.feature.module.modules.client.background.Background;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hidelogin.HideLogin;
-import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
+import me.ht9.rose.feature.module.modules.client.hud.Hud;
 import me.ht9.rose.feature.module.modules.client.irc.IRC;
 import me.ht9.rose.feature.module.modules.client.mainmenu.MainMenu;
 import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
@@ -67,7 +67,7 @@ public final class Registry
         modules.add(Background.instance());
         modules.add(ClickGUI.instance());
         modules.add(HideLogin.instance());
-        modules.add(HudEditor.instance());
+        modules.add(Hud.instance());
         modules.add(IRC.instance());
         modules.add(MainMenu.instance());
         modules.add(ToggleMsg.instance());

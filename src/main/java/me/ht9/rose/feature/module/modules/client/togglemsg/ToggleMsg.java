@@ -5,7 +5,7 @@ import me.ht9.rose.event.events.ModuleEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
-import me.ht9.rose.feature.module.modules.client.hudeditor.HudEditor;
+import me.ht9.rose.feature.module.modules.client.hud.Hud;
 import me.ht9.rose.util.misc.FontColor;
 
 @Description("Shows a message in chat when you toggle a module.")
@@ -18,7 +18,7 @@ public final class ToggleMsg extends Module
     public void onModule(ModuleEvent event)
     {
         if (mc.ingameGUI == null) return;
-        if (event.module() instanceof ClickGUI || event.module() instanceof HudEditor) return;
+        if (event.module() instanceof ClickGUI || event.module() instanceof Hud) return;
         if (event.type() == ModuleEvent.Type.ENABLE)
         {
             mc.ingameGUI.addChatMessage( FontColor.GREEN + "Enabled " + FontColor.GOLD + event.module().name());
