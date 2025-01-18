@@ -140,6 +140,10 @@ public final class Registry
                 .withDescription("Vehicle crash exploit")
                 .withExecutable(new CrashCommand())
                 .asCommand());
+        commands.add(new CommandBuilder("Teleport")
+                .withDescription("Teleport somewhere")
+                .withExecutable(new TeleportCommand())
+                .asCommand());
     }
 
     public static void finishLoad()

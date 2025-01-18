@@ -43,7 +43,7 @@ public final class Hud extends Module
 
     private int getRainbow(int offset)
     {
-        return Color.HSBtoRGB((System.nanoTime() + offset * 6000000L) / 7500000000f % 1, .5f, 1f);
+        return Color.HSBtoRGB((System.nanoTime() + offset * 8000000L) / 7500000000f % 1, .5f, 1f);
     }
 
     public static Hud instance()

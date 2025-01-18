@@ -1,6 +1,7 @@
 package me.ht9.rose.feature.module.modules.misc.autotnt;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
+import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
@@ -17,7 +18,7 @@ public final class AutoTNT extends Module
 {
     private static final AutoTNT instance = new AutoTNT();
 
-    private final Setting<Integer> distance = new Setting<>("Distance", 1, 3, 5)
+    private final Setting<Integer> distance = new Setting<>("Distance", 0, 3, 4)
             .withDescription("How far away the TNT should be from each other");
     private final Setting<Swap> swap = new Setting<>("Swap", Swap.Server);
 
@@ -75,7 +76,7 @@ public final class AutoTNT extends Module
         if (slot == -1)
             return;
 
-        int dist = distance.value();
+        int dist = distance.value() + 1;
         for (int i = -5; i < 5; i++)
         {
             for (int j = -5; j < 5; j++)
@@ -130,6 +131,16 @@ public final class AutoTNT extends Module
                     }
                 }
             }
+        }
+    }
+
+    @SubscribeEvent
+    public void onPacket(PacketEvent event)
+    {
+        if (event.packet() instanceof Packet16BlockItemSwitch packet)
+        {
+            if (packet.id != slot
+                    && swap.value() == Swap.Server) event.setCancelled(true);
         }
     }
 
