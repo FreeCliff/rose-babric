@@ -7,7 +7,7 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = project.mod_version
+version = (project.hasProperty("build_number") ? "git-" + project.findProperty("build_number") : "local")
 group = project.maven_group
 
 loom {

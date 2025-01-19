@@ -4,6 +4,7 @@ import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.gui.component.Component;
 import me.ht9.rose.feature.gui.component.impl.windows.ModuleWindow;
 import me.ht9.rose.feature.module.keybinding.Bind;
+import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.util.render.Render2d;
@@ -95,14 +96,16 @@ public final class ModuleComponent implements Component
                 this.module.name(),
                 this.parent.x() + 2.0F,
                 this.y + 4.0F,
-                this.module.enabled() ? new Color(1.0F, 1.0F, 1.0F, alpha) : textGrey
+                this.module.enabled() ? new Color(1.0F, 1.0F, 1.0F, alpha) : textGrey,
+                ClickGUI.instance().customFont.value()
         );
 
         Render2d.drawStringWithShadow(
                 this.opened ? "-" : "+",
                 this.parent.x() + this.WIDTH - 13.0F,
                 this.y + 3.0F,
-                this.module.enabled() ? new Color(1.0F, 1.0F, 1.0F, alpha) : textGrey
+                this.module.enabled() ? new Color(1.0F, 1.0F, 1.0F, alpha) : textGrey,
+                ClickGUI.instance().customFont.value()
         );
 
         if (this.opened)

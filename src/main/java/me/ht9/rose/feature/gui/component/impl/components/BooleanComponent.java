@@ -1,6 +1,7 @@
 package me.ht9.rose.feature.gui.component.impl.components;
 
 import me.ht9.rose.feature.gui.clickgui.RoseGui;
+import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.render.Render2d;
 
@@ -61,7 +62,8 @@ public final class BooleanComponent extends SettingComponent<Boolean>
                 this.setting().name(),
                 this.x() + 4.0F,
                 this.y() + 4.0F,
-                this.setting().value() ? new Color(1.0F, 1.0F, 1.0F, alpha) : textGrey
+                this.setting().value() ? new Color(1.0F, 1.0F, 1.0F, alpha) : textGrey,
+                ClickGUI.instance().customFont.value()
         );
 
         Render2d.drawRect(

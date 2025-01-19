@@ -5,6 +5,7 @@ import me.ht9.rose.feature.gui.component.DraggableComponent;
 import me.ht9.rose.feature.gui.component.impl.components.ModuleComponent;
 import me.ht9.rose.feature.module.modules.Category;
 import me.ht9.rose.feature.module.Module;
+import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.util.render.Render2d;
 
 import java.awt.*;
@@ -108,7 +109,8 @@ public final class ModuleWindow extends DraggableComponent
                 this.category.name(),
                 this.x() + 2.0F,
                 this.y() + 3.0F,
-                new Color(1.0F, 1.0F, 1.0F, alpha)
+                new Color(1.0F, 1.0F, 1.0F, alpha),
+                ClickGUI.instance().customFont.value()
         );
 
         if (this.opened)

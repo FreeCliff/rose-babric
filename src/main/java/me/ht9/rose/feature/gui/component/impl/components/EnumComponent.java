@@ -1,6 +1,7 @@
 package me.ht9.rose.feature.gui.component.impl.components;
 
 import me.ht9.rose.feature.gui.clickgui.RoseGui;
+import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.render.Render2d;
 
@@ -48,14 +49,16 @@ public final class EnumComponent extends SettingComponent<Enum<?>>
                 this.setting().name(),
                 this.x() + 4.0F,
                 this.y() + 4.0F,
-                new Color(1.0F, 1.0F, 1.0F, alpha)
+                new Color(1.0F, 1.0F, 1.0F, alpha),
+                ClickGUI.instance().customFont.value()
         );
 
         Render2d.drawStringWithShadow(
                 this.setting().value().name(),
                 this.x() + this.width() - Render2d.stringWidth(this.setting().value().name()) - 4.0F,
                 this.y() + 4.0F,
-                textGrey
+                textGrey,
+                ClickGUI.instance().customFont.value()
         );
     }
 

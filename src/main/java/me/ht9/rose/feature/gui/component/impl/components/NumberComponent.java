@@ -1,6 +1,7 @@
 package me.ht9.rose.feature.gui.component.impl.components;
 
 import me.ht9.rose.feature.gui.clickgui.RoseGui;
+import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.render.Render2d;
 
@@ -160,7 +161,8 @@ public final class NumberComponent extends SettingComponent<Number>
                 this.setting().name(),
                 this.x() + 3.0F,
                 this.y() + 4.0F,
-                new Color(1.0F, 1.0F, 1.0F, alpha)
+                new Color(1.0F, 1.0F, 1.0F, alpha),
+                ClickGUI.instance().customFont.value()
         );
 
         String value = "";
@@ -192,7 +194,8 @@ public final class NumberComponent extends SettingComponent<Number>
                 value,
                 this.x() + width() - Render2d.stringWidth(value) - 3.0F,
                 this.y() + 4.0F,
-                textGrey
+                textGrey,
+                ClickGUI.instance().customFont.value()
         );
     }
 

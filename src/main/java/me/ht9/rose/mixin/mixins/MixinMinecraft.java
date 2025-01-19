@@ -32,11 +32,22 @@ public class MixinMinecraft
                     target = "Lnet/minecraft/client/Minecraft;getMinecraftDir()Ljava/io/File;"
             )
     )
-    public void glContextCreated(CallbackInfo ci)
+    public void createFramebuffer(CallbackInfo ci)
     {
         Framebuffer.framebuffer = new Framebuffer(displayWidth, displayHeight);
         Framebuffer.framebuffer.setFramebufferColor(0.0f, 0.0f, 0.0f, 0.0f);
+    }
 
+    @Inject(
+            method = "startGame",
+            at = @At(
+                    value = "INVOKE",
+                    target = "Lnet/minecraft/client/Minecraft;checkGLError(Ljava/lang/String;)V",
+                    ordinal = 0
+            )
+    )
+    public void glContextCreated(CallbackInfo ci)
+    {
         Rose.bus().post(new GLContextCreatedEvent());
     }
 

@@ -1,6 +1,7 @@
 package me.ht9.rose.feature.gui.component.impl.components;
 
 import me.ht9.rose.feature.gui.clickgui.RoseGui;
+import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.util.render.Render2d;
 import org.lwjgl.input.Keyboard;
@@ -44,7 +45,8 @@ public final class StringComponent extends SettingComponent<String>
                 this.setting().name(),
                 this.x() + 4.0F,
                 this.y() + 4.0F,
-                new Color(1.0F, 1.0F, 1.0F, alpha)
+                new Color(1.0F, 1.0F, 1.0F, alpha),
+                ClickGUI.instance().customFont.value()
         );
 
         int[] bounds = bounds();
@@ -54,7 +56,8 @@ public final class StringComponent extends SettingComponent<String>
                 this.textBoxText,
                 textBoxX,
                 textBoxY,
-                new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, alpha)
+                new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, alpha),
+                ClickGUI.instance().customFont.value()
         );
 
         if (this.textBoxFocused && System.currentTimeMillis() % 1000 < 500)
@@ -63,7 +66,8 @@ public final class StringComponent extends SettingComponent<String>
                     "_",
                     textBoxX + Render2d.stringWidth(this.textBoxText),
                     textBoxY,
-                    new Color(255, 255, 255, 255)
+                    new Color(255, 255, 255, 255),
+                    ClickGUI.instance().customFont.value()
             );
         }
     }

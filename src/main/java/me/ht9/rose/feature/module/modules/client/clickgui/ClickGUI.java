@@ -18,6 +18,13 @@ public final class ClickGUI extends Module
     public final Setting<Integer> green = new Setting<>("Green", 0, 130, 255);
     public final Setting<Integer> blue = new Setting<>("Blue", 0, 255, 255);
 
+    public final Setting<Boolean> descriptions = new Setting<>("Descriptions", true)
+            .withDescription("Whether or not to show this text when hovering things.");
+    public final Setting<Boolean> customFont = new Setting<>("CustomFont", true)
+            .withDescription("Whether or not to use a custom font instead of the built-in one.");
+    public final Setting<Boolean> lowerCase = new Setting<>("LowerCase", false)
+            .withDescription("Whether or not to make every rendered string lowercase.");
+
     private ClickGUI()
     {
         this.toggleBind().value().setKey(Keyboard.KEY_RSHIFT, Bind.BindType.KEYBOARD);

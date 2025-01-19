@@ -130,7 +130,7 @@ public class RoseGui extends GuiScreen implements Globals
                 }
             }
 
-            if (hoveredComponent != null)
+            if (ClickGUI.instance().descriptions.value() && hoveredComponent != null)
             {
                 if (hoveredComponent instanceof ModuleComponent component)
                 {
@@ -140,7 +140,8 @@ public class RoseGui extends GuiScreen implements Globals
                             module.description(),
                             2.0F,
                             sr.getScaledHeight() - 10.0F,
-                            new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, this.universalTransparency / 255.0F)
+                            new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, this.universalTransparency / 255.0F),
+                            ClickGUI.instance().customFont.value()
                     );
                 }
                 else if (hoveredComponent instanceof SettingComponent<?> component)
@@ -151,7 +152,8 @@ public class RoseGui extends GuiScreen implements Globals
                             setting.description(),
                             2.0F,
                             sr.getScaledHeight() - 10.0F,
-                            new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, this.universalTransparency / 255.0F)
+                            new Color(180.0F / 255.0F, 180.0F / 255.0F, 180.0F / 255.0F, this.universalTransparency / 255.0F),
+                            ClickGUI.instance().customFont.value()
                     );
                 }
             }

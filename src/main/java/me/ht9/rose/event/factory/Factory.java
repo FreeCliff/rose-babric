@@ -12,6 +12,7 @@ import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.util.Globals;
 import me.ht9.rose.util.misc.MultiprotoIntegrationHelper;
+import me.ht9.rose.util.render.Render2d;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.src.*;
 import org.apache.commons.lang3.ArrayUtils;
@@ -59,6 +60,7 @@ public class Factory implements Globals
     @SubscribeEvent
     private void onGLContextCreated(GLContextCreatedEvent event)
     {
+        Render2d.initGL();
         Registry.modules().forEach(Module::initGL);
     }
 
