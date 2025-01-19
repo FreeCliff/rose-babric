@@ -7,8 +7,10 @@ sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
 archivesBaseName = project.archives_base_name
-version = (project.hasProperty("build_number") ? "git-" + project.findProperty("build_number") : "local")
-group = project.maven_group
+version = "local"
+if (project.hasProperty("build_number")) {
+	version = "git-" + project.findProperty("build_number")
+}
 
 loom {
 	mixin {
