@@ -30,6 +30,14 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
+      - name: Get current commit hash
+        shell: bash
+        run: |
+          echo "build_number=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
+
+      - name: Check current commit hash
+        run: echo "${{ env.build_number }}"
+
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
