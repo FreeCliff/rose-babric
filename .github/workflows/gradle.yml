@@ -33,10 +33,7 @@ jobs:
       - name: Get current commit hash
         shell: bash
         run: |
-          echo "build_number=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
-
-      - name: Check current commit hash
-        run: echo "${{ env.build_number }}"
+          echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
 
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
@@ -44,7 +41,7 @@ jobs:
           gradle-version: '8.9'
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build
+        run: ./gradlew build -Pbuild_number=${{ env.git_hash }}
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4.4.3
