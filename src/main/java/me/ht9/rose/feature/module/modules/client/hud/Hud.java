@@ -1,5 +1,6 @@
 package me.ht9.rose.feature.module.modules.client.hud;
 
+import me.ht9.rose.Rose;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.ModuleEvent;
 import me.ht9.rose.feature.module.Module;
@@ -88,7 +89,7 @@ public final class Hud extends Module
 
     private void renderWaterMark()
     {
-        Render2d.drawGradientStringWithShadow("rose-babric ", 1.0f, 2.5f, ClickGUI.instance().customFont.value());
+        Render2d.drawGradientStringWithShadow("rose-babric " + Rose.version(), 1.0f, 2.5f, ClickGUI.instance().customFont.value());
     }
 
     private void renderArrayList()
@@ -150,13 +151,12 @@ public final class Hud extends Module
                     }
                     arrayListModule.progress = x;
                     ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-                    Color color = this.getColor((float)sr.getScaledWidth() - (x += 1.0f) - 2.0f - arrayListModule.getStringWidth());
                     if (arrayListModule.hasArrayListInfo())
                     {
                         Render2d.drawGradientStringWithShadow(arrayListModule.module.name(), (float)sr.getScaledWidth() - (x += arrayListModule.getStringWidth()), offset, ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow(" [", (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(arrayListModule.module.name(), ClickGUI.instance().customFont.value())), offset, new Color(-4473925), ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow(arrayListModule.module.arraylistInfo(), (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(" [", ClickGUI.instance().customFont.value())), offset, new Color(-1), ClickGUI.instance().customFont.value());
-                        Render2d.drawStringWithShadow("]", (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(arrayListModule.module.arraylistInfo(), ClickGUI.instance().customFont.value())), offset, new Color(-4473925), ClickGUI.instance().customFont.value());
+                        Render2d.drawStringWithShadow("]", (float)sr.getScaledWidth() - (x - Render2d.getStringWidth(arrayListModule.module.arraylistInfo(), ClickGUI.instance().customFont.value())), offset, new Color(-4473925), ClickGUI.instance().customFont.value());
                     }
                     else
                     {
@@ -210,13 +210,12 @@ public final class Hud extends Module
                         x = Math.max(x, -arrayListModule.getStringWidth());
                     }
                     arrayListModule.progress = x;
-                    Color color = this.getColor((float)sr.getScaledWidth() - (x += 1.0f) - 2.0f - arrayListModule.getStringWidth());
                     if (arrayListModule.hasArrayListInfo())
                     {
                         Render2d.drawGradientStringWithShadow(arrayListModule.module.name(), (float)sr.getScaledWidth() - (x += arrayListModule.getStringWidth()), (float)sr.getScaledHeight() - offset, ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow(" [", (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(arrayListModule.module.name(), ClickGUI.instance().customFont.value())), (float)sr.getScaledHeight() - offset, new Color(-4473925), ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow(arrayListModule.module.arraylistInfo(), (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(" [", ClickGUI.instance().customFont.value())), (float)sr.getScaledHeight() - offset, new Color(-1), ClickGUI.instance().customFont.value());
-                        Render2d.drawStringWithShadow("]", (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(arrayListModule.module.arraylistInfo(), ClickGUI.instance().customFont.value())), (float)sr.getScaledHeight() - offset, new Color(-4473925), ClickGUI.instance().customFont.value());
+                        Render2d.drawStringWithShadow("]", (float)sr.getScaledWidth() - (x - Render2d.getStringWidth(arrayListModule.module.arraylistInfo(), ClickGUI.instance().customFont.value())), (float)sr.getScaledHeight() - offset, new Color(-4473925), ClickGUI.instance().customFont.value());
                     }
                     else
                     {
@@ -326,18 +325,13 @@ public final class Hud extends Module
     public enum ArraySort
     {
         Length((m1, m2) -> Float.compare(m2.getStringWidth(), m1.getStringWidth())),
-        ABC((m1, m2) -> m1.getFullName().compareTo(m2.getFullName()));
+        ABC(Comparator.comparing(ArrayListModule::getFullName));
 
         private final Comparator<? super ArrayListModule> comparator;
 
         ArraySort(Comparator<? super ArrayListModule> comparator)
         {
             this.comparator = comparator;
-        }
-
-        public Comparator<? super ArrayListModule> comparator()
-        {
-            return comparator;
         }
     }
 }

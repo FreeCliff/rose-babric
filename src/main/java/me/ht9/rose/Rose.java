@@ -7,6 +7,7 @@ import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.util.Globals;
 import me.ht9.rose.util.config.FileUtils;
 import net.fabricmc.api.ClientModInitializer;
+import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -15,6 +16,10 @@ import java.util.concurrent.Executors;
 
 public class Rose implements ClientModInitializer, Globals
 {
+	private static final String version = FabricLoader.getInstance().getModContainer("rose")
+			.map(container -> container.getMetadata().getVersion().getFriendlyString())
+			.orElse("unknown");
+
 	private static final Logger logger = LogManager.getLogger("rose");
 
 	private static final EventBus bus = new EventBus();
@@ -62,5 +67,10 @@ public class Rose implements ClientModInitializer, Globals
 	public static Logger logger()
 	{
 		return logger;
+	}
+
+	public static String version()
+	{
+		return version;
 	}
 }
