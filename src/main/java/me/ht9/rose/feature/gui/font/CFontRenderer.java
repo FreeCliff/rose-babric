@@ -162,12 +162,12 @@ public final class CFontRenderer extends CFont
             glEnd();
 
             if (strikethrough)
-                this.drawLine(x, y + (double)(currentData[character].height / 2), x + (double) currentData[character].width - 8.0, y + (double)(currentData[character].height / 2), 1.0f);
+                this.drawLine(x, y + (double)(currentData[character].height / 2), x + (double) currentData[character].width - 8.0, y + (double)(currentData[character].height / 2));
 
             if (underline)
-                this.drawLine(x, y + (double)currentData[character].height - 2.0, x + (double) currentData[character].width - 8.0, y + (double)currentData[character].height - 2.0, 1.0f);
+                this.drawLine(x, y + (double)currentData[character].height - 2.0, x + (double) currentData[character].width - 8.0, y + (double)currentData[character].height - 2.0);
 
-            x += (double)(currentData[character].width - 8 + this.charOffset);
+            x += currentData[character].width - 8 + this.charOffset;
         }
         glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
         glPopMatrix();
@@ -293,10 +293,10 @@ public final class CFontRenderer extends CFont
             glEnd();
 
             if (strikethrough)
-                this.drawLine(x, y + (double)(currentData[character].height / 2), x + (double) currentData[character].width - 8.0, y + (double)(currentData[character].height / 2), 1.0f);
+                this.drawLine(x, y + (double)(currentData[character].height / 2), x + (double) currentData[character].width - 8.0, y + (double)(currentData[character].height / 2));
 
             if (underline)
-                this.drawLine(x, y + (double)currentData[character].height - 2.0, x + (double) currentData[character].width - 8.0, y + (double)currentData[character].height - 2.0, 1.0f);
+                this.drawLine(x, y + (double)currentData[character].height - 2.0, x + (double) currentData[character].width - 8.0, y + (double)currentData[character].height - 2.0);
 
             x += (double)(currentData[character].width - 8 + this.charOffset);
         }
@@ -418,15 +418,15 @@ public final class CFontRenderer extends CFont
 
     private void setupBoldItalicIDs()
     {
-        this.textureIDBold = this.setupTexture(this.font.deriveFont(1), this.antiAlias, this.fractionalMetrics, this.boldChars);
-        this.textureIDItalic = this.setupTexture(this.font.deriveFont(2), this.antiAlias, this.fractionalMetrics, this.boldChars);
-        this.textureIDItalicBold = this.setupTexture(this.font.deriveFont(3), this.antiAlias, this.fractionalMetrics, this.boldChars);
+        this.textureIDBold = this.setupTexture(this.font.deriveFont(Font.BOLD), this.antiAlias, this.fractionalMetrics, this.boldChars);
+        this.textureIDItalic = this.setupTexture(this.font.deriveFont(Font.ITALIC), this.antiAlias, this.fractionalMetrics, this.boldChars);
+        this.textureIDItalicBold = this.setupTexture(this.font.deriveFont(Font.BOLD | Font.ITALIC), this.antiAlias, this.fractionalMetrics, this.boldChars);
     }
 
-    private void drawLine(double x1, double y1, double x2, double y2, float width)
+    private void drawLine(double x1, double y1, double x2, double y2)
     {
         glDisable(GL_TEXTURE_2D);
-        glLineWidth(width);
+        glLineWidth((float) 1.0);
 
         glBegin(GL_LINES);
         glVertex2d(x1, y1);

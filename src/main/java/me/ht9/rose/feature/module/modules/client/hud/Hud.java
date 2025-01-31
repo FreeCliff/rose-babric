@@ -19,13 +19,13 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+// I took it from alpha by ht9 and gavin
 @Description("Cool")
 public final class Hud extends Module
 {
     private static final Hud instance = new Hud();
 
     private final Setting<HudColor> hudColor = new Setting<>("HudColor", HudColor.Static);
-    //private final Setting<Boolean> rects = new Setting<>("Rectangles", false);
 
     private final Setting<Boolean> waterMark = new Setting<>("WaterMark", true);
 
@@ -333,5 +333,12 @@ public final class Hud extends Module
         {
             this.comparator = comparator;
         }
+    }
+
+    public enum E621Size
+    {
+        preview,
+        sample,
+        file
     }
 }

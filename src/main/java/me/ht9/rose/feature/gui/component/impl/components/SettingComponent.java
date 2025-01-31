@@ -17,7 +17,10 @@ public abstract class SettingComponent<V> implements Component
 
     public boolean isMouseOverThis(float mouseX, float mouseY)
     {
-        return mouseX >= this.x() && mouseX <= this.x() + this.width() && mouseY > this.y() && mouseY <= this.y() + this.height();
+        return mouseX >= this.x()
+                && mouseX <= this.x() + this.width()
+                && mouseY > this.y()
+                && mouseY <= this.y() + this.height();
     }
 
     public Setting<V> setting()

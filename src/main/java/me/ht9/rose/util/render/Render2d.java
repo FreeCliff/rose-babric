@@ -141,6 +141,6 @@ public final class Render2d implements Globals
 
     public static float stringWidth(String s)
     {
-        return mc.fontRenderer.getStringWidth(s);
+        return getStringWidth(s, ClickGUI.instance().customFont.value());
     }
 }
