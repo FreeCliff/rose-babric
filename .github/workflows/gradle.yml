@@ -30,18 +30,13 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - name: Get current commit hash
-        shell: bash
-        run: |
-          echo "git_hash=$(git rev-parse --short "$GITHUB_SHA")" >> $GITHUB_ENV
-
       - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.9'
 
       - name: Build with Gradle Wrapper
-        run: ./gradlew build -Pbuild_number=${{ env.git_hash }}
+        run: ./gradlew build
 
       - name: Upload Build Artifact
         uses: actions/upload-artifact@v4.4.3

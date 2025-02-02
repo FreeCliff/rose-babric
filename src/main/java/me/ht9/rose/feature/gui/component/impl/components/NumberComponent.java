@@ -171,19 +171,19 @@ public final class NumberComponent extends SettingComponent<Number>
             case INTEGER:
             {
                 Setting<Integer> intSetting = (Setting<Integer>) raw;
-                value = String.valueOf(intSetting.value().doubleValue());
+                value = String.valueOf(intSetting.value().intValue());
                 break;
             }
             case DOUBLE:
             {
                 Setting<Double> doubleSetting = (Setting<Double>) raw;
-                value = String.valueOf(doubleSetting.value());
+                value = String.valueOf(doubleSetting.value().doubleValue());
                 break;
             }
             case FLOAT:
             {
                 Setting<Float> floatSetting = (Setting<Float>) raw;
-                value = String.valueOf(Double.valueOf(floatSetting.value().toString()).doubleValue());
+                value = String.valueOf(Double.valueOf(floatSetting.value().toString()).floatValue());
                 break;
             }
         }

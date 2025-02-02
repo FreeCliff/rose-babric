@@ -28,8 +28,11 @@ import me.ht9.rose.feature.module.modules.misc.retard.Retard;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
 import me.ht9.rose.feature.module.modules.misc.chatbomb.Spammer;
 import me.ht9.rose.feature.module.modules.movement.autowalk.AutoWalk;
+import me.ht9.rose.feature.module.modules.movement.faststop.FastStop;
 import me.ht9.rose.feature.module.modules.movement.flight.Flight;
 import me.ht9.rose.feature.module.modules.movement.freecam.Freecam;
+import me.ht9.rose.feature.module.modules.movement.guiwalk.GuiWalk;
+import me.ht9.rose.feature.module.modules.movement.jesus.Jesus;
 import me.ht9.rose.feature.module.modules.movement.noclip.NoClip;
 import me.ht9.rose.feature.module.modules.movement.nofall.NoFall;
 import me.ht9.rose.feature.module.modules.movement.norotate.NoRotate;
@@ -91,8 +94,11 @@ public final class Registry
         modules.add(Timer.instance());
 
         modules.add(AutoWalk.instance());
+        modules.add(FastStop.instance());
         modules.add(Flight.instance());
         modules.add(Freecam.instance());
+        modules.add(GuiWalk.instance());
+        modules.add(Jesus.instance());
         modules.add(NoClip.instance());
         modules.add(NoFall.instance());
         modules.add(NoRotate.instance());

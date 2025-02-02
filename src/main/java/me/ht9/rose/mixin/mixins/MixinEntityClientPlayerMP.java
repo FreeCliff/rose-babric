@@ -105,7 +105,7 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
             float distanceWalkedBackup = this.distanceWalkedModified;
             float prevDistanceWalkedBackup = this.prevDistanceWalkedModified;
 
-            for (int i = 0; i < Math.ceil(Speed.instance().speed.value()); ++i)
+            for (int i = 0; i < Speed.instance().speedi.value(); ++i)
             {
                 super.onUpdate();
 

@@ -6,11 +6,22 @@ plugins {
 sourceCompatibility = JavaVersion.VERSION_17
 targetCompatibility = JavaVersion.VERSION_17
 
-archivesBaseName = project.archives_base_name
-version = "local"
-if (project.hasProperty("build_number")) {
-	version = "git-" + project.findProperty("build_number")
+def getGitHash()
+{
+	def gitFolder = "$projectDir/.git/"
+	def takeFromHash = 7
+
+	def head = new File(gitFolder + "HEAD").text.split(":")
+	def isCommit = head.length == 1
+
+	if (isCommit) return head[0].trim().take(takeFromHash)
+
+	def refHead = new File(gitFolder + head[1].trim())
+	refHead.text.trim().take takeFromHash
 }
+
+archivesBaseName = project.archives_base_name
+version = "git-" + getGitHash()
 
 loom {
 	mixin {
@@ -24,7 +35,8 @@ repositories {
 	maven { url = 'https://maven.glass-launcher.net/babric' }
 	maven { url = 'https://maven.minecraftforge.net/' }
 	maven { url = 'https://jitpack.io' }
-	maven { url = 'https://maven.nathatpas.tel/releases' }
+	//maven { url = 'https://maven.nathatpas.tel/releases' }
+	maven { url = 'https://github.com/skibidiware/maven/raw/main' }
 	exclusiveContent {
 		forRepository {
 			maven {
@@ -41,7 +53,7 @@ repositories {
 
 dependencies {
 	minecraft("com.mojang:minecraft:${project.minecraft_version}")
-	mappings("org.wksh:mcp:${project.mcp_mappings}:v2")
+	mappings("org.wksh:mcp:${project.mcp_mappings}")
 	modImplementation("babric:fabric-loader:${project.loader_version}")
 
 	implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'

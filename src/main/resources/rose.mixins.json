@@ -12,6 +12,7 @@
     "accessors.IMinecraft",
     "accessors.INetClientHandler",
     "mixins.MixinBlock",
+    "mixins.MixinBlockFluid",
     "mixins.MixinEntity",
     "mixins.MixinEntityClientPlayerMP",
     "mixins.MixinEntityPlayer",

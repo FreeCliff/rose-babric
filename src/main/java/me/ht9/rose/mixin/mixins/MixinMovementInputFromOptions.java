@@ -6,6 +6,7 @@ import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.MovementInputFromOptions;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -15,14 +16,20 @@ public class MixinMovementInputFromOptions
 {
     @Shadow private boolean[] movementKeyStates;
 
+    @Unique private boolean oldMoveForward;
+    @Unique private boolean oldMoveBack;
+    @Unique private boolean oldMoveLeft;
+    @Unique private boolean oldMoveRight;
+    @Unique private boolean oldJump;
+    @Unique private boolean oldSneak;
+
     @Inject(
             method = "updatePlayerMoveState",
             at = @At(
                     "HEAD"
-            ),
-            cancellable = true
+            )
     )
-    public void updatePlayerMoveState(EntityPlayer par1, CallbackInfo ci)
+    public void updatePlayerMoveState$Head(EntityPlayer player, CallbackInfo ci)
     {
         boolean moveForward = movementKeyStates[0];
         boolean moveBack = movementKeyStates[1];
@@ -30,6 +37,13 @@ public class MixinMovementInputFromOptions
         boolean moveRight = movementKeyStates[3];
         boolean jump = movementKeyStates[4];
         boolean sneak = movementKeyStates[5];
+
+        this.oldMoveForward = moveForward;
+        this.oldMoveBack = moveBack;
+        this.oldMoveLeft = moveLeft;
+        this.oldMoveRight = moveRight;
+        this.oldJump = jump;
+        this.oldSneak = sneak;
 
         MoveStateUpdateEvent event = new MoveStateUpdateEvent(moveForward, moveBack, moveLeft, moveRight, jump, sneak);
         Rose.bus().post(event);
@@ -40,8 +54,16 @@ public class MixinMovementInputFromOptions
         movementKeyStates[3] = event.moveRight();
         movementKeyStates[4] = event.jump();
         movementKeyStates[5] = event.sneak();
+    }
 
-        if (event.cancelled())
-            ci.cancel();
+    @Inject(method = "updatePlayerMoveState", at = @At("TAIL"))
+    public void updatePlayerMoveState$Tail(EntityPlayer player, CallbackInfo ci)
+    {
+        movementKeyStates[0] = this.oldMoveForward;
+        movementKeyStates[1] = this.oldMoveBack;
+        movementKeyStates[2] = this.oldMoveLeft;
+        movementKeyStates[3] = this.oldMoveRight;
+        movementKeyStates[4] = this.oldJump;
+        movementKeyStates[5] = this.oldSneak;
     }
 }
