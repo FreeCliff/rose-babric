@@ -11,6 +11,11 @@ public final class FOV extends Module
 
     private final Setting<Integer> fov = new Setting<>("FOV", 30, 90, 125);
 
+    private FOV()
+    {
+        setArrayListInfo(() -> fov.value().toString());
+    }
+
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void onFOV(FOVModifierEvent event)

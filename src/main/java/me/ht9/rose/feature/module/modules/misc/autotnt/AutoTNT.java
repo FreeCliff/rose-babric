@@ -26,6 +26,11 @@ public final class AutoTNT extends Module
 
     private int clientSlot = -1, slot = -1;
 
+    private AutoTNT()
+    {
+        setArrayListInfo(() -> String.valueOf(blacklist.size() / 2));
+    }
+
     @Override
     public void onDisable() {
         blacklist.clear();

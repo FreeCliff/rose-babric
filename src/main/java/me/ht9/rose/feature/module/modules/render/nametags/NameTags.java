@@ -45,6 +45,8 @@ public final class NameTags extends Module
 
         double scale = distance / 150;
 
+        String name = String.format("%s (%.1f)", event.name(), distance);
+
         glPushMatrix();
         glTranslated(event.x(), y + 2.3, event.z());
         glNormal3f(0.0f, 1.0f, 0.0f);
@@ -60,7 +62,7 @@ public final class NameTags extends Module
 
         glDisable(GL_TEXTURE_2D);
         tessellator.startDrawingQuads();
-        int center = mc.fontRenderer.getStringWidth(event.name()) / 2;
+        int center = mc.fontRenderer.getStringWidth(name) / 2;
         tessellator.setColorRGBA_F(0f, 0f, 0f, .25f);
         tessellator.addVertex(-center - 1, -1, 0.0);
         tessellator.addVertex(-center - 1, 8, 0.0);
@@ -68,7 +70,7 @@ public final class NameTags extends Module
         tessellator.addVertex(center + 1, -1, 0.0);
         tessellator.draw();
         glEnable(GL_TEXTURE_2D);
-        mc.fontRenderer.drawString(event.name(), -center, 0, color.getRGB());
+        mc.fontRenderer.drawString(name, -center, 0, color.getRGB());
         glEnable(GL_DEPTH_TEST);
         glDepthMask(true);
         glEnable(GL_LIGHTING);

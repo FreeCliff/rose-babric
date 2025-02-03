@@ -14,6 +14,7 @@ import me.ht9.rose.feature.module.modules.client.mainmenu.MainMenu;
 import me.ht9.rose.feature.module.modules.client.togglemsg.ToggleMsg;
 import me.ht9.rose.feature.module.modules.combat.aura.Aura;
 import me.ht9.rose.feature.module.modules.exploit.boattravel.BoatTravel;
+import me.ht9.rose.feature.module.modules.exploit.fastportal.FastPortal;
 import me.ht9.rose.feature.module.modules.exploit.infdurability.InfDurability;
 import me.ht9.rose.feature.module.modules.exploit.instamine.Instamine;
 import me.ht9.rose.feature.module.modules.exploit.lawnmower.Lawnmower;
@@ -23,10 +24,13 @@ import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
 import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
 import me.ht9.rose.feature.module.modules.exploit.xcarry.XCarry;
+import me.ht9.rose.feature.module.modules.misc.autoreconnect.AutoReconnect;
 import me.ht9.rose.feature.module.modules.misc.autotnt.AutoTNT;
+import me.ht9.rose.feature.module.modules.misc.portals.Portals;
 import me.ht9.rose.feature.module.modules.misc.retard.Retard;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
-import me.ht9.rose.feature.module.modules.misc.chatbomb.Spammer;
+import me.ht9.rose.feature.module.modules.misc.spammer.Spammer;
+import me.ht9.rose.feature.module.modules.misc.visualrange.VisualRange;
 import me.ht9.rose.feature.module.modules.movement.autowalk.AutoWalk;
 import me.ht9.rose.feature.module.modules.movement.faststop.FastStop;
 import me.ht9.rose.feature.module.modules.movement.flight.Flight;
@@ -78,6 +82,7 @@ public final class Registry
         modules.add(Aura.instance());
 
         modules.add(BoatTravel.instance());
+        modules.add(FastPortal.instance());
         modules.add(InfDurability.instance());
         modules.add(Instamine.instance());
         modules.add(Lawnmower.instance());
@@ -88,10 +93,13 @@ public final class Registry
         modules.add(Sneak.instance());
         modules.add(XCarry.instance());
 
+        modules.add(AutoReconnect.instance());
         modules.add(AutoTNT.instance());
+        modules.add(Portals.instance());
         modules.add(Spammer.instance());
         modules.add(Retard.instance());
         modules.add(Timer.instance());
+        modules.add(VisualRange.instance());
 
         modules.add(AutoWalk.instance());
         modules.add(FastStop.instance());

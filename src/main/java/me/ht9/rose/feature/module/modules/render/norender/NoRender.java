@@ -16,6 +16,17 @@ public class NoRender extends Module
     private final Setting<Boolean> hurtcam = new Setting<>("Hurtcam", false);
     private final Setting<Boolean> rain = new Setting<>("Rain", false);
     private final Setting<Boolean> viewbob = new Setting<>("Viewbob", false);
+    private final Setting<Boolean> portal = new Setting<>("Portal", false);
+
+    @Override
+    public void onRender2d(float partialTicks)
+    {
+        if (portal.value() && mc.thePlayer != null)
+        {
+            mc.thePlayer.field_504 = 0.0f;
+            mc.thePlayer.prevTimeInPortal = 0.0f;
+        }
+    }
 
     @SuppressWarnings("unused")
     @SubscribeEvent

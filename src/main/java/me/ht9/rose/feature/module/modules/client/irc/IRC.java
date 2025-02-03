@@ -27,6 +27,11 @@ public final class IRC extends Module
 
     private Thread listenerThread;
 
+    private IRC()
+    {
+        setArrayListInfo(() -> "#" + ircChannel.value());
+    }
+
     @Override
     public void onEnable()
     {

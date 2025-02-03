@@ -22,6 +22,11 @@ public class Freecam extends Module
     private double x, y, z;
     private float yaw, pitch;
 
+    private Freecam()
+    {
+        setArrayListInfo(() -> speed.value().toString());
+    }
+
     @Override
     public void onEnable()
     {

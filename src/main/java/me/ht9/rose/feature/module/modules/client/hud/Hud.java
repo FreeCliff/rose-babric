@@ -36,12 +36,17 @@ public final class Hud extends Module
 
     private final List<ArrayListModule> renderingMods = new ArrayList<>();
 
+    private Hud()
+    {
+        setArrayListInfo(() -> hudColor.value().toString());
+    }
+
     @SubscribeEvent
     public void onModule(ModuleEvent event)
     {
         if (mc.thePlayer == null || mc.theWorld == null) return;
         Module module = event.module();
-        long toggleTime = System.currentTimeMillis();
+        long toggleTime = System.nanoTime() / 1000000L;
         if (module.category().equals(Category.Hidden)) return;
 
         switch (event.type())
@@ -105,7 +110,7 @@ public final class Hud extends Module
                 break;
             }
             if (!module.enabled() || !module.drawn().value() || contains) continue;
-            this.renderingMods.add(new ArrayListModule(module, System.currentTimeMillis()));
+            this.renderingMods.add(new ArrayListModule(module, System.nanoTime() / 1000000L));
         }
         this.renderingMods.sort(this.arrayListSort.value().comparator);
         switch (this.arrayListSide.value())
@@ -119,7 +124,7 @@ public final class Hud extends Module
                     float diff;
                     ArrayListModule arrayListModule = arrayListModuleIterator.next();
                     float targetX = arrayListModule.getStringWidth();
-                    float timeDiff = System.currentTimeMillis() - arrayListModule.toggleTime;
+                    float timeDiff = System.nanoTime() / 1000000F - arrayListModule.toggleTime;
                     float x = arrayListModule.module.enabled() ? Easing.exponential(timeDiff, 0.0f, targetX, this.arrayAnimMs.value() * 2) : Easing.linear(timeDiff, 0.0f, targetX, this.arrayAnimMs.value());
                     if (arrayListModule.module.enabled() && arrayListModule.module.drawn().value())
                     {
@@ -178,7 +183,7 @@ public final class Hud extends Module
                     float diff;
                     ArrayListModule arrayListModule = arrayListModuleIterator.next();
                     float targetX = arrayListModule.getStringWidth();
-                    float timeDiff = System.currentTimeMillis() - arrayListModule.toggleTime;
+                    float timeDiff = System.nanoTime() / 1000000F - arrayListModule.toggleTime;
                     float x = arrayListModule.module.enabled() ? Easing.exponential(timeDiff, 0.0f, targetX, this.arrayAnimMs.value() * 2) : Easing.linear(timeDiff, 0.0f, targetX, this.arrayAnimMs.value().longValue());
                     if (arrayListModule.module.enabled() && arrayListModule.module.drawn().value())
                     {
@@ -236,14 +241,14 @@ public final class Hud extends Module
             case Dynamic ->
             {
                 Color guiColor = new Color(ClickGUI.instance().red.value(), ClickGUI.instance().green.value(), ClickGUI.instance().blue.value());
-                float sin = (float)(System.currentTimeMillis() % 100000L) / 10.0f;
+                float sin = (System.nanoTime() % 100000000000L) / 1000000F / 10.0f;
                 float brightness = Math.abs(MathHelper.sin((float) Math.toRadians(sin + offset)));
                 float[] hsb = Color.RGBtoHSB(guiColor.getRed(), guiColor.getGreen(), guiColor.getBlue(), null);
                 yield Color.getHSBColor(hsb[0], hsb[1], Math.max(brightness, 0.25f));
             }
             case Rainbow ->
             {
-                float sin = (float)(System.currentTimeMillis() % 100000L) / 25.0f;
+                float sin = (System.nanoTime() % 100000000000L) / 1000000F / 25.0f;
                 float hue = 0.4f * Math.abs(MathHelper.sin((float) Math.toRadians(sin + offset / 2.5f))) + 0.6f;
                 yield Color.getHSBColor(hue, 0.5f, 1.0f);
             }

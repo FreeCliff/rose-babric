@@ -14,6 +14,11 @@ public final class Flight extends Module {
 
     private final Setting<Float> speed = new Setting<>("Speed", 0.2f, 2.5f, 15.0f, 1);
 
+    private Flight()
+    {
+        setArrayListInfo(() -> speed.value().toString());
+    }
+
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void onUpdate(PosRotUpdateEvent event) {

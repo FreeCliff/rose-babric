@@ -34,6 +34,13 @@ public final class ESP extends Module
 
     private Shader shader;
 
+    private int size = 0;
+
+    private ESP()
+    {
+        setArrayListInfo(() -> String.valueOf(size));
+    }
+
     @Override
     public void initGL() {
         shader = new Shader(
@@ -59,6 +66,7 @@ public final class ESP extends Module
         framebuffer.bindFramebuffer(true);
 
         ((IEntityRenderer) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
+        this.size = 0;
         for (Object object : mc.theWorld.loadedEntityList)
         {
             if (!(object instanceof Entity entity)) continue;
@@ -88,6 +96,7 @@ public final class ESP extends Module
                 Render render = RenderManager.instance.getEntityRenderObject(entity);
                 glColor3f(brightness, brightness, brightness);
                 render.doRender(entity, var3 - RenderManager.renderPosX, var5 - RenderManager.renderPosY, var7 - RenderManager.renderPosZ, var9, event.partialTicks());
+                this.size++;
             }
         }
 
@@ -100,7 +109,7 @@ public final class ESP extends Module
 
         ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
         glUniform2f(shader.uniform("resolution"), (float) sr.getScaledWidth() * 2.5f, (float) sr.getScaledHeight() * 2.5f);
-        glUniform1f(shader.uniform("time"), ((System.currentTimeMillis() * 3) % 1000000) / 5000.0f);
+        glUniform1f(shader.uniform("time"), (((System.nanoTime() / 1000000F) * 3) % 1000000) / 5000.0f);
 
         glUniform1f(shader.uniform("red"), (float) red.value() / 255.0f);
         glUniform1f(shader.uniform("green"), (float) green.value() / 255.0f);

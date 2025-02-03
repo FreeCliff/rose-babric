@@ -11,6 +11,8 @@ public class MoveStateUpdateEvent extends Event
     private boolean jump;
     private boolean sneak;
 
+    private boolean dontReset = false;
+
     public MoveStateUpdateEvent(boolean moveForward, boolean moveBack, boolean moveLeft, boolean moveRight, boolean jump, boolean sneak)
     {
         this.moveForward = moveForward;
@@ -51,6 +53,11 @@ public class MoveStateUpdateEvent extends Event
         return sneak;
     }
 
+    public boolean dontReset()
+    {
+        return dontReset;
+    }
+
     public void setMoveForward(boolean moveForward)
     {
         this.moveForward = moveForward;
@@ -79,5 +86,10 @@ public class MoveStateUpdateEvent extends Event
     public void setSneak(boolean sneak)
     {
         this.sneak = sneak;
+    }
+
+    public void setDontReset(boolean dontReset)
+    {
+        this.dontReset = dontReset;
     }
 }

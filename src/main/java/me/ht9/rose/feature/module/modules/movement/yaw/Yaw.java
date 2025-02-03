@@ -12,6 +12,11 @@ public final class Yaw extends Module {
 
     public final Setting<Integer> direction = new Setting<>("Direction", 0, 0, 7);
 
+    private Yaw()
+    {
+        setArrayListInfo(() -> String.valueOf(direction.value() * 45));
+    }
+
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void onUpdate(Render2dEvent event) { // doing this with PosRotUpdateEvent doesn't work :pray:

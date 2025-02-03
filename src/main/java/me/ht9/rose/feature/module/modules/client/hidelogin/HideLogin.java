@@ -13,6 +13,11 @@ public final class HideLogin extends Module
 
     private final Setting<Mode> mode = new Setting<>("Mode", Mode.Censor);
 
+    private HideLogin()
+    {
+        setArrayListInfo(() -> mode.value().toString());
+    }
+
     @SubscribeEvent
     public void onChatGuiRender(ChatGuiRenderEvent event)
     {

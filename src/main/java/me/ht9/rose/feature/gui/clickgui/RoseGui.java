@@ -54,7 +54,7 @@ public class RoseGui extends GuiScreen implements Globals
 
     public void openGui()
     {
-        this.lastOpenTime = System.currentTimeMillis();
+        this.lastOpenTime = System.nanoTime();
         this.universalTransparency = 255.0F;
         this.lastTransparency = 0.0F;
         this.lastScale = 0.0F;
@@ -66,7 +66,7 @@ public class RoseGui extends GuiScreen implements Globals
 
     public void openGuiMainMenu()
     {
-        this.lastOpenTime = System.currentTimeMillis();
+        this.lastOpenTime = System.nanoTime();
         this.universalTransparency = 0.0F;
         this.lastTransparency = 0.0F;
         this.lastScale = 0.0F;
@@ -82,8 +82,8 @@ public class RoseGui extends GuiScreen implements Globals
         super.drawScreen(mouseX, mouseY, partialTicks);
         super.drawDefaultBackground();
 
-        long timeDiff = System.currentTimeMillis() - this.lastOpenTime;
-        float currentTransparency = Easing.linear(timeDiff, 55.0F, 200.0F, 250L);
+        long timeDiff = System.nanoTime() - this.lastOpenTime;
+        float currentTransparency = Easing.linear(timeDiff / 1000000F, 55.0F, 200.0F, 250L);
         this.universalTransparency = this.lastTransparency + (currentTransparency - this.lastTransparency) * partialTicks;
         this.universalTransparency = Math.min(this.universalTransparency, 255.0F);
 
@@ -294,7 +294,7 @@ public class RoseGui extends GuiScreen implements Globals
                 new Color(16.0F / 255.0F, 16.0F / 255.0F, 16.0F / 255.0F, this.universalTransparency / 510.0F)
         );
 
-        float passedTime = System.currentTimeMillis() - this.lastOpenTime;
+        float passedTime = (System.nanoTime() - this.lastOpenTime) / 1000000f;
         float currentScale = Easing.bounce(passedTime, 0.92F, 0.08F, 350L);
         float actualScale = Math.max(
                 0.92F,

@@ -2,14 +2,17 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PushByEvent;
+import me.ht9.rose.feature.module.modules.misc.portals.Portals;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.EntityPlayer;
 import net.minecraft.src.EntityPlayerSP;
+import net.minecraft.src.GuiScreen;
 import net.minecraft.src.World;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = EntityPlayerSP.class)
@@ -40,6 +43,12 @@ public class MixinEntityPlayerSP extends EntityPlayer
         }
     }
 
+    @Redirect(method = "onLivingUpdate", at = @At(value = "FIELD", target = "Lnet/minecraft/client/Minecraft;currentScreen:Lnet/minecraft/src/GuiScreen;"))
+    public GuiScreen getCurrentScreenProxy(Minecraft instance)
+    {
+        if (Portals.instance().enabled()) return null;
+        return instance.currentScreen;
+    }
 
     @Override
     public void func_6420_o()

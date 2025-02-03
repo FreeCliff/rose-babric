@@ -16,7 +16,7 @@ public final class GuiWalk extends Module
 
     private final Setting<Boolean> shift = new Setting<>("Shift", false);
 
-    @SubscribeEvent
+    @SubscribeEvent(priority = 5)
     public void onUpdate(MoveStateUpdateEvent event)
     {
         if (mc.currentScreen != null && !(mc.currentScreen instanceof GuiChat || mc.currentScreen instanceof GuiEditSign))
@@ -29,6 +29,8 @@ public final class GuiWalk extends Module
 
             if (shift.value())
                 event.setSneak(Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode));
+
+            event.setDontReset(true);
         }
     }
 

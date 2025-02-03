@@ -23,6 +23,8 @@ public class MixinMovementInputFromOptions
     @Unique private boolean oldJump;
     @Unique private boolean oldSneak;
 
+    @Unique private boolean dontReset;
+
     @Inject(
             method = "updatePlayerMoveState",
             at = @At(
@@ -54,11 +56,15 @@ public class MixinMovementInputFromOptions
         movementKeyStates[3] = event.moveRight();
         movementKeyStates[4] = event.jump();
         movementKeyStates[5] = event.sneak();
+
+        this.dontReset = event.dontReset();
     }
 
     @Inject(method = "updatePlayerMoveState", at = @At("TAIL"))
     public void updatePlayerMoveState$Tail(EntityPlayer player, CallbackInfo ci)
     {
+        if (this.dontReset) return;
+
         movementKeyStates[0] = this.oldMoveForward;
         movementKeyStates[1] = this.oldMoveBack;
         movementKeyStates[2] = this.oldMoveLeft;

@@ -2,21 +2,21 @@ package me.ht9.rose.util.module;
 
 public final class Timer
 {
-    private double time;
+    private long time;
 
     public Timer()
     {
-        this.time = System.currentTimeMillis();
+        this.time = System.nanoTime();
     }
 
-    public boolean hasReached(double ms)
+    public boolean hasReached(long ms)
     {
         return this.hasReached(ms, false);
     }
 
-    public boolean hasReached(double ms, boolean reset)
+    public boolean hasReached(long ms, boolean reset)
     {
-        if (System.currentTimeMillis() - this.time >= ms)
+        if ((System.nanoTime() - this.time) / 1000000.0 >= ms)
         {
             if (reset)
             {
@@ -27,13 +27,13 @@ public final class Timer
         return false;
     }
 
-    public double time()
+    public long time()
     {
-        return System.currentTimeMillis() - this.time;
+        return System.nanoTime() - this.time;
     }
 
     public void reset()
     {
-        this.time = System.currentTimeMillis();
+        this.time = System.nanoTime();
     }
 }

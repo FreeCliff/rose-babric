@@ -28,7 +28,7 @@ public class MixinBlockFluid extends Block
                 return;
             }
 
-            if ((Globals.mc.thePlayer.isSneaking() || Globals.mc.thePlayer.handleLavaMovement() || Globals.mc.thePlayer.isInWater()) && Jesus.instance().mode.value() == Jesus.Mode.SemiSolid)
+            if ((Globals.mc.thePlayer.isSneaking() || Globals.mc.thePlayer.handleLavaMovement() || Globals.mc.thePlayer.isInWater() || Globals.mc.thePlayer.isBurning()) && Jesus.instance().mode.value() == Jesus.Mode.SemiSolid)
             {
                 if (!Globals.mc.thePlayer.isSneaking())
                     Globals.mc.thePlayer.motionY = 0.42;

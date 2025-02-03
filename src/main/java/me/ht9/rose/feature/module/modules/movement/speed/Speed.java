@@ -27,6 +27,11 @@ public class Speed extends Module
 
     private final Timer timer = new Timer();
 
+    private Speed()
+    {
+        setArrayListInfo(() -> type.value().toString());
+    }
+
     @Override
     public void onEnable()
     {

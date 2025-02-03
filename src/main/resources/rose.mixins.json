@@ -19,6 +19,8 @@
     "mixins.MixinEntityPlayerSP",
     "mixins.MixinEntityRenderer",
     "mixins.MixinGuiChat",
+    "mixins.MixinGuiConnectFailed",
+    "mixins.MixinGuiConnecting",
     "mixins.MixinGuiContainer",
     "mixins.MixinGuiIngame",
     "mixins.MixinGuiMainMenu",
@@ -37,5 +39,9 @@
   ],
   "injectors": {
     "defaultRequire": 1
-  }
+  },
+  "mixins": [
+    "accessors.IEntityPlayer",
+    "mixins.MixinWorld"
+  ]
 }

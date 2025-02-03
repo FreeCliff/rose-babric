@@ -21,7 +21,9 @@ def getGitHash()
 }
 
 archivesBaseName = project.archives_base_name
-version = "git-" + getGitHash()
+version = "2.0.0"
+
+version = version + "-git-" + getGitHash()
 
 loom {
 	mixin {

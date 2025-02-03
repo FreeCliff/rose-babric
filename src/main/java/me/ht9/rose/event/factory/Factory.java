@@ -24,6 +24,9 @@ public class Factory implements Globals
 {
     private static final Factory instance = new Factory();
 
+    public String ip;
+    public int port;
+
     public float rotationRenderPitch;
     public float prevRotationRenderPitch;
     public boolean doSetModelRotations;

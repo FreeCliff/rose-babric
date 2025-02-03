@@ -14,6 +14,11 @@ public final class Timer extends Module
 
     public final Setting<Float> timer = new Setting<>("Timer", 1f, 1f, 25f);
 
+    private Timer()
+    {
+        setArrayListInfo(() -> timer.value().toString());
+    }
+
     @SuppressWarnings("unused")
     @SubscribeEvent
     public void onTick(TickEvent event)

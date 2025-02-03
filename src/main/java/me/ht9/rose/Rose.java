@@ -29,7 +29,7 @@ public class Rose implements ClientModInitializer, Globals
 	@Override
 	public void onInitializeClient()
 	{
-		long startTime = System.currentTimeMillis();
+		long startTime = System.nanoTime();
 		logger.info("loading rose...");
 
 		bus.register(Factory.instance());
@@ -50,7 +50,7 @@ public class Rose implements ClientModInitializer, Globals
 			FileUtils.saveFriends();
 		}));
 
-		double elapsedTime = (System.currentTimeMillis() - startTime) / 1000.0D;
+		double elapsedTime = (System.nanoTime() - startTime) / 1000000000.0;
 		logger.info("successfully loaded rose in {}s.", elapsedTime);
 	}
 

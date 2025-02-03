@@ -20,6 +20,7 @@ public final class Aura extends Module
 {
     private static final Aura instance = new Aura();
 
+    private final Setting<Boolean> multi = new Setting<>("Multi", true);
     private final Setting<Boolean> rotate = new Setting<>("Rotate", true);
     private final Setting<Boolean> swing = new Setting<>("Swing", false);
     private final Setting<Boolean> fakeblock = new Setting<>("Fake Block", false)
@@ -33,24 +34,41 @@ public final class Aura extends Module
 
     private boolean shouldFakeBlock = false;
 
+    private Aura()
+    {
+        setArrayListInfo(() ->
+        {
+            String info = "";
+
+            if (players.value()) info += "P";
+            if (mobs.value()) info += "M";
+            if (animals.value()) info += "A";
+
+            return info;
+        });
+    }
+
     @SubscribeEvent
     public void onUpdate(PosRotUpdateEvent event)
     {
         boolean hasRotated = false;
-        List<Entity> entities = new ArrayList<>();
+        List<EntityLiving> entities = new ArrayList<>();
         for (Object object : mc.theWorld.loadedEntityList)
         {
-            if (object instanceof Entity entity)
+            if (object instanceof EntityLiving entity)
             {
                 if (entity instanceof EntityPlayerSP) continue;
+                if (entity.health == 0) continue;
                 if (mc.thePlayer.getDistanceToEntity(entity) > range.value()) continue;
+
                 if (
                         (entity instanceof EntityPlayer player && players.value() && !Registry.friends().contains(player.username))
                                 || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
-                                || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
+                                || ((entity instanceof EntityMob || entity instanceof EntityFlying || entity instanceof EntitySlime) && mobs.value())
                 )
                 {
                     entities.add(entity);
+                    if (!this.multi.value()) break;
                 }
             }
         }

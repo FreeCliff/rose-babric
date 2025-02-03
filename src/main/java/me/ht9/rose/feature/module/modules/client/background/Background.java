@@ -23,6 +23,11 @@ public final class Background extends Module
 
     private Shader shader;
 
+    private Background()
+    {
+        setArrayListInfo(() -> shaderOption.value().toString());
+    }
+
     @Override
     public void initGL() {
         glContextCreated = true;

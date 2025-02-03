@@ -1,4 +1,4 @@
-package me.ht9.rose.feature.module.modules.misc.chatbomb;
+package me.ht9.rose.feature.module.modules.misc.spammer;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
@@ -46,6 +46,11 @@ public final class Spammer extends Module
 
     private final Setting<Integer> delay = new Setting<>("Delay", 0, 0, 2000);
     private final Setting<Integer> amount = new Setting<>("Amount", 1, 1, 100);
+
+    private Spammer()
+    {
+        setArrayListInfo(() -> mode.value().toString());
+    }
 
     @Override
     public void onEnable() {

@@ -11,6 +11,11 @@ public final class Jesus extends Module
 
     public final Setting<Mode> mode = new Setting<>("Mode", Mode.SemiSolid);
 
+    private Jesus()
+    {
+        setArrayListInfo(() -> mode.value().toString());
+    }
+
     public static Jesus instance()
     {
         return instance;
