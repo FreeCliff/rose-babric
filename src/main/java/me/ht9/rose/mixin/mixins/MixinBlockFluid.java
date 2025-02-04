@@ -23,12 +23,12 @@ public class MixinBlockFluid extends Block
         {
             if (Jesus.instance().mode.value() == Jesus.Mode.Bob)
             {
-                if ((Globals.mc.thePlayer.handleLavaMovement() || Globals.mc.thePlayer.isInWater()))
+                if ((Globals.mc.thePlayer.isInWater()))
                     Globals.mc.thePlayer.motionY = 0.42;
                 return;
             }
 
-            if ((Globals.mc.thePlayer.isSneaking() || Globals.mc.thePlayer.handleLavaMovement() || Globals.mc.thePlayer.isInWater() || Globals.mc.thePlayer.isBurning()) && Jesus.instance().mode.value() == Jesus.Mode.SemiSolid)
+            if ((Globals.mc.thePlayer.isSneaking() || Globals.mc.thePlayer.isInWater() || Globals.mc.thePlayer.isBurning()) && Jesus.instance().mode.value() == Jesus.Mode.SemiSolid)
             {
                 if (!Globals.mc.thePlayer.isSneaking())
                     Globals.mc.thePlayer.motionY = 0.42;

@@ -21,6 +21,16 @@ public final class Background extends Module
                     initGL();
             });
 
+    public final Setting<Boolean> customGradient = new Setting<>("CustomGradient", false);
+    public final Setting<Integer> topRed = new Setting<>("TopRed", 0, 16, 255, this.customGradient::value);
+    public final Setting<Integer> topGreen = new Setting<>("TopGreen", 0, 16, 255, this.customGradient::value);
+    public final Setting<Integer> topBlue = new Setting<>("TopBlue", 0, 16, 255, this.customGradient::value);
+    public final Setting<Integer> topAlpha = new Setting<>("TopAlpha", 0, 192, 255, this.customGradient::value);
+    public final Setting<Integer> bottomRed = new Setting<>("BottomRed", 0, 16, 255, this.customGradient::value);
+    public final Setting<Integer> bottomGreen = new Setting<>("BottomGreen", 0, 16, 255, this.customGradient::value);
+    public final Setting<Integer> bottomBlue = new Setting<>("BottomBlue", 0, 16, 255, this.customGradient::value);
+    public final Setting<Integer> bottomAlpha = new Setting<>("BottomAlpha", 0, 208, 255, this.customGradient::value);
+
     private Shader shader;
 
     private Background()

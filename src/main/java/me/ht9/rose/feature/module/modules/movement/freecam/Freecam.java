@@ -72,7 +72,7 @@ public class Freecam extends Module
 
         if (!event.serverBound()) return;
 
-        if(event.packet() instanceof Packet10Flying || event.packet() instanceof Packet11PlayerPosition || event.packet() instanceof Packet12PlayerLook)
+        if(event.packet() instanceof Packet10Flying || event.packet() instanceof Packet11PlayerPosition || event.packet() instanceof Packet12PlayerLook || event.packet() instanceof Packet13PlayerLookMove)
         {
             mc.getSendQueue().addToSendQueue(new Packet0KeepAlive()); // this is to prevent the server from kicking us :pray:
             event.setCancelled(true);

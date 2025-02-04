@@ -6,6 +6,7 @@
   "refmap": "rose.refmap.json",
   "client": [
     "accessors.IBlock",
+    "accessors.IEntityPlayer",
     "accessors.IEntityRenderer",
     "accessors.IGuiChat",
     "accessors.IItemBlock",
@@ -19,9 +20,9 @@
     "mixins.MixinEntityPlayerSP",
     "mixins.MixinEntityRenderer",
     "mixins.MixinGuiChat",
+    "mixins.MixinGuiChest",
     "mixins.MixinGuiConnectFailed",
     "mixins.MixinGuiConnecting",
-    "mixins.MixinGuiContainer",
     "mixins.MixinGuiIngame",
     "mixins.MixinGuiMainMenu",
     "mixins.MixinGuiScreen",
@@ -35,13 +36,10 @@
     "mixins.MixinRenderItem",
     "mixins.MixinRenderList",
     "mixins.MixinRenderLiving",
-    "mixins.MixinRenderPlayer"
+    "mixins.MixinRenderPlayer",
+    "mixins.MixinWorld"
   ],
   "injectors": {
     "defaultRequire": 1
-  },
-  "mixins": [
-    "accessors.IEntityPlayer",
-    "mixins.MixinWorld"
-  ]
+  }
 }

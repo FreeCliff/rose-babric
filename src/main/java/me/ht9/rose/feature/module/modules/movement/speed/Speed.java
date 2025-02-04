@@ -15,7 +15,7 @@ import java.util.function.Supplier;
 
 @SuppressWarnings("unused")
 @Description("Go fast")
-public class Speed extends Module
+public final class Speed extends Module
 {
     private static final Speed instance = new Speed();
 
@@ -23,7 +23,8 @@ public class Speed extends Module
     public final Setting<Double> speedd = new Setting<>("SpeedD", 1.0, 5.0, 20.0, 1, () -> type.value() == Type.Vanilla);
     public final Setting<Integer> speedi = new Setting<>("Speed", 1, 5, 20, () -> type.value() == Type.NoCheat);
 
-    public final Setting<Bypass> bypass = new Setting<>("Bypass", Bypass.BedExit);
+    public final Setting<Bypass> bypass = new Setting<>("Bypass", Bypass.BedExit, () -> type.value().equals(Type.NoCheat));
+    public final Setting<Integer> delay = new Setting<>("Delay", 10, 450, 1000, () -> type.value().equals(Type.NoCheat));
 
     private final Timer timer = new Timer();
 
@@ -58,7 +59,7 @@ public class Speed extends Module
         }
         else if (this.type.value() == Type.NoCheat)
         {
-            if (!this.timer.hasReached(450, true)) return;
+            if (!this.timer.hasReached(delay.value(), true)) return;
             mc.getSendQueue().addToSendQueue(bypass.value().get());
         }
     }

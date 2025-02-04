@@ -23,9 +23,9 @@ import me.ht9.rose.feature.module.modules.exploit.nuker.Nuker;
 import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
 import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
-import me.ht9.rose.feature.module.modules.exploit.xcarry.XCarry;
 import me.ht9.rose.feature.module.modules.misc.autoreconnect.AutoReconnect;
 import me.ht9.rose.feature.module.modules.misc.autotnt.AutoTNT;
+import me.ht9.rose.feature.module.modules.misc.inventorytweaks.InventoryTweaks;
 import me.ht9.rose.feature.module.modules.misc.portals.Portals;
 import me.ht9.rose.feature.module.modules.misc.retard.Retard;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
@@ -91,10 +91,10 @@ public final class Registry
         modules.add(PacketLogger.instance());
         modules.add(PacketMine.instance());
         modules.add(Sneak.instance());
-        modules.add(XCarry.instance());
 
         modules.add(AutoReconnect.instance());
         modules.add(AutoTNT.instance());
+        modules.add(InventoryTweaks.instance());
         modules.add(Portals.instance());
         modules.add(Spammer.instance());
         modules.add(Retard.instance());

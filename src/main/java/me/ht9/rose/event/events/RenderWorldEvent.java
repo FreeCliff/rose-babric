@@ -22,6 +22,7 @@ public class RenderWorldEvent extends Event
         FOG,
         HURTCAM,
         RAIN,
-        VIEWBOB
+        VIEWBOB,
+        ENTITIES
     }
 }

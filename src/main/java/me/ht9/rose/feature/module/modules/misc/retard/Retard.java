@@ -7,8 +7,8 @@ import me.ht9.rose.feature.module.annotation.Description;
 
 import java.util.Random;
 
-@Description("Funny retard mode insired by Reliant")
-public class Retard extends Module
+@Description("Funny retard mode inspired from Reliant")
+public final class Retard extends Module
 {
     private static final Retard instance = new Retard();
     private static final Random random = new Random();

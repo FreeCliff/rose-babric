@@ -117,8 +117,7 @@ public final class Render2d implements Globals
         {
             fontRenderer_small.drawGradientString(s, x + 1.0f, y, true);
             fontRenderer_small.drawGradientString(s, x, y - 1.0f, false);
-        }
-        else
+        } else
         {
             int currX = (int) x;
             for (char c : s.toCharArray())
@@ -128,6 +127,21 @@ public final class Render2d implements Globals
                 mc.fontRenderer.drawStringWithShadow(String.valueOf(c), currX, (int)y, syncedInt);
                 currX += mc.fontRenderer.getStringWidth(String.valueOf(c));
             }
+        }
+    }
+
+    public static void drawLargeStringWithShadow(String s, float x, float y, Color color, boolean customFont)
+    {
+        s = ClickGUI.instance().lowerCase.value() ? s.toLowerCase() : s;
+
+        if (customFont)
+        {
+            fontRenderer_large.drawStringWithShadow(s, x, y, color.getRGB());
+        } else
+        {
+            glScalef(1.2f, 1.2f, 1.2f);
+            mc.fontRenderer.drawStringWithShadow(s, (int) x, (int) y, color.getRGB());
+            glScalef(1.0f, 1.0f, 1.0f);
         }
     }
 

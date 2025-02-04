@@ -17,13 +17,14 @@ public class NoRender extends Module
     private final Setting<Boolean> rain = new Setting<>("Rain", false);
     private final Setting<Boolean> viewbob = new Setting<>("Viewbob", false);
     private final Setting<Boolean> portal = new Setting<>("Portal", false);
+    private final Setting<Boolean> entities = new Setting<>("Entities", false);
 
     @Override
     public void onRender2d(float partialTicks)
     {
         if (portal.value() && mc.thePlayer != null)
         {
-            mc.thePlayer.field_504 = 0.0f;
+            mc.thePlayer.field_504 = 0.0f; // shitty mappings </3
             mc.thePlayer.prevTimeInPortal = 0.0f;
         }
     }
@@ -65,6 +66,13 @@ public class NoRender extends Module
             case VIEWBOB ->
             {
                 if (this.viewbob.value())
+                {
+                    event.setCancelled(true);
+                }
+            }
+            case ENTITIES ->
+            {
+                if (this.entities.value())
                 {
                     event.setCancelled(true);
                 }

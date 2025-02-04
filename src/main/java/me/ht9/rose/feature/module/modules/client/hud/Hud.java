@@ -3,6 +3,7 @@ package me.ht9.rose.feature.module.modules.client.hud;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.ModuleEvent;
+import me.ht9.rose.event.factory.Factory;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.modules.Category;
@@ -16,6 +17,8 @@ import net.minecraft.src.MathHelper;
 import net.minecraft.src.ScaledResolution;
 
 import java.awt.*;
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.*;
 import java.util.List;
 
@@ -33,6 +36,8 @@ public final class Hud extends Module
     private final Setting<ArraySort> arrayListSort = new Setting<>("ArraySort", ArraySort.Length, arrayList::value);
     private final Setting<ArraySide> arrayListSide = new Setting<>("ArraySide", ArraySide.Top, arrayList::value);
     private final Setting<Integer> arrayAnimMs = new Setting<>("ArrayAnimMS", 0, 200, 500, arrayList::value);
+
+    private final Setting<Boolean> coords = new Setting<>("Coords", false);
 
     private final List<ArrayListModule> renderingMods = new ArrayList<>();
 
@@ -90,6 +95,8 @@ public final class Hud extends Module
             renderWaterMark();
         if (arrayList.value())
             renderArrayList();
+        if (coords.value())
+            renderCoords();
     }
 
     private void renderWaterMark()
@@ -129,8 +136,7 @@ public final class Hud extends Module
                     if (arrayListModule.module.enabled() && arrayListModule.module.drawn().value())
                     {
                         x -= arrayListModule.getStringWidth();
-                    }
-                    else
+                    } else
                     {
                         x = -x;
                         if (arrayListModule.progress - 2.0f <= -arrayListModule.getStringWidth())
@@ -147,8 +153,7 @@ public final class Hud extends Module
                         {
                             x = 0.0f;
                         }
-                    }
-                    else
+                    } else
                     {
                         diff = arrayListModule.lastProgress;
                         x += diff;
@@ -162,8 +167,7 @@ public final class Hud extends Module
                         Render2d.drawStringWithShadow(" [", (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(arrayListModule.module.name(), ClickGUI.instance().customFont.value())), offset, new Color(-4473925), ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow(arrayListModule.module.arraylistInfo(), (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(" [", ClickGUI.instance().customFont.value())), offset, new Color(-1), ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow("]", (float)sr.getScaledWidth() - (x - Render2d.getStringWidth(arrayListModule.module.arraylistInfo(), ClickGUI.instance().customFont.value())), offset, new Color(-4473925), ClickGUI.instance().customFont.value());
-                    }
-                    else
+                    } else
                     {
                         Render2d.drawGradientStringWithShadow(arrayListModule.module.name(), (float)sr.getScaledWidth() - x - arrayListModule.getStringWidth(), offset, ClickGUI.instance().customFont.value());
                         arrayListModule.progress = x;
@@ -174,9 +178,8 @@ public final class Hud extends Module
             case Bottom ->
             {
                 float offset = 9.0f;
-                if (mc.currentScreen instanceof GuiChat) {
+                if (mc.currentScreen instanceof GuiChat)
                     offset += 16.0f;
-                }
                 Iterator<ArrayListModule> arrayListModuleIterator = this.renderingMods.iterator();
                 while (arrayListModuleIterator.hasNext())
                 {
@@ -188,8 +191,7 @@ public final class Hud extends Module
                     if (arrayListModule.module.enabled() && arrayListModule.module.drawn().value())
                     {
                         x -= arrayListModule.getStringWidth();
-                    }
-                    else
+                    } else
                     {
                         x = -x;
                         if (arrayListModule.progress - 2.0f <= -arrayListModule.getStringWidth())
@@ -207,8 +209,7 @@ public final class Hud extends Module
                         {
                             x = 0.0f;
                         }
-                    }
-                    else
+                    } else
                     {
                         diff = arrayListModule.lastProgress;
                         x += diff;
@@ -221,8 +222,7 @@ public final class Hud extends Module
                         Render2d.drawStringWithShadow(" [", (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(arrayListModule.module.name(), ClickGUI.instance().customFont.value())), (float)sr.getScaledHeight() - offset, new Color(-4473925), ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow(arrayListModule.module.arraylistInfo(), (float)sr.getScaledWidth() - (x -= Render2d.getStringWidth(" [", ClickGUI.instance().customFont.value())), (float)sr.getScaledHeight() - offset, new Color(-1), ClickGUI.instance().customFont.value());
                         Render2d.drawStringWithShadow("]", (float)sr.getScaledWidth() - (x - Render2d.getStringWidth(arrayListModule.module.arraylistInfo(), ClickGUI.instance().customFont.value())), (float)sr.getScaledHeight() - offset, new Color(-4473925), ClickGUI.instance().customFont.value());
-                    }
-                    else
+                    } else
                     {
                         Render2d.drawGradientStringWithShadow(arrayListModule.module.name(), (float)sr.getScaledWidth() - x - arrayListModule.getStringWidth(), (float)sr.getScaledHeight() - offset, ClickGUI.instance().customFont.value());
                         arrayListModule.progress = x;
@@ -231,6 +231,39 @@ public final class Hud extends Module
                 }
             }
         }
+    }
+
+    private void renderCoords()
+    {
+        double x = this.roundDouble(mc.thePlayer.posX, 1);
+        double y = this.roundDouble(mc.thePlayer.posY, 1);
+        double z = this.roundDouble(mc.thePlayer.posZ, 1);
+
+        double otherX;
+        double otherZ;
+
+        if (mc.thePlayer.worldObj.worldProvider.isHellWorld)
+        {
+            otherX = this.roundDouble(x * 8.0, 1);
+            otherZ = this.roundDouble(z * 8.0, 1);
+        } else
+        {
+            otherX = this.roundDouble(x / 8.0, 1);
+            otherZ = this.roundDouble(z / 8.0, 1);
+        }
+
+        String combined = x + ", " + y + ", " + z;
+
+        if (Factory.instance().protocolVersion >= 13)
+            combined += " [" + otherX + ", " + otherZ + "]";
+
+        float offset = 9.0f;
+        if (mc.currentScreen instanceof GuiChat)
+            offset += 16.0f;
+
+        ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
+        Render2d.drawGradientStringWithShadow("XYZ ", 2.0f, sr.getScaledHeight() - offset, ClickGUI.instance().customFont.value());
+        Render2d.drawStringWithShadow(combined, Render2d.getStringWidth("XYZ ", ClickGUI.instance().customFont.value()), sr.getScaledHeight() - offset, new Color(-4473925), ClickGUI.instance().customFont.value());
     }
 
     public Color getColor(float offset)
@@ -267,6 +300,11 @@ public final class Hud extends Module
     public int getRGBA(int r, int g, int b, int a)
     {
         return (r << 16) + (g << 8) + b + (a << 24);
+    }
+
+    private double roundDouble(double number, int scale)
+    {
+        return new BigDecimal(number).setScale(scale, RoundingMode.HALF_UP).doubleValue();
     }
 
     public static Hud instance()
@@ -338,12 +376,5 @@ public final class Hud extends Module
         {
             this.comparator = comparator;
         }
-    }
-
-    public enum E621Size
-    {
-        preview,
-        sample,
-        file
     }
 }
