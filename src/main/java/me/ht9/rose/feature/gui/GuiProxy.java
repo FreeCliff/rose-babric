@@ -1,4 +1,4 @@
-package me.ht9.rose.util.misc;
+package me.ht9.rose.feature.gui;
 
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiScreen;

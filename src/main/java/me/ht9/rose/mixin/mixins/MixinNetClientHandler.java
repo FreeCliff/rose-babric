@@ -1,6 +1,6 @@
 package me.ht9.rose.mixin.mixins;
 
-import me.ht9.rose.util.misc.GuiProxy;
+import me.ht9.rose.feature.gui.GuiProxy;
 import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.NetworkManager;
 import org.spongepowered.asm.mixin.Mixin;

@@ -9,7 +9,7 @@ import net.minecraft.src.GuiInventory;
 import net.minecraft.src.Packet101CloseWindow;
 
 @Description("Various inventory related utilities")
-public class InventoryTweaks extends Module
+public final class InventoryTweaks extends Module
 {
     private static final InventoryTweaks instance = new InventoryTweaks();
 

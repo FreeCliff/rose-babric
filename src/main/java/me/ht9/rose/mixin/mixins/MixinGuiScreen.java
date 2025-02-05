@@ -24,7 +24,7 @@ public class MixinGuiScreen extends Gui
     @Redirect(method = "drawWorldBackground", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/GuiScreen;drawGradientRect(IIIIII)V"))
     public void drawWorldBackground$drawGradientRect(GuiScreen instance, int x, int y, int x2, int y2, int topCol, int bottomCol)
     {
-        if (Background.instance().customGradient.value())
+        if (Background.instance().enabled() && Background.instance().customGradient.value())
         {
             topCol = Hud.instance().getRGBA(
                     Background.instance().topRed.value(),
@@ -51,14 +51,15 @@ public class MixinGuiScreen extends Gui
     )
     public void drawBackground$Head(int par1, CallbackInfo ci)
     {
-        if (!Background.instance().enabled())
-            return;
-        glPushMatrix();
-        glPushAttrib(8256);
+        if (Background.instance().enabled() && Background.instance().shader.value())
+        {
+            glPushMatrix();
+            glPushAttrib(8256);
 
-        Shader shader = Background.instance().shader();
-        glUseProgram(shader.programId());
-        Background.instance().setupUniforms();
+            Shader shader = Background.instance().shader();
+            glUseProgram(shader.programId());
+            Background.instance().setupUniforms();
+        }
     }
 
     @Inject(
@@ -69,10 +70,11 @@ public class MixinGuiScreen extends Gui
     )
     public void drawBackground$Return(int par1, CallbackInfo ci)
     {
-        if (!Background.instance().enabled())
-            return;
-        glUseProgram(0);
-        glPopAttrib();
-        glPopMatrix();
+        if (Background.instance().enabled() && Background.instance().shader.value())
+        {
+            glUseProgram(0);
+            glPopAttrib();
+            glPopMatrix();
+        }
     }
 }

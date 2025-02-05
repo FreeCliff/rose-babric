@@ -102,7 +102,8 @@ public final class Render2d implements Globals
 
     public static void drawStringWithShadow(String s, float x, float y, Color color, boolean customFont)
     {
-        s = ClickGUI.instance().lowerCase.value() ? s.toLowerCase() : s;
+        if (ClickGUI.instance().lowerCase.value()) s = s.toLowerCase();
+
         if (customFont)
             fontRenderer_small.drawStringWithShadow(s, x, y, color.getRGB());
         else
@@ -111,7 +112,7 @@ public final class Render2d implements Globals
 
     public static void drawGradientStringWithShadow(String s, float x, float y, boolean customFont)
     {
-        s = ClickGUI.instance().lowerCase.value() ? s.toLowerCase() : s;
+        if (ClickGUI.instance().lowerCase.value()) s = s.toLowerCase();
 
         if (customFont)
         {
@@ -132,7 +133,7 @@ public final class Render2d implements Globals
 
     public static void drawLargeStringWithShadow(String s, float x, float y, Color color, boolean customFont)
     {
-        s = ClickGUI.instance().lowerCase.value() ? s.toLowerCase() : s;
+        if (ClickGUI.instance().lowerCase.value()) s = s.toLowerCase();
 
         if (customFont)
         {
@@ -147,7 +148,8 @@ public final class Render2d implements Globals
 
     public static float getStringWidth(String s, boolean customFont)
     {
-        s = ClickGUI.instance().lowerCase.value() ? s.toLowerCase() : s;
+        if (ClickGUI.instance().lowerCase.value()) s = s.toLowerCase();
+
         if (customFont)
             return fontRenderer_small.getStringWidth(s);
         return mc.fontRenderer.getStringWidth(s);

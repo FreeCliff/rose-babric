@@ -26,6 +26,7 @@
     "mixins.MixinGuiIngame",
     "mixins.MixinGuiMainMenu",
     "mixins.MixinGuiScreen",
+    "mixins.MixinInventoryPlayer",
     "mixins.MixinItemRenderer",
     "mixins.MixinMinecraft",
     "mixins.MixinMovementInputFromOptions",

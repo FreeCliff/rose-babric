@@ -193,19 +193,19 @@ public abstract class Module extends Feature
             {
                 if (setting.value() instanceof Boolean)
                 {
-                    ((Setting<Boolean>) setting).setValue(element.getAsBoolean());
+                    ((Setting<Boolean>) setting).setValue(element.getAsBoolean(), false);
                 } else if (setting.value() instanceof Integer)
                 {
-                    ((Setting<Integer>) setting).setValue(element.getAsInt());
+                    ((Setting<Integer>) setting).setValue(element.getAsInt(), false);
                 } else if (setting.value() instanceof Double)
                 {
-                    ((Setting<Double>) setting).setValue(element.getAsDouble());
+                    ((Setting<Double>) setting).setValue(element.getAsDouble(), false);
                 } else if (setting.value() instanceof Float)
                 {
-                    ((Setting<Float>) setting).setValue(element.getAsFloat());
+                    ((Setting<Float>) setting).setValue(element.getAsFloat(), false);
                 } else if (setting.value() instanceof String)
                 {
-                    ((Setting<String>) setting).setValue(element.getAsString());
+                    ((Setting<String>) setting).setValue(element.getAsString(), false);
                 } else if (setting.value() instanceof Enum<?>)
                 {
                     String enumName = element.getAsString();
@@ -213,7 +213,7 @@ public abstract class Module extends Feature
                     {
                         if (e.name().equalsIgnoreCase(enumName))
                         {
-                            ((Setting<Enum<?>>) setting).setValue(e);
+                            ((Setting<Enum<?>>) setting).setValue(e, false);
                             break;
                         }
                     }

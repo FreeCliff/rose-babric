@@ -9,12 +9,13 @@ import net.minecraft.src.GuiChat;
 import net.minecraft.src.GuiEditSign;
 import org.lwjgl.input.Keyboard;
 
-@Description("Lets you walk while in guis")
-public final class GuiWalk extends Module
+@Description("Lets you move while in guis")
+public final class GuiMove extends Module
 {
-    private static final GuiWalk instance = new GuiWalk();
+    private static final GuiMove instance = new GuiMove();
 
-    private final Setting<Boolean> shift = new Setting<>("Shift", false);
+    private final Setting<Boolean> jump = new Setting<>("Jump", true);
+    private final Setting<Boolean> sneak = new Setting<>("Sneak", true);
 
     @SubscribeEvent(priority = 5)
     public void onUpdate(MoveStateUpdateEvent event)
@@ -27,14 +28,14 @@ public final class GuiWalk extends Module
             event.setMoveRight(Keyboard.isKeyDown(mc.gameSettings.keyBindRight.keyCode));
             event.setJump(Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode));
 
-            if (shift.value())
+            if (sneak.value())
                 event.setSneak(Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode));
 
             event.setDontReset(true);
         }
     }
 
-    public static GuiWalk instance()
+    public static GuiMove instance()
     {
         return instance;
     }

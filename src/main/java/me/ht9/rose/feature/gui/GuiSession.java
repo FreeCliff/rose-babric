@@ -1,4 +1,4 @@
-package me.ht9.rose.util.misc;
+package me.ht9.rose.feature.gui;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.ChangeUsernameEvent;

@@ -1,7 +1,7 @@
 package me.ht9.rose.mixin.mixins;
 
-import me.ht9.rose.util.misc.GuiProxy;
-import me.ht9.rose.util.misc.GuiSession;
+import me.ht9.rose.feature.gui.GuiProxy;
+import me.ht9.rose.feature.gui.GuiSession;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;

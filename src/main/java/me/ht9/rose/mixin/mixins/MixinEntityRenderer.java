@@ -4,17 +4,24 @@ import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.FOVModifierEvent;
 import me.ht9.rose.event.events.RenderWorldEvent;
 import me.ht9.rose.event.events.RenderWorldPassEvent;
-import net.minecraft.src.EntityRenderer;
+import me.ht9.rose.feature.module.modules.render.cameratweaks.CameraTweaks;
+import net.minecraft.src.*;
 import org.lwjgl.opengl.GL11;
 import org.spongepowered.asm.mixin.Mixin;
+import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
+import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = EntityRenderer.class)
 public class MixinEntityRenderer
 {
+    @Shadow private float field_22227_s;
+
+    @Shadow private float field_22228_r;
+
     @Inject(
             method = "renderWorld",
             at = @At(
@@ -121,5 +128,12 @@ public class MixinEntityRenderer
             cir.setReturnValue(event.fov());
             cir.cancel();
         }
+    }
+
+    @Redirect(method = "orientCamera", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/World;rayTraceBlocks(Lnet/minecraft/src/Vec3D;Lnet/minecraft/src/Vec3D;)Lnet/minecraft/src/MovingObjectPosition;"))
+    public MovingObjectPosition orientCamera$fixClip(World instance, Vec3D vec3D1, Vec3D vec3D2)
+    {
+        if (CameraTweaks.instance().enabled() && CameraTweaks.instance().clip.value()) return null;
+        return instance.rayTraceBlocks(vec3D1, vec3D2);
     }
 }

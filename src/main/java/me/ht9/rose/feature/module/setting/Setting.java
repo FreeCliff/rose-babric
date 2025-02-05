@@ -105,9 +105,14 @@ public final class Setting<V>
 
     public void setValue(V value)
     {
+        this.setValue(value, true);
+    }
+
+    public void setValue(V value, boolean callOnChange)
+    {
         this.value = value;
         this.checkEnums();
-        if (this.onChange != null)
+        if (callOnChange && this.onChange != null)
         {
             this.onChange.accept(value);
         }

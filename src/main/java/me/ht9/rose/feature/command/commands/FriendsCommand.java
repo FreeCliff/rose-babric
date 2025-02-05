@@ -42,16 +42,30 @@ public final class FriendsCommand extends Executable implements Globals
             boolean foundFriend = false;
             for (String friend : Registry.friends())
             {
-                if (friend.toLowerCase().startsWith(args[1].toLowerCase()))
+                if (friend.equalsIgnoreCase(args[1]))
                 {
                     Registry.friends().remove(friend);
                     mc.ingameGUI.addChatMessage("Removed " + args[1] + " from friends.");
                     foundFriend = true;
+                    break;
                 }
             }
             if (!foundFriend)
             {
-                mc.ingameGUI.addChatMessage(FontColor.RED + "Couldn't find " + args[1] + " in friends list!");
+                for (String friend : Registry.friends())
+                {
+                    if (friend.toLowerCase().startsWith(args[1].toLowerCase()))
+                    {
+                        Registry.friends().remove(friend);
+                        mc.ingameGUI.addChatMessage("Removed " + args[1] + " from friends.");
+                        foundFriend = true;
+                        break;
+                    }
+                }
+                if (!foundFriend)
+                {
+                    mc.ingameGUI.addChatMessage(FontColor.RED + "Couldn't find " + args[1] + " in friends list!");
+                }
             }
         }
     }

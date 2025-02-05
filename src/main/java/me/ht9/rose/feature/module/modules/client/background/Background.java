@@ -1,5 +1,6 @@
 package me.ht9.rose.feature.module.modules.client.background;
 
+import me.ht9.rose.Rose;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
@@ -14,7 +15,8 @@ public final class Background extends Module
 
     private boolean glContextCreated = false;
 
-    private final Setting<ShaderOption> shaderOption = new Setting<>("Shader", ShaderOption.Auroras)
+    public final Setting<Boolean> shader = new Setting<>("UseShader", true);
+    public final Setting<ShaderOption> shaderOption = new Setting<>("Shader", ShaderOption.Auroras, this.shader::value)
             .withOnChange(value ->
             {
                 if (glContextCreated)
@@ -31,7 +33,7 @@ public final class Background extends Module
     public final Setting<Integer> bottomBlue = new Setting<>("BottomBlue", 0, 16, 255, this.customGradient::value);
     public final Setting<Integer> bottomAlpha = new Setting<>("BottomAlpha", 0, 208, 255, this.customGradient::value);
 
-    private Shader shader;
+    private Shader shaderObj;
 
     private Background()
     {
@@ -41,7 +43,7 @@ public final class Background extends Module
     @Override
     public void initGL() {
         glContextCreated = true;
-        shader = new Shader(
+        shaderObj = new Shader(
                 "/assets/rose/shaders/vertex.vert",
                 shaderOption.value().fragmentPath,
                 "resolution", "time"
@@ -50,12 +52,12 @@ public final class Background extends Module
 
     public void setupUniforms()
     {
-        glUniform2f(shader.uniform("resolution"), mc.displayWidth, mc.displayHeight);
-        glUniform1f(shader.uniform("time"), System.currentTimeMillis() % 120000 / 1000.0f);
+        glUniform2f(shaderObj.uniform("resolution"), mc.displayWidth, mc.displayHeight);
+        glUniform1f(shaderObj.uniform("time"), (System.nanoTime() - Rose.startTime()) / 1000000000.0F);
     }
 
     public Shader shader() {
-        return shader;
+        return shaderObj;
     }
 
     public static Background instance()
@@ -65,7 +67,8 @@ public final class Background extends Module
 
     public enum ShaderOption
     {
-        Auroras("/assets/rose/shaders/auroras.frag");
+        Auroras("/assets/rose/shaders/auroras.frag"),
+        CyberFuji("/assets/rose/shaders/cyberfuji.frag");
 
         final String fragmentPath;
 

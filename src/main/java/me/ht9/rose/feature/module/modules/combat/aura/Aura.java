@@ -57,7 +57,7 @@ public final class Aura extends Module
         {
             if (object instanceof EntityLiving entity)
             {
-                if (entity instanceof EntityPlayerSP) continue;
+                if (entity instanceof EntityPlayerSP || entity instanceof EntityClientPlayerMP) continue;
                 if (entity.health == 0) continue;
                 if (mc.thePlayer.getDistanceToEntity(entity) > range.value()) continue;
 

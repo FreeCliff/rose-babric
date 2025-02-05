@@ -25,11 +25,13 @@ public class Rose implements ClientModInitializer, Globals
 	private static final EventBus bus = new EventBus();
 
 	private static final ExecutorService asyncExecutor = Executors.newSingleThreadExecutor();
+
+	private static long startTime;
 	
 	@Override
 	public void onInitializeClient()
 	{
-		long startTime = System.nanoTime();
+		startTime = System.nanoTime();
 		logger.info("loading rose...");
 
 		bus.register(Factory.instance());
@@ -67,6 +69,11 @@ public class Rose implements ClientModInitializer, Globals
 	public static Logger logger()
 	{
 		return logger;
+	}
+
+	public static long startTime()
+	{
+		return startTime;
 	}
 
 	public static String version()
