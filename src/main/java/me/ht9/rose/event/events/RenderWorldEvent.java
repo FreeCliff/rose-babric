@@ -23,6 +23,7 @@ public class RenderWorldEvent extends Event
         HURTCAM,
         RAIN,
         VIEWBOB,
-        ENTITIES
+        ENTITIES,
+        PARTICLES
     }
 }

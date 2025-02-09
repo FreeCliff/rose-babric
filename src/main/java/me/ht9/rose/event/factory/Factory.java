@@ -41,7 +41,7 @@ public class Factory implements Globals
         if (Keyboard.isKeyDown(ClickGUI.instance().toggleBind().value().key()) && MainMenu.instance().enabled() && mc.currentScreen instanceof GuiMainMenu)
         {
             ClickGUI.instance().enable();
-            RoseGui.instance().openGuiMainMenu();
+            RoseGui.instance().openGuiInMenu();
         } else if (Keyboard.isKeyDown(Keyboard.KEY_ESCAPE) && MainMenu.instance().enabled() && mc.currentScreen instanceof RoseGui && ClickGUI.instance().enabled())
         {
             mc.displayGuiScreen(new GuiMainMenu());

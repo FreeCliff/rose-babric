@@ -2,7 +2,7 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PacketEvent;
-import me.ht9.rose.util.misc.CNetworkManager;
+import me.ht9.rose.mixinterface.INetworkManager;
 import net.minecraft.src.NetworkManager;
 import net.minecraft.src.Packet;
 import org.spongepowered.asm.mixin.Mixin;
@@ -15,7 +15,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 @Mixin(value = NetworkManager.class)
-public abstract class MixinNetworkManager implements CNetworkManager
+public abstract class MixinNetworkManager implements INetworkManager
 {
     @Shadow public abstract void addToSendQueue(Packet packet);
 

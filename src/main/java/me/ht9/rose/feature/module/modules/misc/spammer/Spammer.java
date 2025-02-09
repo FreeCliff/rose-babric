@@ -44,7 +44,7 @@ public final class Spammer extends Module
             .withOnChange(value -> updateMessages());
     private final Setting<Boolean> fillRest = new Setting<>("Fill Rest", false, () -> mode.value().equals(Mode.File));
 
-    private final Setting<Integer> delay = new Setting<>("Delay", 0, 0, 2000);
+    private final Setting<Double> delay = new Setting<>("Delay", 0.0, 0.0, 2.0, 3);
     private final Setting<Integer> amount = new Setting<>("Amount", 1, 1, 100);
 
     private Spammer()

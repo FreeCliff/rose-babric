@@ -24,7 +24,7 @@ public final class Speed extends Module
     public final Setting<Integer> speedi = new Setting<>("Speed", 1, 5, 20, () -> type.value() == Type.NoCheat);
 
     public final Setting<Bypass> bypass = new Setting<>("Bypass", Bypass.BedExit, () -> type.value().equals(Type.NoCheat));
-    public final Setting<Integer> delay = new Setting<>("Delay", 10, 450, 1000, () -> type.value().equals(Type.NoCheat));
+    public final Setting<Double> delay = new Setting<>("Delay", 0.01, 0.45, 1.0, 3, () -> type.value().equals(Type.NoCheat));
 
     private final Timer timer = new Timer();
 

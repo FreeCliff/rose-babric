@@ -5,7 +5,7 @@ import me.ht9.rose.event.events.TickEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
-import me.ht9.rose.mixin.accessors.IMinecraft;
+import me.ht9.rose.mixin.accessors.MinecraftAccessor;
 
 @Description("Change your game speed.")
 public final class Timer extends Module
@@ -23,13 +23,13 @@ public final class Timer extends Module
     @SubscribeEvent
     public void onTick(TickEvent event)
     {
-        ((IMinecraft) mc).timer().timerSpeed = timer.value();
+        ((MinecraftAccessor) mc).timer().timerSpeed = timer.value();
     }
 
     @Override
     public void onDisable()
     {
-        ((IMinecraft) mc).timer().timerSpeed = 1.0f;
+        ((MinecraftAccessor) mc).timer().timerSpeed = 1.0f;
     }
 
     public static Timer instance()

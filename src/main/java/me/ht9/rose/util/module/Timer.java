@@ -6,30 +6,28 @@ public final class Timer
 
     public Timer()
     {
-        this.time = System.nanoTime();
+        this.reset();
     }
 
-    public boolean hasReached(long ms)
+    public boolean hasReached(double s)
     {
-        return this.hasReached(ms, false);
+        return this.hasReached(s, false);
     }
 
-    public boolean hasReached(long ms, boolean reset)
+    public boolean hasReached(double s, boolean reset)
     {
-        if ((System.nanoTime() - this.time) / 1000000.0 >= ms)
+        if (this.time() >= s)
         {
             if (reset)
-            {
                 this.reset();
-            }
             return true;
         }
         return false;
     }
 
-    public long time()
+    public double time()
     {
-        return System.nanoTime() - this.time;
+        return (System.nanoTime() - this.time) / 1000000000.0;
     }
 
     public void reset()

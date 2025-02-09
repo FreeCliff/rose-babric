@@ -4,7 +4,7 @@ import me.ht9.rose.Rose;
 import me.ht9.rose.feature.gui.font.CFontRenderer;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hud.Hud;
-import me.ht9.rose.mixin.accessors.IMinecraft;
+import me.ht9.rose.mixin.accessors.MinecraftAccessor;
 import me.ht9.rose.util.Globals;
 import net.minecraft.src.Tessellator;
 
@@ -97,7 +97,7 @@ public final class Render2d implements Globals
 
     public static float renderPartialTicks()
     {
-        return ((IMinecraft) mc).timer().renderPartialTicks;
+        return ((MinecraftAccessor) mc).timer().renderPartialTicks;
     }
 
     public static void drawStringWithShadow(String s, float x, float y, Color color, boolean customFont)

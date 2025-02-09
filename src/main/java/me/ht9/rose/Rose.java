@@ -3,9 +3,11 @@ package me.ht9.rose;
 import me.ht9.rose.event.bus.EventBus;
 import me.ht9.rose.event.factory.Factory;
 import me.ht9.rose.feature.command.impl.Prediction;
+import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.util.Globals;
 import me.ht9.rose.util.config.FileUtils;
+import me.ht9.rose.util.misc.ModMenuIntegrationHelper;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.loader.api.FabricLoader;
 import org.apache.logging.log4j.LogManager;
@@ -14,7 +16,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 
-public class Rose implements ClientModInitializer, Globals
+public final class Rose implements ClientModInitializer, Globals
 {
 	private static final String version = FabricLoader.getInstance().getModContainer("rose")
 			.map(container -> container.getMetadata().getVersion().getFriendlyString())
@@ -44,6 +46,9 @@ public class Rose implements ClientModInitializer, Globals
 		FileUtils.loadModules();
 		FileUtils.loadClickGUI();
 		FileUtils.loadFriends();
+
+		if (MixinPlugin.isModMenuLoaded())
+			ModMenuIntegrationHelper.addLegacyConfigScreenTask("rose", () -> RoseGui.instance().openGuiInMenu());
 
 		Runtime.getRuntime().addShutdownHook(new Thread(() ->
 		{

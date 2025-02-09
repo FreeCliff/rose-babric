@@ -8,7 +8,7 @@ import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.util.world.Facing;
 import me.ht9.rose.feature.module.setting.Setting;
-import me.ht9.rose.mixin.accessors.IItemBlock;
+import me.ht9.rose.mixin.accessors.ItemBlockAccessor;
 import net.minecraft.src.*;
 import org.lwjgl.input.Keyboard;
 
@@ -283,7 +283,7 @@ public class Scaffold extends Module
     {
         if (itemStack == null || !(itemStack.getItem() instanceof ItemBlock itemBlock)) return false;
 
-        Block block = Block.blocksList[((IItemBlock) itemBlock).blockId()];
+        Block block = Block.blocksList[((ItemBlockAccessor) itemBlock).blockId()];
 
         return block != null && block.isCollidable() && !INVALID_BLOCKS.contains(block);
     }

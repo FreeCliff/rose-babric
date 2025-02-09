@@ -2,11 +2,10 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.*;
+import me.ht9.rose.feature.gui.GuiCustomChat;
 import me.ht9.rose.util.render.Framebuffer;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.MovingObjectPosition;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 import org.spongepowered.asm.mixin.Mixin;
@@ -148,5 +147,17 @@ public class MixinMinecraft
     public void clickBlock(int par1, CallbackInfo ci)
     {
         Rose.bus().post(new PlayerBlockClickEvent(objectMouseOver.blockX, objectMouseOver.blockY, objectMouseOver.blockZ, objectMouseOver.sideHit));
+    }
+
+    @Redirect(method = "runTick", at = @At(value = "INVOKE", target = "Lnet/minecraft/client/Minecraft;displayGuiScreen(Lnet/minecraft/src/GuiScreen;)V"))
+    private void displayGuiScreen(Minecraft instance, GuiScreen screen)
+    {
+        if (screen instanceof GuiChat)
+        {
+            instance.displayGuiScreen(new GuiCustomChat());
+        } else
+        {
+            instance.displayGuiScreen(screen);
+        }
     }
 }

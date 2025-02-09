@@ -2,7 +2,7 @@ package me.ht9.rose.feature.command.impl;
 
 import me.ht9.rose.event.events.ChatGuiRenderEvent;
 import me.ht9.rose.event.events.ChatKeyTypedEvent;
-import me.ht9.rose.mixin.accessors.IGuiChat;
+import me.ht9.rose.mixin.accessors.GuiChatAccessor;
 import org.apache.commons.lang3.tuple.Pair;
 import org.spongepowered.include.com.google.common.base.Strings;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
@@ -37,7 +37,7 @@ public final class Prediction implements Globals
     {
         if (event.keyCode() == Keyboard.KEY_TAB && suggestion != null)
         {
-            ((IGuiChat) mc.currentScreen).setMessage(suggestion);
+            ((GuiChatAccessor) mc.currentScreen).setMessage(suggestion);
             event.setCancelled(true);
         }
     }

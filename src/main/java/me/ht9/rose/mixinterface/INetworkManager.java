@@ -1,8 +1,8 @@
-package me.ht9.rose.util.misc;
+package me.ht9.rose.mixinterface;
 
 import net.minecraft.src.Packet;
 
-public interface CNetworkManager
+public interface INetworkManager
 {
     void rose_Babric$sendWithoutEvent(Packet packet);
 }

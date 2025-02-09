@@ -2,6 +2,7 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.event.factory.Factory;
 import me.ht9.rose.feature.module.modules.misc.autoreconnect.AutoReconnect;
+import me.ht9.rose.util.misc.FontColor;
 import me.ht9.rose.util.module.Timer;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiConnectFailed;
@@ -44,12 +45,12 @@ public class MixinGuiConnectFailed extends GuiScreen
             return;
         }
 
-        if (this.timer.hasReached((long) (AutoReconnect.instance().delay.value() * 1000.0)))
+        if (this.timer.hasReached(AutoReconnect.instance().delay.value()))
         {
             mc.displayGuiScreen(new GuiConnecting(mc, Factory.instance().ip, Factory.instance().port));
         }
 
-        button.displayString = String.format("Auto Reconnect (%.1f)", AutoReconnect.instance().delay.value() - timer.time() / 1000000000.0);
+        button.displayString = String.format("Auto Reconnect " + FontColor.RED + "(%.1f)", AutoReconnect.instance().delay.value() - timer.time());
     }
 
     @Inject(method = "actionPerformed", at = @At("RETURN"))

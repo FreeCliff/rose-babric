@@ -6,7 +6,7 @@ import me.ht9.rose.event.events.InputEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
-import me.ht9.rose.mixin.accessors.IEntityRenderer;
+import me.ht9.rose.mixin.accessors.EntityRendererAccessor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
@@ -19,7 +19,7 @@ public final class CameraTweaks extends Module
     private final Setting<Float> cameraDistance = new Setting<>("CameraDistance", 0.0f, 4.0f, 15.0f, 1)
             .withOnChange(val ->
             {
-                if (this.enabled()) ((IEntityRenderer) mc.entityRenderer).setCameraDistance(val);
+                if (this.enabled()) ((EntityRendererAccessor) mc.entityRenderer).setCameraDistance(val);
             });
 
     public final Setting<Boolean> scrolling = new Setting<>("Scrolling", true);
@@ -28,13 +28,13 @@ public final class CameraTweaks extends Module
     @Override
     public void onEnable()
     {
-        ((IEntityRenderer) mc.entityRenderer).setCameraDistance(this.cameraDistance.value());
+        ((EntityRendererAccessor) mc.entityRenderer).setCameraDistance(this.cameraDistance.value());
     }
 
     @Override
     public void onDisable()
     {
-        ((IEntityRenderer) mc.entityRenderer).setCameraDistance(4.0f);
+        ((EntityRendererAccessor) mc.entityRenderer).setCameraDistance(4.0f);
     }
 
     @SubscribeEvent
@@ -55,10 +55,10 @@ public final class CameraTweaks extends Module
         if (value != 0)
         {
             Rose.logger().info("value: {}", value);
-            float dist = ((IEntityRenderer) mc.entityRenderer).cameraDistance();
+            float dist = ((EntityRendererAccessor) mc.entityRenderer).cameraDistance();
             dist -= value * 0.05f * scrollingSensitivity.value();
             dist = Math.max(dist, 0.0f);
-            ((IEntityRenderer) mc.entityRenderer).setCameraDistance(dist);
+            ((EntityRendererAccessor) mc.entityRenderer).setCameraDistance(dist);
         }
     }
 

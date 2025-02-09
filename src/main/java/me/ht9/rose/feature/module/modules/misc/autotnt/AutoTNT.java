@@ -6,7 +6,7 @@ import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
-import me.ht9.rose.mixin.accessors.IItemBlock;
+import me.ht9.rose.mixin.accessors.ItemBlockAccessor;
 import me.ht9.rose.util.world.Facing;
 import net.minecraft.src.*;
 
@@ -227,7 +227,7 @@ public final class AutoTNT extends Module
     private boolean isTNT(ItemStack itemStack)
     {
         if (itemStack == null || !(itemStack.getItem() instanceof ItemBlock itemBlock)) return false;
-        return Block.blocksList[((IItemBlock) itemBlock).blockId()] instanceof BlockTNT;
+        return Block.blocksList[((ItemBlockAccessor) itemBlock).blockId()] instanceof BlockTNT;
     }
 
     public static AutoTNT instance()

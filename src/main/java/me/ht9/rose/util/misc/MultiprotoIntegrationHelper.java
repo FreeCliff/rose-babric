@@ -1,11 +1,11 @@
 package me.ht9.rose.util.misc;
 
-import com.github.zr0n1.multiproto.protocol.ProtocolVersionManager;
+import me.howard.multiprotonostapi.protocol.ProtocolVersionManager;
 
-public class MultiprotoIntegrationHelper
+public final class MultiprotoIntegrationHelper
 {
     public static int getProtocolVersionAsInt()
     {
-        return ProtocolVersionManager.getVersion().version;
+        return ProtocolVersionManager.version().version;
     }
 }

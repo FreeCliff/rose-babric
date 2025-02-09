@@ -5,7 +5,7 @@ import me.ht9.rose.event.events.RenderWorldPassEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
-import me.ht9.rose.mixin.accessors.IEntityRenderer;
+import me.ht9.rose.mixin.accessors.EntityRendererAccessor;
 import me.ht9.rose.util.render.Framebuffer;
 import me.ht9.rose.util.render.Shader;
 import net.minecraft.src.*;
@@ -56,7 +56,7 @@ public final class ESP extends Module
     {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
-        ((IEntityRenderer) mc.entityRenderer).invokeRenderHand(event.partialTicks(), 2);
+        ((EntityRendererAccessor) mc.entityRenderer).invokeRenderHand(event.partialTicks(), 2);
 
         glPushMatrix();
         glPushAttrib(0x2040);
@@ -65,7 +65,7 @@ public final class ESP extends Module
         //framebuffer.clearFramebuffer();
         framebuffer.bindFramebuffer(true);
 
-        ((IEntityRenderer) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
+        ((EntityRendererAccessor) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
         this.size = 0;
         for (Object object : mc.theWorld.loadedEntityList)
         {

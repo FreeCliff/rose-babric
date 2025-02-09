@@ -39,6 +39,8 @@ public class RoseGui extends GuiScreen implements Globals
     private int lastMouseX;
     private int lastMouseY;
 
+    private boolean isInMenu = false;
+
     private RoseGui()
     {
         float xOff = 30.0F;
@@ -54,6 +56,8 @@ public class RoseGui extends GuiScreen implements Globals
 
     public void openGui()
     {
+        this.isInMenu = false;
+
         this.lastOpenTime = System.nanoTime();
         this.universalTransparency = 255.0F;
         this.lastTransparency = 0.0F;
@@ -64,8 +68,10 @@ public class RoseGui extends GuiScreen implements Globals
         Globals.mc.displayGuiScreen(instance);
     }
 
-    public void openGuiMainMenu()
+    public void openGuiInMenu()
     {
+        this.isInMenu = true;
+
         this.lastOpenTime = System.nanoTime();
         this.universalTransparency = 0.0F;
         this.lastTransparency = 0.0F;
@@ -255,6 +261,15 @@ public class RoseGui extends GuiScreen implements Globals
     @Override
     public void keyTyped(char typedChar, int keyCode)
     {
+        if (this.isInMenu)
+        {
+            if (keyCode == 1)
+            {
+                Globals.mc.displayGuiScreen(null);
+                return;
+            }
+        }
+
         super.keyTyped(typedChar, keyCode);
 
         this.windows.getFirst().keyTyped(typedChar, keyCode);

@@ -43,7 +43,8 @@ public final class NameTags extends Module
         if (event.entity().isPlayerSleeping())
             y -= 1.5;
 
-        double scale = distance / 150;
+        double scale = 1.0 / 60.0 * 2.0;
+        scale = Math.max(scale, scale / 10.0 * Math.min(distance, 200.0));
 
         String name = String.format("%s (%.1f)", event.name(), distance);
 

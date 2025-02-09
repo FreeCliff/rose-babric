@@ -14,7 +14,7 @@
   },
   "license": "MPL-2.0",
   "icon": "assets/rose/icon.png",
-  "environment": "*",
+  "environment": "client",
   "entrypoints": {
     "client": [
       "me.ht9.rose.Rose"

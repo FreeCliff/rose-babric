@@ -4,7 +4,8 @@ import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PlayerDamageBlockEvent;
 import me.ht9.rose.event.events.SyncCurrentItemEvent;
 import me.ht9.rose.feature.module.modules.exploit.infdurability.InfDurability;
-import me.ht9.rose.mixin.accessors.IBlock;
+import me.ht9.rose.mixin.accessors.BlockAccessor;
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
@@ -16,11 +17,16 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = PlayerControllerMP.class, priority = 1001) // Fuck you StAPI
-public abstract class MixinPlayerControllerMP
+public abstract class MixinPlayerControllerMP extends PlayerController
 {
     @Shadow private int blockHitDelay;
 
     @Unique private SyncCurrentItemEvent.Type type;
+
+    public MixinPlayerControllerMP(Minecraft minecraft)
+    {
+        super(minecraft);
+    }
 
     @Inject(
             method = "sendBlockRemoving",
@@ -113,7 +119,7 @@ public abstract class MixinPlayerControllerMP
     {
         if (!InfDurability.instance().enabled()) return block.blockStrength(player);
 
-        if (((IBlock) block).blockHardness() < 0.0f) return 0.0f;
+        if (((BlockAccessor) block).blockHardness() < 0.0f) return 0.0f;
 
         boolean canHarvestBlock = block.blockMaterial.getIsHarvestable() ||
                 (player.inventory.mainInventory[9] != null && player.inventory.mainInventory[9].canHarvestBlock(block));
@@ -128,10 +134,10 @@ public abstract class MixinPlayerControllerMP
 
             //if (!player.onGround) strVsBlock /= 5.0f;
 
-            return strVsBlock / ((IBlock) block).blockHardness() / 30.0f;
+            return strVsBlock / ((BlockAccessor) block).blockHardness() / 30.0f;
         } else
         {
-            return 1.0f / ((IBlock) block).blockHardness() / 100.0f;
+            return 1.0f / ((BlockAccessor) block).blockHardness() / 100.0f;
         }
     }
 }

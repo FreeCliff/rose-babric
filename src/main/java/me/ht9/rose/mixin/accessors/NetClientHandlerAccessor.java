@@ -6,7 +6,7 @@ import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.gen.Accessor;
 
 @Mixin(NetClientHandler.class)
-public interface INetClientHandler
+public interface NetClientHandlerAccessor
 {
     @Accessor("netManager") NetworkManager netManager();
 }

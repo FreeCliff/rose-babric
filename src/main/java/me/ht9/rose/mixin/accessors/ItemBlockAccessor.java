@@ -5,7 +5,7 @@ import org.spongepowered.asm.mixin.gen.Accessor;
 import net.minecraft.src.ItemBlock;
 
 @Mixin(ItemBlock.class)
-public interface IItemBlock
+public interface ItemBlockAccessor
 {
     @Accessor("blockID") int blockId();
 }
