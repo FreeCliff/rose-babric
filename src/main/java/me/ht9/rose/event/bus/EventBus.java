@@ -64,9 +64,8 @@ public final class EventBus
         Invoker invoker;
         Class<?> eventType = method.getParameters()[0].getType();
         int priority = method.getDeclaredAnnotation(SubscribeEvent.class).priority();
-        if (instance instanceof Class<?>)
+        if (instance instanceof Class<?> parent)
         {
-            Class<?> parent = (Class<?>) instance;
             invoker = new Invoker(method, parent, eventType, priority);
         } else
         {
@@ -140,7 +139,7 @@ public final class EventBus
             method.invoke(instance, event);
         } catch (IllegalAccessException | InvocationTargetException e)
         {
-            Rose.logger().error("[EventBus] Failed to invoke " + event.getClass().getSimpleName() + ": ", e);
+            Rose.logger().error("[EventBus] Failed to invoke {}: ", event.getClass().getSimpleName(), e);
         }
     }
 

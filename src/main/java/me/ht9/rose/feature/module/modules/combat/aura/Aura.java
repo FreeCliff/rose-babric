@@ -15,6 +15,7 @@ import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 
+@SuppressWarnings("unused")
 @Description("Attacks entities near you")
 public final class Aura extends Module
 {

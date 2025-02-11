@@ -30,6 +30,7 @@ public class MixinWorld
         Rose.bus().post(event);
     }
 
+    @SuppressWarnings("rawtypes")
     @Inject(method = "getLoadedEntityList", at = @At("HEAD"), cancellable = true)
     public void getLoadedEntityList$Head(CallbackInfoReturnable<List> cir)
     {

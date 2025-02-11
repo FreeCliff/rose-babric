@@ -11,6 +11,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 
+@SuppressWarnings("ResultOfMethodCallIgnored")
 public final class FileUtils
 {
     public static final File MAIN_FOLDER = new File("rose");
@@ -40,7 +41,7 @@ public final class FileUtils
                 bw.close();
             } catch (Throwable t)
             {
-                Rose.logger().error("Failed to save module " + m.name() + ": ", t);
+                Rose.logger().error("Failed to save module {}: ", m.name(), t);
             }
         });
     }
@@ -59,7 +60,7 @@ public final class FileUtils
                 }
             } catch (Throwable t)
             {
-                Rose.logger().error("Failed to load module " + m.name() + ": ", t);
+                Rose.logger().error("Failed to load module {}: ", m.name(), t);
             }
         });
     }

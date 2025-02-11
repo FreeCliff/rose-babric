@@ -2,6 +2,7 @@ package me.ht9.rose.util.render;
 
 import me.ht9.rose.util.Globals;
 import net.minecraft.src.AxisAlignedBB;
+import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 
 public class Render3d implements Globals
@@ -24,7 +25,9 @@ public class Render3d implements Globals
 
     private static void renderFilledBox(double minX, double minY, double minZ, double maxX, double maxY, double maxZ)
     {
-        GL11.glBegin(GL11.GL_TRIANGLE_STRIP);
+        Tessellator tessellator = Tessellator.instance;
+
+        tessellator.startDrawing(GL11.GL_TRIANGLE_STRIP);
         GL11.glVertex3d(minX, minY, minZ);
         GL11.glVertex3d(minX, minY, maxZ);
         GL11.glVertex3d(minX, maxY, minZ);
@@ -167,5 +170,37 @@ public class Render3d implements Globals
         }
 
         GL11.glPopMatrix();
+    }
+
+    public static void drawOutlinedBox(AxisAlignedBB bb)
+    {
+        Tessellator tessellator = Tessellator.instance;
+
+        tessellator.startDrawing(3);
+        tessellator.addVertex(bb.minX, bb.minY, bb.minZ);
+        tessellator.addVertex(bb.maxX, bb.minY, bb.minZ);
+        tessellator.addVertex(bb.maxX, bb.minY, bb.maxZ);
+        tessellator.addVertex(bb.minX, bb.minY, bb.maxZ);
+        tessellator.addVertex(bb.minX, bb.minY, bb.minZ);
+        tessellator.draw();
+
+        tessellator.startDrawing(3);
+        tessellator.addVertex(bb.minX, bb.maxY, bb.minZ);
+        tessellator.addVertex(bb.maxX, bb.maxY, bb.minZ);
+        tessellator.addVertex(bb.maxX, bb.maxY, bb.maxZ);
+        tessellator.addVertex(bb.minX, bb.maxY, bb.maxZ);
+        tessellator.addVertex(bb.minX, bb.maxY, bb.minZ);
+        tessellator.draw();
+
+        tessellator.startDrawing(1);
+        tessellator.addVertex(bb.minX, bb.minY, bb.minZ);
+        tessellator.addVertex(bb.minX, bb.maxY, bb.minZ);
+        tessellator.addVertex(bb.maxX, bb.minY, bb.minZ);
+        tessellator.addVertex(bb.maxX, bb.maxY, bb.minZ);
+        tessellator.addVertex(bb.maxX, bb.minY, bb.maxZ);
+        tessellator.addVertex(bb.maxX, bb.maxY, bb.maxZ);
+        tessellator.addVertex(bb.minX, bb.minY, bb.maxZ);
+        tessellator.addVertex(bb.minX, bb.maxY, bb.maxZ);
+        tessellator.draw();
     }
 }

@@ -32,6 +32,7 @@ public class MixinGuiConnectFailed extends GuiScreen
     public void initGui$Return(CallbackInfo ci)
     {
         this.button = new GuiButton(new Random().nextInt(100, 999), width / 2 - 100, height / 4 + 120 + 12 + 20 + 2, "Auto Reconnect");
+        //noinspection unchecked
         this.controlList.add(this.button);
     }
 

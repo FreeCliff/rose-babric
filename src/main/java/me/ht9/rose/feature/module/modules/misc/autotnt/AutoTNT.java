@@ -13,6 +13,7 @@ import net.minecraft.src.*;
 import java.util.ArrayList;
 import java.util.List;
 
+@SuppressWarnings("unused")
 @Description("Automatically places tnt")
 public final class AutoTNT extends Module
 {
@@ -235,16 +236,8 @@ public final class AutoTNT extends Module
         return instance;
     }
 
-    private static class BlockPair
+    private record BlockPair(Vec3D pos, Facing facing)
     {
-        public Vec3D pos;
-        public Facing facing;
-
-        public BlockPair(Vec3D pos, Facing facing)
-        {
-            this.pos = pos;
-            this.facing = facing;
-        }
     }
 
     private enum Swap

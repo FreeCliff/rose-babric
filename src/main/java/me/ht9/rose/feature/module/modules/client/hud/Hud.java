@@ -302,6 +302,7 @@ public final class Hud extends Module
         return (r << 16) + (g << 8) + b + (a << 24);
     }
 
+    @SuppressWarnings("SameParameterValue")
     private double roundDouble(double number, int scale)
     {
         return new BigDecimal(number).setScale(scale, RoundingMode.HALF_UP).doubleValue();

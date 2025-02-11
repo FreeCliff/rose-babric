@@ -37,7 +37,8 @@ repositories {
 	maven { url = 'https://github.com/skibidiware/maven/raw/main' }
 	exclusiveContent {
 		forRepository {
-			maven {
+			//noinspection ForeignDelegate
+            maven {
 				name = "Modrinth"
 				url = "https://api.modrinth.com/maven"
 			}

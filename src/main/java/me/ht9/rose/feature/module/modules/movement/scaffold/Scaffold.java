@@ -356,16 +356,8 @@ public class Scaffold extends Module
         return instance;
     }
 
-    private static class BlockPair
+    private record BlockPair(Vec3D pos, Facing facing)
     {
-        public Vec3D pos;
-        public Facing facing;
-
-        public BlockPair(Vec3D pos, Facing facing)
-        {
-            this.pos = pos;
-            this.facing = facing;
-        }
     }
 
     public enum Tower

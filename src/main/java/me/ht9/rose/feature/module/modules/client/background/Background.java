@@ -65,6 +65,7 @@ public final class Background extends Module
         return instance;
     }
 
+    @SuppressWarnings("unused")
     public enum ShaderOption
     {
         Auroras("/assets/rose/shaders/auroras.frag"),

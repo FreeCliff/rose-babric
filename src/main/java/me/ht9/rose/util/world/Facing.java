@@ -10,8 +10,6 @@ public enum Facing
     WEST(5, 4, 1, 0, 0);
     /** Face order for D-U-N-S-E-W. */
     private final int order_a;
-    /** Face order for U-D-S-N-W-E. */
-    private final int order_b;
     private final int frontOffsetX;
     private final int frontOffsetY;
     private final int frontOffsetZ;
@@ -21,7 +19,6 @@ public enum Facing
     Facing(int par3, int par4, int par5, int par6, int par7)
     {
         this.order_a = par3;
-        this.order_b = par4;
         this.frontOffsetX = par5;
         this.frontOffsetY = par6;
         this.frontOffsetZ = par7;

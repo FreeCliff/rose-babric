@@ -22,6 +22,7 @@ public abstract class MixinGuiChest extends GuiContainer
         super(container);
     }
 
+    @SuppressWarnings("unchecked")
     @Override
     public void initGui()
     {

@@ -28,11 +28,13 @@ public abstract class SettingComponent<V> implements Component
         return this.setting;
     }
 
+    @SuppressWarnings("SameReturnValue")
     public float width()
     {
         return 125.0F;
     }
 
+    @SuppressWarnings("SameReturnValue")
     public float height()
     {
         return 14.0F;

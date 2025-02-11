@@ -64,6 +64,7 @@ public abstract class Module extends Feature
                 );
     }
 
+    @SuppressWarnings("EmptyMethod")
     public void onLogIn()
     {
     }
@@ -76,6 +77,7 @@ public abstract class Module extends Feature
     {
     }
 
+    @SuppressWarnings("EmptyMethod")
     public void onRender3d(float partialTicks)
     {
     }
@@ -88,6 +90,7 @@ public abstract class Module extends Feature
     {
     }
 
+    @SuppressWarnings("EmptyMethod")
     public void onLogOut()
     {
     }

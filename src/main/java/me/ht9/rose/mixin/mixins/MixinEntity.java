@@ -45,7 +45,6 @@ public abstract class MixinEntity
     public void moveEntity(double x, double y, double z, CallbackInfo ci)
     {
         Entity $this = (Entity) (Object) this;
-        // noinspection ConstantConditions
         if ($this == mc.thePlayer && this.shouldInject)
         {
             PlayerMoveEvent event = new PlayerMoveEvent(x, y, z);

@@ -1,5 +1,6 @@
 package me.ht9.rose.util.misc;
 
+@SuppressWarnings("unused")
 public enum FontColor
 {
     BLACK(0x0),
@@ -29,7 +30,7 @@ public enum FontColor
     @Override
     public String toString()
     {
-        return String.format("\u00a7%x", code);
+        return String.format("§%x", code);
     }
 
 

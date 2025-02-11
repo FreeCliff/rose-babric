@@ -10,13 +10,13 @@ import static org.lwjgl.opengl.GL11.*;
 
 public final class CFontRenderer extends CFont
 {
-    protected CharData[] boldChars = new CharData[256];
-    protected CharData[] italicChars = new CharData[256];
-    protected CharData[] boldItalicChars = new CharData[256];
+    private final CharData[] boldChars = new CharData[256];
+    private final CharData[] italicChars = new CharData[256];
+    private final CharData[] boldItalicChars = new CharData[256];
     private final int[] colorCode = new int[32];
-    protected int textureIDBold;
-    protected int textureIDItalic;
-    protected int textureIDItalicBold;
+    private int textureIDBold;
+    private int textureIDItalic;
+    private int textureIDItalicBold;
 
     public CFontRenderer(Font font)
     {
@@ -85,7 +85,7 @@ public final class CFontRenderer extends CFont
         for (int i = 0; i < size; i++)
         {
             char character = text.charAt(i);
-            if (character == '\u00a7')
+            if (character == '§')
             {
                 int colorIndex = 21;
                 try
@@ -175,14 +175,14 @@ public final class CFontRenderer extends CFont
         return (float) x / 2.0f;
     }
 
-    public float drawGradientString(String text, double x, double y, boolean shadow)
+    public void drawGradientString(String text, double x, double y, boolean shadow)
     {
         x -= 1.0;
         y -= 2.0;
 
         int color = Hud.instance().getColor((float) x).getRGB();
 
-        if (text == null) return 0.0f;
+        if (text == null) return;
 
         if (color == 0x20FFFFFF) color = 0xFFFFFF;
         if ((color & 0xFC000000) == 0) color |= 0xFF000000;
@@ -216,7 +216,7 @@ public final class CFontRenderer extends CFont
                 color = Hud.instance().getColor((float) x / 2.0f).getRGB();
                 glColor4f((float)(color >> 16 & 0xFF) / 255.0f, (float)(color >> 8 & 0xFF) / 255.0f, (float)(color & 0xFF) / 255.0f, alpha);
             }
-            if (character == '\u00a7')
+            if (character == '§')
             {
                 int colorIndex = 21;
                 try
@@ -298,12 +298,11 @@ public final class CFontRenderer extends CFont
             if (underline)
                 this.drawLine(x, y + (double)currentData[character].height - 2.0, x + (double) currentData[character].width - 8.0, y + (double)currentData[character].height - 2.0);
 
-            x += (double)(currentData[character].width - 8 + this.charOffset);
+            x += currentData[character].width - 8 + this.charOffset;
         }
         glHint(GL_POLYGON_SMOOTH_HINT, GL_DONT_CARE);
         glPopMatrix();
 
-        return (float) x / 2.0f;
     }
 
     @Override
@@ -317,7 +316,7 @@ public final class CFontRenderer extends CFont
         for (int i = 0; i < size; i++)
         {
             char character = text.charAt(i);
-            if (character == '\u00a7')
+            if (character == '§')
             {
                 i++;
                 continue;
@@ -359,7 +358,7 @@ public final class CFontRenderer extends CFont
                 for (int i = 0; i < word.length(); i++)
                 {
                     char c = word.toCharArray()[i];
-                    if (c != '\u00a7' || i >= word.length() - 1) continue;
+                    if (c != '§' || i >= word.length() - 1) continue;
                     lastColorCode = word.toCharArray()[i + 1];
                 }
                 StringBuilder stringBuilder = new StringBuilder();
@@ -369,18 +368,17 @@ public final class CFontRenderer extends CFont
                     continue;
                 }
                 finalWords.add(currentWord);
-                currentWord = "\u00a7" + lastColorCode + word + " ";
+                currentWord = "§" + lastColorCode + word + " ";
             }
             if (!currentWord.isEmpty())
             {
                 if ((double) this.getStringWidth(currentWord) < width)
                 {
-                    finalWords.add("\u00a7" + lastColorCode + currentWord + " ");
+                    finalWords.add("§" + lastColorCode + currentWord + " ");
                 }
                 else
                 {
-                    for (String s : this.formatString(currentWord, width))
-                        finalWords.add(s);
+                    finalWords.addAll(this.formatString(currentWord, width));
                 }
             }
         }
@@ -393,13 +391,13 @@ public final class CFontRenderer extends CFont
 
     public List<String> formatString(String string, double width)
     {
-        ArrayList<String> finalWords = new ArrayList<String>();
+        ArrayList<String> finalWords = new ArrayList<>();
         String currentWord = "";
         char lastColorCode = '\uffff';
         char[] chars = string.toCharArray();
         for (int i = 0; i < chars.length; ++i) {
             char c = chars[i];
-            if (c == '\u00a7' && i < chars.length - 1) {
+            if (c == '§' && i < chars.length - 1) {
                 lastColorCode = chars[i + 1];
             }
             StringBuilder stringBuilder = new StringBuilder();
@@ -408,7 +406,7 @@ public final class CFontRenderer extends CFont
                 continue;
             }
             finalWords.add(currentWord);
-            currentWord = "\u00a7" + lastColorCode + c;
+            currentWord = "§" + lastColorCode + c;
         }
         if (!currentWord.isEmpty()) {
             finalWords.add(currentWord);

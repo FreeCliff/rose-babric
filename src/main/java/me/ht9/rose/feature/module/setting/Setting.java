@@ -13,7 +13,7 @@ public final class Setting<V>
     private final Number max;
     private final Supplier<Boolean> visibility;
     private int enumIndex = 0;
-    private int roundingScale = 0;
+    private final int roundingScale;
     private Consumer<V> onChange;
 
     public <N extends Number> Setting(String name, N min, V value, N max, int roundingScale, Supplier<Boolean> visibility)

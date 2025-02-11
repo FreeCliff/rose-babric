@@ -5,6 +5,7 @@ import me.ht9.rose.event.events.SignEditEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 
+@SuppressWarnings("unused")
 @Description("Automatically writes to signs.")
 public final class AutoSign extends Module
 {

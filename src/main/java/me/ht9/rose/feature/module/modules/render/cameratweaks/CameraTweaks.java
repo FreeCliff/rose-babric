@@ -10,12 +10,14 @@ import me.ht9.rose.mixin.accessors.EntityRendererAccessor;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
 
+@SuppressWarnings("unused")
 @Description("Allows modification of the third person camera")
 public final class CameraTweaks extends Module
 {
     private static final CameraTweaks instance = new CameraTweaks();
 
     public final Setting<Boolean> clip = new Setting<>("Clip", true);
+
     private final Setting<Float> cameraDistance = new Setting<>("CameraDistance", 0.0f, 4.0f, 15.0f, 1)
             .withOnChange(val ->
             {

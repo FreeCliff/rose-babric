@@ -130,10 +130,6 @@ public abstract class MixinPlayerControllerMP extends PlayerController
 
             if (player.inventory.mainInventory[9] != null) strVsBlock *= player.inventory.mainInventory[9].getStrVsBlock(block);
 
-            //if (player.isInWater()) strVsBlock /= 5.0f;
-
-            //if (!player.onGround) strVsBlock /= 5.0f;
-
             return strVsBlock / ((BlockAccessor) block).blockHardness() / 30.0f;
         } else
         {

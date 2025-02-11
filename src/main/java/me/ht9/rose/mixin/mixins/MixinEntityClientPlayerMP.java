@@ -136,7 +136,6 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         Rose.bus().post(event);
         if (event.cancelled())
             ci.cancel();
-        message = event.message();
     }
 
     @Override public void func_6420_o() {}

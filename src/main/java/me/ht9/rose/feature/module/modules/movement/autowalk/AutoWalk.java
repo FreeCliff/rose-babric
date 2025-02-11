@@ -4,6 +4,7 @@ import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.MoveStateUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 
+@SuppressWarnings("unused")
 public final class AutoWalk extends Module
 {
     private static final AutoWalk instance = new AutoWalk();

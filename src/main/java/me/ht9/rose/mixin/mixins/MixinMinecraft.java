@@ -3,11 +3,13 @@ package me.ht9.rose.mixin.mixins;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.*;
 import me.ht9.rose.feature.gui.GuiCustomChat;
+import me.ht9.rose.feature.module.modules.render.cameratweaks.CameraTweaks;
 import me.ht9.rose.util.render.Framebuffer;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 import org.lwjgl.input.Keyboard;
 import org.lwjgl.input.Mouse;
+import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
@@ -159,5 +161,12 @@ public class MixinMinecraft
         {
             instance.displayGuiScreen(screen);
         }
+    }
+
+    @Redirect(method = "run", at = @At(value = "FIELD", target = "Lnet/minecraft/src/GameSettings;thirdPersonView:Z", opcode = Opcodes.PUTFIELD))
+    private void redirectDisableThirdPerson(GameSettings instance, boolean value)
+    {
+        if (CameraTweaks.instance().enabled()) return;
+        instance.thirdPersonView = value;
     }
 }

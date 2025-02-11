@@ -37,11 +37,6 @@ public enum Category
         ).collect(Collectors.toList());
     }
 
-    public boolean hasModules()
-    {
-        return !this.modules().isEmpty();
-    }
-
     public static Optional<Category> matchCategory(String packageName)
     {
         return Arrays.stream(Category.values()).filter(

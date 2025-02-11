@@ -17,12 +17,6 @@ public final class GuiSession extends GuiScreen
         this.parentScreen = parentScreen;
     }
 
-    @Override
-    public void updateScreen()
-    {
-        super.updateScreen();
-    }
-
     @SuppressWarnings("unchecked")
     @Override
     public void initGui()

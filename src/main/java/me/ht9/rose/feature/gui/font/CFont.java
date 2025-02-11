@@ -1,5 +1,6 @@
 package me.ht9.rose.feature.gui.font;
 
+import me.ht9.rose.Rose;
 import me.ht9.rose.util.Globals;
 
 import java.awt.*;
@@ -10,13 +11,12 @@ import static org.lwjgl.opengl.GL11.*;
 
 public abstract class CFont implements Globals
 {
-    private final float imgSize = 512.0f;
-    protected CharData[] charData = new CharData[256];
+    protected final CharData[] charData = new CharData[256];
     protected Font font;
     protected boolean antiAlias;
     protected boolean fractionalMetrics;
     protected int fontHeight = -1;
-    protected int charOffset = 0;
+    protected final int charOffset = 0;
     protected int textureID;
 
     public CFont(Font font, boolean antiAlias, boolean fractionalMetrics)
@@ -38,7 +38,7 @@ public abstract class CFont implements Globals
         }
         catch (Exception e)
         {
-            e.printStackTrace();
+            Rose.logger().error("Error occurred while trying to set up texture", e);
             return -1;
         }
     }
@@ -92,6 +92,7 @@ public abstract class CFont implements Globals
         return bufferedImage;
     }
 
+    @SuppressWarnings("ClassEscapesDefinedScope")
     public void drawChar(CharData[] chars, char c, float x, float y) throws ArrayIndexOutOfBoundsException
     {
         try
@@ -100,7 +101,7 @@ public abstract class CFont implements Globals
         }
         catch (Throwable t)
         {
-            t.printStackTrace();
+            Rose.logger().error("Error occurred while drawing character", t);
         }
     }
 

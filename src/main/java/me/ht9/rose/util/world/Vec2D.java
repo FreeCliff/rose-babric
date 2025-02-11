@@ -1,4 +1,4 @@
-package me.ht9.rose.feature.module.modules.exploit.newchunks.util;
+package me.ht9.rose.util.world;
 
 public final class Vec2D
 {
