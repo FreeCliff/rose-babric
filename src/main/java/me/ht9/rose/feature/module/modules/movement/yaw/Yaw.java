@@ -1,27 +1,37 @@
 package me.ht9.rose.feature.module.modules.movement.yaw;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
-import me.ht9.rose.event.events.Render2dEvent;
+import me.ht9.rose.event.events.PosRotUpdateEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
-import me.ht9.rose.feature.module.setting.Setting;
 
-@Description("set your yaw")
+@Description("Rotates your yaw to be perfect")
 public final class Yaw extends Module {
     private static final Yaw instance = new Yaw();
 
-    public final Setting<Integer> direction = new Setting<>("Direction", 0, 0, 7);
+    private float yaw = 0.0f;
 
     private Yaw()
     {
-        setArrayListInfo(() -> String.valueOf(direction.value() * 45));
+        setArrayListInfo(() -> String.valueOf(this.yaw));
     }
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public void onUpdate(Render2dEvent event) { // doing this with PosRotUpdateEvent doesn't work :pray:
-        if (mc.thePlayer == null) return;
-        mc.thePlayer.rotationYaw = 45 * direction.value();
+    public void onUpdate(PosRotUpdateEvent event) {
+        this.yaw = wrapAngleTo180(Math.round(mc.thePlayer.rotationYaw / 45.0f) * 45.0f);
+        event.setYaw(this.yaw);
+        event.setClientRotation(true);
+    }
+
+    private static float wrapAngleTo180(float f)
+    {
+        f %= 360.0f;
+
+        if (f >= 180.0f) f -= 360.0f;
+        if (f < -180.0f) f += 360.0f;
+
+        return f;
     }
 
     public static Yaw instance() {

@@ -14,6 +14,7 @@ public final class PosRotUpdateEvent extends Event implements Globals
     private boolean onGround;
 
     private boolean setModelRotations;
+    private boolean clientRotation;
 
     public PosRotUpdateEvent(double packetX, double packetY, double packetZ, float yaw, float pitch, boolean onGround)
     {
@@ -31,6 +32,11 @@ public final class PosRotUpdateEvent extends Event implements Globals
         Factory.instance().rotationRenderPitch = this.pitch;
 
         this.setModelRotations = true;
+    }
+
+    public void setClientRotation(boolean clientRotation)
+    {
+        this.clientRotation = true;
     }
 
     public double packetX()
@@ -66,6 +72,11 @@ public final class PosRotUpdateEvent extends Event implements Globals
     public boolean isSetModelRotations()
     {
         return this.setModelRotations;
+    }
+
+    public boolean clientRotation()
+    {
+        return clientRotation;
     }
 
     public void setPacketX(double packetX)

@@ -16,7 +16,7 @@ public final class VisualRange extends Module
         {
             if (mc.theWorld != null)
             {
-                return String.valueOf(mc.theWorld.playerEntities.size());
+                return String.valueOf(mc.theWorld.playerEntities.size() - 1);
             }
             return "";
         });

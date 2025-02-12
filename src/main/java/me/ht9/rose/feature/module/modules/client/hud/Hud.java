@@ -4,6 +4,7 @@ import me.ht9.rose.Rose;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.ModuleEvent;
 import me.ht9.rose.event.factory.Factory;
+import me.ht9.rose.feature.gui.GuiCustomChat;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.modules.Category;
@@ -12,7 +13,6 @@ import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.feature.registry.Registry;
 import me.ht9.rose.util.render.Easing;
 import me.ht9.rose.util.render.Render2d;
-import net.minecraft.src.GuiChat;
 import net.minecraft.src.MathHelper;
 import net.minecraft.src.ScaledResolution;
 
@@ -178,7 +178,7 @@ public final class Hud extends Module
             case Bottom ->
             {
                 float offset = 9.0f;
-                if (mc.currentScreen instanceof GuiChat)
+                if (mc.currentScreen instanceof GuiCustomChat)
                     offset += 16.0f;
                 Iterator<ArrayListModule> arrayListModuleIterator = this.renderingMods.iterator();
                 while (arrayListModuleIterator.hasNext())
@@ -258,7 +258,7 @@ public final class Hud extends Module
             combined += " [" + otherX + ", " + otherZ + "]";
 
         float offset = 9.0f;
-        if (mc.currentScreen instanceof GuiChat)
+        if (mc.currentScreen instanceof GuiCustomChat)
             offset += 16.0f;
 
         ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);

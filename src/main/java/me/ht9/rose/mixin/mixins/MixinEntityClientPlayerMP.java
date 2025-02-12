@@ -65,6 +65,12 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         this.rotationPitch = event.pitch();
         this.onGround = event.onGround();
 
+        if (event.clientRotation())
+        {
+            this.oldYaw = this.rotationYaw;
+            this.oldPitch = this.rotationPitch;
+        }
+
         Factory.instance().doSetModelRotations = event.isSetModelRotations();
     }
 
@@ -137,6 +143,4 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         if (event.cancelled())
             ci.cancel();
     }
-
-    @Override public void func_6420_o() {}
 }
