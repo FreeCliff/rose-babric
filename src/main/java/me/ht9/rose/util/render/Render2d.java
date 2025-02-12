@@ -1,7 +1,7 @@
 package me.ht9.rose.util.render;
 
 import me.ht9.rose.Rose;
-import me.ht9.rose.feature.gui.font.CFontRenderer;
+import me.ht9.rose.util.render.font.CFontRenderer;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
 import me.ht9.rose.feature.module.modules.client.hud.Hud;
 import me.ht9.rose.mixin.accessors.MinecraftAccessor;

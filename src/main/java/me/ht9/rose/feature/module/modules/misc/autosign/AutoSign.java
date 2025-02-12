@@ -14,12 +14,6 @@ public final class AutoSign extends Module
     private String[] lines;
 
     @Override
-    public void onEnable()
-    {
-        this.lines = null;
-    }
-
-    @Override
     public void onDisable()
     {
         this.lines = null;
@@ -32,17 +26,14 @@ public final class AutoSign extends Module
         {
             if (this.lines != null)
             {
-                event.setLine1(this.lines[0]);
-                event.setLine2(this.lines[1]);
-                event.setLine3(this.lines[2]);
-                event.setLine4(this.lines[3]);
+                event.sign().signText = this.lines;
                 event.setCancelled(true);
             }
         } else if (event.type() == SignEditEvent.Type.FINISH)
         {
             if (this.lines == null)
             {
-                this.lines = new String[]{ event.line1(), event.line2(), event.line3(), event.line4() };
+                this.lines = event.sign().signText;
             }
         }
     }

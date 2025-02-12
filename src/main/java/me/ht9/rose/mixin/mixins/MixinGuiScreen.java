@@ -54,7 +54,7 @@ public class MixinGuiScreen extends Gui
         if (Background.instance().enabled() && Background.instance().shader.value())
         {
             glPushMatrix();
-            glPushAttrib(8256);
+            glPushAttrib(GL_ENABLE_BIT | GL_LIGHTING_BIT);
 
             Shader shader = Background.instance().shader();
             glUseProgram(shader.programId());

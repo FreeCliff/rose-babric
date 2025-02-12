@@ -59,7 +59,7 @@ public final class ESP extends Module
         ((EntityRendererAccessor) mc.entityRenderer).invokeRenderHand(event.partialTicks(), 2);
 
         glPushMatrix();
-        glPushAttrib(0x2040);
+        glPushAttrib(GL_ENABLE_BIT | GL_LIGHTING_BIT);
 
         Framebuffer framebuffer = shader.framebuffer();
         //framebuffer.clearFramebuffer();

@@ -1,4 +1,4 @@
-package me.ht9.rose.feature.gui.font;
+package me.ht9.rose.util.render.font;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.util.Globals;

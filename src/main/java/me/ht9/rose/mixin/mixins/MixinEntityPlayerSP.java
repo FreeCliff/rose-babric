@@ -2,21 +2,20 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.PushByEvent;
+import me.ht9.rose.event.events.SignEditEvent;
 import me.ht9.rose.feature.module.modules.misc.portals.Portals;
 import net.minecraft.client.Minecraft;
-import net.minecraft.src.EntityPlayer;
-import net.minecraft.src.EntityPlayerSP;
-import net.minecraft.src.GuiScreen;
-import net.minecraft.src.World;
+import net.minecraft.src.*;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(value = EntityPlayerSP.class)
-public class MixinEntityPlayerSP extends EntityPlayer
+public abstract class MixinEntityPlayerSP extends EntityPlayer
 {
     @Shadow protected Minecraft mc;
 
@@ -50,8 +49,16 @@ public class MixinEntityPlayerSP extends EntityPlayer
         return instance.currentScreen;
     }
 
-    @Override
-    public void func_6420_o()
+    @Inject(method = "displayGUIEditSign", at = @At("HEAD"), cancellable = true)
+    private void displayGUIEditSign$Head(TileEntitySign sign, CallbackInfo ci)
     {
+        SignEditEvent event = new SignEditEvent(SignEditEvent.Type.START, sign);
+        Rose.bus().post(event);
+        if (event.cancelled())
+        {
+            if (mc.theWorld.multiplayerWorld)
+                mc.getSendQueue().addToSendQueue(new Packet130UpdateSign(sign.xCoord, sign.yCoord, sign.zCoord, sign.signText));
+            ci.cancel();
+        }
     }
 }

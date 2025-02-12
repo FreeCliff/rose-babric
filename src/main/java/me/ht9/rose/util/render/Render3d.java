@@ -1,11 +1,12 @@
 package me.ht9.rose.util.render;
 
+import me.ht9.rose.Rose;
 import me.ht9.rose.util.Globals;
 import net.minecraft.src.AxisAlignedBB;
 import net.minecraft.src.Tessellator;
 import org.lwjgl.opengl.GL11;
 
-public class Render3d implements Globals
+public final class Render3d implements Globals
 {
     public static void drawShaderBox(final AxisAlignedBB axis)
     {
@@ -88,7 +89,7 @@ public class Render3d implements Globals
         int error = GL11.glGetError();
         if (error != GL11.GL_NO_ERROR)
         {
-            System.err.println("OpenGL error during setupRender3d: " + error);
+            Rose.logger().error("OpenGL error during setupRender3d: {}", error);
         }
     }
 
@@ -109,7 +110,7 @@ public class Render3d implements Globals
         int error = GL11.glGetError();
         if (error != GL11.GL_NO_ERROR)
         {
-            System.err.println("OpenGL error during endRender3d: " + error);
+            Rose.logger().error("OpenGL error during endRender3d: {}", error);
         }
     }
 
