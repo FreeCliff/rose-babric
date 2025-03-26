@@ -101,4 +101,9 @@ public final class GuiCustomChat extends GuiScreen
         this.drawString(this.fontRenderer, "> " + event.text() + (this.updateCounter / 6 % 2 == 0 ? "_" : ""), 4, this.height - 12, 0xE0E0E0);
         super.drawScreen(i, j, f);
     }
+
+    public void setMessage(String message)
+    {
+        this.message = message;
+    }
 }

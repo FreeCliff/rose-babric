@@ -34,7 +34,7 @@ loom {
 repositories {
 	maven { url = 'https://maven.glass-launcher.net/babric' }
 	maven { url = 'https://jitpack.io' }
-	maven { url = 'https://github.com/skibidiware/maven/raw/main' }
+	maven { url = 'https://maven.nathatpas.tel/releases' }
 	exclusiveContent {
 		forRepository {
 			//noinspection ForeignDelegate
@@ -52,7 +52,7 @@ repositories {
 
 dependencies {
 	minecraft("com.mojang:minecraft:${project.minecraft_version}")
-	mappings("org.wksh:mcp:${project.mcp_mappings}")
+	mappings("org.wksh:mcp:${project.mcp_mappings}:v2")
 	modImplementation("babric:fabric-loader:${project.loader_version}")
 
 	implementation 'com.google.guava:guava:33.2.1-jre'
