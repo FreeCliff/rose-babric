@@ -132,7 +132,7 @@ public final class StringComponent extends SettingComponent<String>
             {
                 this.textBoxFocused = false;
                 this.setting().setValue(this.textBoxText);
-            } else if (Character.isLetterOrDigit(typedChar) || typedChar == '-')
+            } else if (Character.isDefined(typedChar))
             {
                 this.textBoxText += typedChar;
             }
