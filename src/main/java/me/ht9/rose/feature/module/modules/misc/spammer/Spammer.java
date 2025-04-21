@@ -121,6 +121,7 @@ public final class Spammer extends Module
                 String line;
                 while ((line = reader.readLine()) != null)
                 {
+                    if (line.isEmpty()) continue;
                     messages.add(line);
                 }
             }
