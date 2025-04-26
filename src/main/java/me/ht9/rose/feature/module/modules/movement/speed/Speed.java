@@ -49,18 +49,20 @@ public final class Speed extends Module
     public void onTick(TickEvent event)
     {
         if(mc.thePlayer == null || mc.theWorld == null) return;
-        if (this.type.value() == Type.Vanilla)
-        {
-            Movement.setSpeed(
-                    mc.thePlayer.movementInput.moveForward != 0 || mc.thePlayer.movementInput.moveStrafe != 0
-                            ? speedd.value() * .14
-                            : 0
-            );
-        }
-        else if (this.type.value() == Type.NoCheat)
+        if (this.type.value() == Type.NoCheat)
         {
             if (!this.timer.hasReached(delay.value(), true)) return;
             mc.getSendQueue().addToSendQueue(bypass.value().get());
+        }
+        else
+        {
+            Movement.setSpeed(
+                    (this.type.value() == Type.Vanilla)
+                    ? (mc.thePlayer.movementInput.moveForward != 0 || mc.thePlayer.movementInput.moveStrafe != 0
+                            ? speedd.value() * .12
+                            : 0)
+                    : Math.sqrt(mc.thePlayer.motionX * mc.thePlayer.motionX + mc.thePlayer.motionZ * mc.thePlayer.motionZ)
+            );
         }
     }
 
@@ -72,6 +74,7 @@ public final class Speed extends Module
     public enum Type
     {
         Vanilla,
+        Strafe,
         NoCheat
     }
 
