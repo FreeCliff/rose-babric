@@ -7,8 +7,13 @@ import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.mixin.accessors.EntityRendererAccessor;
 import me.ht9.rose.util.render.Framebuffer;
+import me.ht9.rose.util.render.Render3d;
 import me.ht9.rose.util.render.Shader;
 import net.minecraft.src.*;
+
+import java.awt.*;
+import java.util.ArrayList;
+import java.util.List;
 
 import static org.lwjgl.opengl.GL11.*;
 import static org.lwjgl.opengl.GL20.*;
@@ -17,6 +22,8 @@ import static org.lwjgl.opengl.GL20.*;
 public final class ESP extends Module
 {
     private static final ESP instance = new ESP();
+
+    private final Setting<Mode> mode = new Setting<>("Mode", Mode.Shader);
 
     private final Setting<Boolean> rainbow = new Setting<>("Rainbow", true);
     private final Setting<Boolean> fill = new Setting<>("Fill", true);
@@ -56,6 +63,50 @@ public final class ESP extends Module
     {
         if (mc.thePlayer == null || mc.theWorld == null) return;
 
+        List<Entity> entities = new ArrayList<>();
+        this.size = 0;
+        for (Object object : mc.theWorld.loadedEntityList)
+        {
+            if (!(object instanceof Entity entity)) continue;
+            if (entity.equals(mc.thePlayer)) continue;
+
+            if (
+                    all.value()
+                            || (entity instanceof EntityPlayer && players.value())
+                            || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
+                            || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
+                            || (entity instanceof EntityItem && items.value())
+            )
+            {
+                entities.add(entity);
+                this.size++;
+            }
+        }
+
+        if (mode.value() == Mode.Box)
+        {
+            Render3d.render3d(() ->
+            {
+                ((EntityRendererAccessor) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
+                for (Entity entity : entities)
+                {
+                    Color color = new Color(88, 91, 112);
+                    if (entity instanceof EntityAnimal || entity instanceof EntityWaterMob) color = new Color(166, 227, 161);
+                    if (entity instanceof EntityMob || entity instanceof EntityFlying) color = new Color(243, 139, 168);
+                    if (entity instanceof EntityPlayer) color = Color.WHITE;
+
+                    double x = entity.posX - RenderManager.renderPosX;
+                    double y = entity.posY - RenderManager.renderPosY;
+                    double z = entity.posZ - RenderManager.renderPosZ;
+
+                    glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, .85f);
+                    Render3d.drawOutlinedBox(AxisAlignedBB.getBoundingBox(x - entity.width, y, z - entity.width, x + entity.width, y + entity.height, z + entity.width));
+                }
+                glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            });
+            return;
+        }
+
         ((EntityRendererAccessor) mc.entityRenderer).invokeRenderHand(event.partialTicks(), 2);
 
         glPushMatrix();
@@ -66,38 +117,24 @@ public final class ESP extends Module
         framebuffer.bindFramebuffer(true);
 
         ((EntityRendererAccessor) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
-        this.size = 0;
-        for (Object object : mc.theWorld.loadedEntityList)
+        for (Entity entity : entities)
         {
-            if (!(object instanceof Entity entity)) continue;
-            if (entity.equals(mc.thePlayer)) continue;
-
-            if (
-                    all.value()
-                    || (entity instanceof EntityPlayer && players.value())
-                    || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
-                    || ((entity instanceof EntityMob || entity instanceof EntityFlying) && mobs.value())
-                    || (entity instanceof EntityItem && items.value())
-            )
+            if (entity.ticksExisted == 0)
             {
-                if (entity.ticksExisted == 0)
-                {
-                    entity.lastTickPosX = entity.posX;
-                    entity.lastTickPosY = entity.posY;
-                    entity.lastTickPosZ = entity.posZ;
-                }
-
-                glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-                double var3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) event.partialTicks();
-                double var5 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) event.partialTicks();
-                double var7 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) event.partialTicks();
-                float var9 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialTicks();
-                float brightness = entity.getEntityBrightness(event.partialTicks());
-                Render render = RenderManager.instance.getEntityRenderObject(entity);
-                glColor3f(brightness, brightness, brightness);
-                render.doRender(entity, var3 - RenderManager.renderPosX, var5 - RenderManager.renderPosY, var7 - RenderManager.renderPosZ, var9, event.partialTicks());
-                this.size++;
+                entity.lastTickPosX = entity.posX;
+                entity.lastTickPosY = entity.posY;
+                entity.lastTickPosZ = entity.posZ;
             }
+
+            glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
+            double var3 = entity.lastTickPosX + (entity.posX - entity.lastTickPosX) * (double) event.partialTicks();
+            double var5 = entity.lastTickPosY + (entity.posY - entity.lastTickPosY) * (double) event.partialTicks();
+            double var7 = entity.lastTickPosZ + (entity.posZ - entity.lastTickPosZ) * (double) event.partialTicks();
+            float var9 = entity.prevRotationYaw + (entity.rotationYaw - entity.prevRotationYaw) * event.partialTicks();
+            float brightness = entity.getEntityBrightness(event.partialTicks());
+            Render render = RenderManager.instance.getEntityRenderObject(entity);
+            glColor3f(brightness, brightness, brightness);
+            render.doRender(entity, var3 - RenderManager.renderPosX, var5 - RenderManager.renderPosY, var7 - RenderManager.renderPosZ, var9, event.partialTicks());
         }
 
         glEnable(GL_BLEND);
@@ -134,5 +171,11 @@ public final class ESP extends Module
     public static ESP instance()
     {
         return instance;
+    }
+
+    public enum Mode
+    {
+        Shader,
+        Box
     }
 }

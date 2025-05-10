@@ -6,6 +6,7 @@ import java.nio.ByteBuffer;
 
 import static org.lwjgl.opengl.EXTFramebufferObject.*;
 import static org.lwjgl.opengl.GL11.*;
+import static org.lwjgl.opengl.GL14.*;
 
 public final class Framebuffer
 {
@@ -37,7 +38,7 @@ public final class Framebuffer
 
         createFramebuffer(width, height);
         checkFramebufferComplete();
-        glBindFramebufferEXT(0x8D40, 0);
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
     }
 
     public void delete()
@@ -59,7 +60,7 @@ public final class Framebuffer
 
         if (fbo > -1)
         {
-            glBindFramebufferEXT(0x8D40, 0);
+            glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
             glDeleteFramebuffersEXT(fbo);
             fbo = -1;
         }
@@ -81,12 +82,12 @@ public final class Framebuffer
         glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_CLAMP);
 
         glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA8, width, height, 0, GL_RGBA, GL_UNSIGNED_BYTE, (ByteBuffer) null);
-        glBindFramebufferEXT(0x8D40, fbo);
-        glFramebufferTexture2DEXT(0x8D40, 0x8CE0, 0xDE1, texture, 0);
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
+        glFramebufferTexture2DEXT(GL_FRAMEBUFFER_EXT, GL_COLOR_ATTACHMENT0_EXT, GL_TEXTURE_2D, texture, 0);
 
-        glBindRenderbufferEXT(0x8D41, depthbuffer);
-        glRenderbufferStorageEXT(0x8D41, 0x81A6, width, height);
-        glFramebufferRenderbufferEXT(0x8D40, 0x8D00, 0x8D41, depthbuffer);
+        glBindRenderbufferEXT(GL_RENDERBUFFER_EXT, depthbuffer);
+        glRenderbufferStorageEXT(GL_RENDERBUFFER_EXT, GL_DEPTH_COMPONENT16, width, height);
+        glFramebufferRenderbufferEXT(GL_FRAMEBUFFER_EXT, GL_DEPTH_ATTACHMENT_EXT, GL_RENDERBUFFER_EXT, depthbuffer);
 
         clearFramebuffer();
         unbindFramebufferTexture();
@@ -104,7 +105,7 @@ public final class Framebuffer
 
     public void bindFramebuffer(boolean setViewport)
     {
-        glBindFramebufferEXT(0x8D40, fbo);
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, fbo);
 
         if (setViewport)
             glViewport(0, 0, width, height);
@@ -112,12 +113,12 @@ public final class Framebuffer
 
     public void unbindFramebuffer()
     {
-        glBindFramebufferEXT(0x8D40, 0);
+        glBindFramebufferEXT(GL_FRAMEBUFFER_EXT, 0);
     }
 
     private void checkFramebufferComplete()
     {
-        int status = glCheckFramebufferStatusEXT(0x8D40);
+        int status = glCheckFramebufferStatusEXT(GL_FRAMEBUFFER_EXT);
 
         if (status != 0x8CD5)
             throw new RuntimeException("glCheckFramebufferStatusEXT returned status code " + status);
