@@ -3,6 +3,7 @@ package me.ht9.rose.mixin.mixins;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.*;
 import me.ht9.rose.feature.gui.GuiCustomChat;
+import me.ht9.rose.feature.module.modules.misc.fastplace.FastPlace;
 import me.ht9.rose.feature.module.modules.render.cameratweaks.CameraTweaks;
 import me.ht9.rose.util.render.Framebuffer;
 import net.minecraft.client.Minecraft;
@@ -20,11 +21,19 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.lwjgl.opengl.GL11.*;
 
 @Mixin(value = Minecraft.class)
-public class MixinMinecraft
+public abstract class MixinMinecraft
 {
     @Shadow public MovingObjectPosition objectMouseOver;
     @Shadow public int displayWidth;
     @Shadow public int displayHeight;
+
+    @Shadow public boolean inGameHasFocus;
+
+    @Shadow protected abstract void clickMouse(int i);
+
+    @Shadow private int mouseTicksRan;
+
+    @Shadow private int ticksRan;
 
     @Inject(
             method = "startGame",
@@ -168,5 +177,16 @@ public class MixinMinecraft
     {
         if (CameraTweaks.instance().enabled()) return;
         instance.thirdPersonView = value;
+    }
+
+    @Inject(method = "runTick", at = @At(value = "INVOKE", target = "Lorg/lwjgl/input/Mouse;isButtonDown(I)Z", ordinal = 1, remap = false))
+    private void runTick$rightButtonDown(CallbackInfo ci)
+    {
+        if (!FastPlace.instance().enabled()) return;
+        if (Mouse.isButtonDown(1) && this.inGameHasFocus)
+        {
+            this.clickMouse(1);
+            this.mouseTicksRan = this.ticksRan;
+        }
     }
 }
