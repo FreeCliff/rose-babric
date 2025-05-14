@@ -1,17 +1,19 @@
 package me.ht9.rose.feature.module.modules.render.esp;
 
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
+import me.ht9.rose.event.events.RenderWorldEvent;
 import me.ht9.rose.event.events.RenderWorldPassEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.mixin.accessors.EntityRendererAccessor;
-import me.ht9.rose.util.render.Framebuffer;
-import me.ht9.rose.util.render.Render3d;
-import me.ht9.rose.util.render.Shader;
+import me.ht9.rose.mixinterface.IMinecraft;
+import me.ht9.rose.util.render.Render2d;
+import me.ht9.rose.util.render.shader.Framebuffer;
+import me.ht9.rose.util.render.shader.GlStateManager;
 import net.minecraft.src.*;
+import org.lwjgl.opengl.GL11;
 
-import java.awt.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -22,8 +24,6 @@ import static org.lwjgl.opengl.GL20.*;
 public final class ESP extends Module
 {
     private static final ESP instance = new ESP();
-
-    private final Setting<Mode> mode = new Setting<>("Mode", Mode.Shader);
 
     private final Setting<Boolean> rainbow = new Setting<>("Rainbow", true);
     private final Setting<Boolean> fill = new Setting<>("Fill", true);
@@ -39,7 +39,7 @@ public final class ESP extends Module
     private final Setting<Boolean> mobs = new Setting<>("Mobs", true, () -> !all.value());
     private final Setting<Boolean> items = new Setting<>("Items", true, () -> !all.value());
 
-    private Shader shader;
+    private EndShader shader;
 
     private int size = 0;
 
@@ -50,11 +50,7 @@ public final class ESP extends Module
 
     @Override
     public void initGL() {
-        shader = new Shader(
-                "/assets/rose/shaders/vertex.vert",
-                "/assets/rose/shaders/outline.frag",
-                "resolution", "time", "red", "green", "blue", "rainbow", "fill", "dotted"
-        );
+        this.shader = EndShader.instance();
     }
 
     @SuppressWarnings("unused")
@@ -83,37 +79,13 @@ public final class ESP extends Module
             }
         }
 
-        if (mode.value() == Mode.Box)
-        {
-            Render3d.render3d(() ->
-            {
-                ((EntityRendererAccessor) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
-                for (Entity entity : entities)
-                {
-                    Color color = new Color(88, 91, 112);
-                    if (entity instanceof EntityAnimal || entity instanceof EntityWaterMob) color = new Color(166, 227, 161);
-                    if (entity instanceof EntityMob || entity instanceof EntityFlying) color = new Color(243, 139, 168);
-                    if (entity instanceof EntityPlayer) color = Color.WHITE;
-
-                    double x = entity.posX - RenderManager.renderPosX;
-                    double y = entity.posY - RenderManager.renderPosY;
-                    double z = entity.posZ - RenderManager.renderPosZ;
-
-                    glColor4f(color.getRed() / 255.0f, color.getGreen() / 255.0f, color.getBlue() / 255.0f, .85f);
-                    Render3d.drawOutlinedBox(AxisAlignedBB.getBoundingBox(x - entity.width, y, z - entity.width, x + entity.width, y + entity.height, z + entity.width));
-                }
-                glColor4f(1.0f, 1.0f, 1.0f, 1.0f);
-            });
-            return;
-        }
-
         ((EntityRendererAccessor) mc.entityRenderer).invokeRenderHand(event.partialTicks(), 2);
 
-        glPushMatrix();
-        glPushAttrib(GL_ENABLE_BIT | GL_LIGHTING_BIT);
+        GlStateManager.pushMatrix();
+        GlStateManager.pushAttrib();
 
-        Framebuffer framebuffer = shader.framebuffer();
-        //framebuffer.clearFramebuffer();
+        Framebuffer framebuffer = shader.getFramebuffer();
+        framebuffer.framebufferClear();
         framebuffer.bindFramebuffer(true);
 
         ((EntityRendererAccessor) mc.entityRenderer).invokeSetupCameraTransform(event.partialTicks(), 0);
@@ -137,45 +109,49 @@ public final class ESP extends Module
             render.doRender(entity, var3 - RenderManager.renderPosX, var5 - RenderManager.renderPosY, var7 - RenderManager.renderPosZ, var9, event.partialTicks());
         }
 
-        glEnable(GL_BLEND);
-        glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+        GlStateManager.enableBlend();
+        GlStateManager.blendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
         mc.entityRenderer.func_905_b();
-        Framebuffer.framebuffer.bindFramebuffer(true);
+        ((IMinecraft) mc).rose_babric$framebuffer().bindFramebuffer(true);
         glUseProgram(shader.programId());
 
         ScaledResolution sr = new ScaledResolution(mc.gameSettings, mc.displayWidth, mc.displayHeight);
-        glUniform2f(shader.uniform("resolution"), (float) sr.getScaledWidth() * 2.5f, (float) sr.getScaledHeight() * 2.5f);
-        glUniform1f(shader.uniform("time"), (((System.nanoTime() / 1000000F) * 3) % 1000000) / 5000.0f);
+        glUniform2f(shader.getUniform("resolution"), (float) sr.getScaledWidth() * 2.5f, (float) sr.getScaledHeight() * 2.5f);
+        glUniform1f(shader.getUniform("time"), (((System.nanoTime() / 1000000F) * 3) % 1000000) / 5000.0f);
 
-        glUniform1f(shader.uniform("red"), (float) red.value() / 255.0f);
-        glUniform1f(shader.uniform("green"), (float) green.value() / 255.0f);
-        glUniform1f(shader.uniform("blue"), (float) blue.value() / 255.0f);
+        glUniform1f(shader.getUniform("red"), (float) red.value() / 255.0f);
+        glUniform1f(shader.getUniform("green"), (float) green.value() / 255.0f);
+        glUniform1f(shader.getUniform("blue"), (float) blue.value() / 255.0f);
 
-        glUniform1i(shader.uniform("rainbow"), rainbow.value() ? 1 : 0);
-        glUniform1i(shader.uniform("fill"), fill.value() ? 1 : 0);
-        glUniform1i(shader.uniform("dotted"), dotted.value() ? 1 : 0);
+        glUniform1i(shader.getUniform("rainbow"), rainbow.value() ? 1 : 0);
+        glUniform1i(shader.getUniform("fill"), fill.value() ? 1 : 0);
+        glUniform1i(shader.getUniform("dotted"), dotted.value() ? 1 : 0);
 
-        Shader.drawFramebuffer(framebuffer);
+        GL11.glBindTexture(GL11.GL_TEXTURE_2D, framebuffer.texture);
+        GL11.glBegin(GL11.GL_QUADS);
+        GL11.glTexCoord2d(0, 1);
+        GL11.glVertex2d(0, 0);
+        GL11.glTexCoord2d(0, 0);
+        GL11.glVertex2d(0, sr.getScaledHeight());
+        GL11.glTexCoord2d(1, 0);
+        GL11.glVertex2d(sr.getScaledWidth(), sr.getScaledHeight());
+        GL11.glTexCoord2d(1, 1);
+        GL11.glVertex2d(sr.getScaledWidth(), 0);
+        GL11.glEnd();
         glUseProgram(0);
-        Framebuffer.framebuffer.bindFramebuffer(false);
+        ((IMinecraft) mc).rose_babric$framebuffer().bindFramebuffer(false);
 
-        //glDisable(GL_LINE_SMOOTH);
+        glDisable(GL_LINE_SMOOTH);
 
-        glDisable(GL_BLEND);
+        GlStateManager.disableBlend();
 
-        glPopAttrib();
-        glPopMatrix();
+        GlStateManager.popAttrib();
+        GlStateManager.popMatrix();
     }
 
     public static ESP instance()
     {
         return instance;
-    }
-
-    public enum Mode
-    {
-        Shader,
-        Box
     }
 }

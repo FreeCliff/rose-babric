@@ -5,7 +5,10 @@ import me.ht9.rose.event.events.*;
 import me.ht9.rose.feature.gui.GuiCustomChat;
 import me.ht9.rose.feature.module.modules.misc.fastplace.FastPlace;
 import me.ht9.rose.feature.module.modules.render.cameratweaks.CameraTweaks;
-import me.ht9.rose.util.render.Framebuffer;
+import me.ht9.rose.mixinterface.IMinecraft;
+import me.ht9.rose.util.render.shader.Framebuffer;
+import me.ht9.rose.util.render.shader.GlStateManager;
+import me.ht9.rose.util.render.shader.renderer.OpenGlHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 import org.lwjgl.input.Keyboard;
@@ -13,6 +16,7 @@ import org.lwjgl.input.Mouse;
 import org.objectweb.asm.Opcodes;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
@@ -21,8 +25,10 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 import static org.lwjgl.opengl.GL11.*;
 
 @Mixin(value = Minecraft.class)
-public abstract class MixinMinecraft
+public abstract class MixinMinecraft implements IMinecraft
 {
+    @Unique private Framebuffer framebuffer;
+
     @Shadow public MovingObjectPosition objectMouseOver;
     @Shadow public int displayWidth;
     @Shadow public int displayHeight;
@@ -44,8 +50,9 @@ public abstract class MixinMinecraft
     )
     public void createFramebuffer(CallbackInfo ci)
     {
-        Framebuffer.framebuffer = new Framebuffer(displayWidth, displayHeight);
-        Framebuffer.framebuffer.setFramebufferColor(0.0f, 0.0f, 0.0f, 0.0f);
+        OpenGlHelper.initializeTextures();
+        this.framebuffer = new Framebuffer(displayWidth, displayHeight, true);
+        this.framebuffer.setFramebufferColor(0.0f, 0.0f, 0.0f, 0.0f);
     }
 
     @Inject(
@@ -71,7 +78,7 @@ public abstract class MixinMinecraft
     )
     public void bindFramebuffer(CallbackInfo ci)
     {
-        Framebuffer.framebuffer.bindFramebuffer(true);
+        this.framebuffer.bindFramebuffer(true);
         glEnable(GL_ALPHA_TEST);
         glDisable(GL_DEPTH_TEST);
     }
@@ -86,10 +93,10 @@ public abstract class MixinMinecraft
     )
     public void renderFramebuffer(CallbackInfo ci)
     {
-        Framebuffer.framebuffer.unbindFramebuffer();
-        Framebuffer.framebuffer.renderFramebuffer(displayWidth, displayHeight);
-        if (Framebuffer.framebuffer.width != displayWidth || Framebuffer.framebuffer.height != displayHeight)
-            Framebuffer.framebuffer.createBindFramebuffer(displayWidth, displayHeight);
+        this.framebuffer.unbindFramebuffer();
+        this.framebuffer.framebufferRender(displayWidth, displayHeight);
+        if (this.framebuffer.width != displayWidth || this.framebuffer.height != displayHeight)
+            this.framebuffer.createBindFramebuffer(displayWidth, displayHeight);
     }
 
     @Inject(
@@ -188,5 +195,11 @@ public abstract class MixinMinecraft
             this.clickMouse(1);
             this.mouseTicksRan = this.ticksRan;
         }
+    }
+
+    @Override
+    public Framebuffer rose_babric$framebuffer()
+    {
+        return framebuffer;
     }
 }

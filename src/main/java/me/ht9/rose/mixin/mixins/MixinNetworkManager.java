@@ -61,7 +61,7 @@ public abstract class MixinNetworkManager implements INetworkManager
     }
 
     @Override
-    public void rose_Babric$sendWithoutEvent(Packet packet) {
+    public void rose_babric$sendWithoutEvent(Packet packet) {
         postSendEvent = false;
         addToSendQueue(packet);
         postSendEvent = true;

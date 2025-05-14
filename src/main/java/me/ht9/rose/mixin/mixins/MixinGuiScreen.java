@@ -1,8 +1,9 @@
 package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.feature.module.modules.client.background.Background;
+import me.ht9.rose.feature.module.modules.client.background.BackgroundShader;
 import me.ht9.rose.feature.module.modules.client.hud.Hud;
-import me.ht9.rose.util.render.Shader;
+import me.ht9.rose.util.render.shader.GlStateManager;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.Gui;
 import net.minecraft.src.GuiScreen;
@@ -13,8 +14,7 @@ import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 
-import static org.lwjgl.opengl.GL11.*;
-import static org.lwjgl.opengl.GL20.*;
+import static org.lwjgl.opengl.GL20.glUseProgram;
 
 @Mixin(value = GuiScreen.class)
 public class MixinGuiScreen extends Gui
@@ -53,12 +53,17 @@ public class MixinGuiScreen extends Gui
     {
         if (Background.instance().enabled() && Background.instance().shader.value())
         {
-            glPushMatrix();
-            glPushAttrib(GL_ENABLE_BIT | GL_LIGHTING_BIT);
+            GlStateManager.pushMatrix();
+            GlStateManager.pushAttrib();
 
-            Shader shader = Background.instance().shader();
-            glUseProgram(shader.programId());
-            Background.instance().setupUniforms();
+            BackgroundShader shader = switch (Background.instance().shaderOption.value())
+            {
+                case Auroras -> Background.instance().aurorasShader;
+                case CyberFuji -> Background.instance().cyberFujiShader;
+            };
+
+            shader.useShader();
+            shader.updateUniforms();
         }
     }
 
@@ -73,8 +78,8 @@ public class MixinGuiScreen extends Gui
         if (Background.instance().enabled() && Background.instance().shader.value())
         {
             glUseProgram(0);
-            glPopAttrib();
-            glPopMatrix();
+            GlStateManager.popAttrib();
+            GlStateManager.popMatrix();
         }
     }
 }

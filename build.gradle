@@ -55,12 +55,15 @@ dependencies {
 	mappings("org.wksh:mcp:${project.mcp_mappings}:v2")
 	modImplementation("babric:fabric-loader:${project.loader_version}")
 
-	implementation 'com.google.guava:guava:33.2.1-jre'
-	implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
-	implementation 'org.apache.commons:commons-lang3:3.0'
-	implementation 'org.slf4j:slf4j-api:1.8.0-beta4'
-	implementation 'com.google.code.gson:gson:2.8.9'
 	implementation 'blue.endless:jankson:1.2.1'
+	implementation 'org.apache.logging.log4j:log4j-slf4j18-impl:2.17.2'
+	implementation 'org.slf4j:slf4j-api:1.8.0-beta4'
+
+	include implementation('com.google.guava:guava:33.2.1-jre')
+	include implementation('org.apache.commons:commons-lang3:3.12.0')
+	include implementation('com.google.code.gson:gson:2.8.9')
+	include implementation('javax.vecmath:vecmath:1.5.2')
+	include implementation('commons-io:commons-io:2.14.0')
 
 	modImplementation('me.howard:multiproto-nostapi:0.4.1') {
 		transitive false
