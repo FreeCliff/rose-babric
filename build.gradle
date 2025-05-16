@@ -9,6 +9,11 @@ sourceCompatibility = targetCompatibility = JavaVersion.VERSION_17
 def getGitHash()
 {
 	def gitFolder = "$projectDir/.git/"
+	if (!new File(gitFolder).exists())
+	{
+		return "unknown"
+	}
+
 	def takeFromHash = 7
 
 	def head = new File(gitFolder + "HEAD").text.split(":")
