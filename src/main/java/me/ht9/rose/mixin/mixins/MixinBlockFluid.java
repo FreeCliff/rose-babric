@@ -19,6 +19,7 @@ public class MixinBlockFluid extends Block
     @Inject(method = "getCollisionBoundingBoxFromPool", at = @At("HEAD"), cancellable = true)
     public void getCollusionBoundingBoxFromPool$Head(World world, int i, int j, int k, CallbackInfoReturnable<AxisAlignedBB> cir)
     {
+        if (Globals.mc.thePlayer == null) return;
         if (Jesus.instance().enabled())
         {
             if (Jesus.instance().mode.value() == Jesus.Mode.Bob)

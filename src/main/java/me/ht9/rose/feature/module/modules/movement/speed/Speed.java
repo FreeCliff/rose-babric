@@ -81,7 +81,7 @@ public final class Speed extends Module
     public enum Bypass
     {
         BedExit(() -> new Packet19EntityAction(mc.thePlayer, 3)),
-        Movement(() -> new Packet11PlayerPosition(0.0, 1.62, 0.0, 0.0, true));
+        Movement(() -> new Packet11PlayerPosition(mc.thePlayer.posX, mc.thePlayer.boundingBox.minY - 2.0, mc.thePlayer.posY - 2.0, mc.thePlayer.posZ, true));
 
         private final Supplier<? extends Packet> packetSupplier;
 
