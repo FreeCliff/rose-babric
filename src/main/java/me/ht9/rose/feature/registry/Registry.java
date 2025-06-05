@@ -45,6 +45,7 @@ import me.ht9.rose.feature.module.modules.movement.nofall.NoFall;
 import me.ht9.rose.feature.module.modules.movement.norotate.NoRotate;
 import me.ht9.rose.feature.module.modules.movement.scaffold.Scaffold;
 import me.ht9.rose.feature.module.modules.movement.speed.Speed;
+import me.ht9.rose.feature.module.modules.movement.step.Step;
 import me.ht9.rose.feature.module.modules.movement.velocity.Velocity;
 import me.ht9.rose.feature.module.modules.movement.yaw.Yaw;
 import me.ht9.rose.feature.module.modules.render.cameratweaks.CameraTweaks;
@@ -119,6 +120,7 @@ public final class Registry
         modules.add(NoRotate.instance());
         modules.add(Scaffold.instance());
         modules.add(Speed.instance());
+        modules.add(Step.instance());
         modules.add(Velocity.instance());
         modules.add(Yaw.instance());
 
