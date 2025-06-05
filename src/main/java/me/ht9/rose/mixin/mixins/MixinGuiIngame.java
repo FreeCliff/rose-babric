@@ -2,8 +2,8 @@ package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.Render2dEvent;
+import me.ht9.rose.event.events.RenderOverlayEvent;
 import me.ht9.rose.feature.gui.GuiCustomChat;
-import me.ht9.rose.util.render.Render2d;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
 import org.objectweb.asm.Opcodes;
@@ -12,8 +12,6 @@ import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-
-import java.awt.*;
 
 @Mixin(value = GuiIngame.class)
 public abstract class MixinGuiIngame
@@ -33,5 +31,13 @@ public abstract class MixinGuiIngame
     private GuiScreen currentScreen(Minecraft instance)
     {
         return instance.currentScreen instanceof GuiCustomChat ? new GuiChat() : instance.currentScreen;
+    }
+
+    @Inject(method = "renderVignette", at = @At("HEAD"), cancellable = true)
+    private void renderVignette$Head(float i, int j, int par3, CallbackInfo ci)
+    {
+        RenderOverlayEvent event = new RenderOverlayEvent(RenderOverlayEvent.Overlay.VIGNETTE);
+        Rose.bus().post(event);
+        if (event.cancelled()) ci.cancel();
     }
 }

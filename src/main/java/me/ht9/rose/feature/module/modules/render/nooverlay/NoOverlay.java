@@ -14,6 +14,7 @@ public class NoOverlay extends Module
     private final Setting<Boolean> blocks = new Setting<>("Blocks", true);
     private final Setting<Boolean> hand = new Setting<>("Hand", false);
     private final Setting<Boolean> fire = new Setting<>("Fire", true);
+    private final Setting<Boolean> vignette = new Setting<>("Vignette", false);
 
     @SubscribeEvent
     public void onRenderOverlay(RenderOverlayEvent event)
@@ -37,6 +38,13 @@ public class NoOverlay extends Module
             case FIRE ->
             {
                 if (this.fire.value())
+                {
+                    event.setCancelled(true);
+                }
+            }
+            case VIGNETTE ->
+            {
+                if (this.vignette.value())
                 {
                     event.setCancelled(true);
                 }
