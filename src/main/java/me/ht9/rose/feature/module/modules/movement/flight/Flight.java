@@ -21,16 +21,15 @@ public final class Flight extends Module {
 
     @SuppressWarnings("unused")
     @SubscribeEvent
-    public void onUpdate(PosRotUpdateEvent event) {
+    public void onUpdate(PosRotUpdateEvent event)
+    {
         if (mc.thePlayer == null || mc.theWorld == null) return;
         mc.thePlayer.motionY = 0.0f;
 
-        if (Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode) && mc.currentScreen == null) {
-            mc.thePlayer.motionY = speed.value();
-        }
-        if (Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode) && mc.currentScreen == null) {
-            mc.thePlayer.motionY = -speed.value();
-        }
+        if (Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode) && mc.currentScreen == null)
+            mc.thePlayer.motionY += speed.value();
+        if (Keyboard.isKeyDown(mc.gameSettings.keyBindSneak.keyCode) && mc.currentScreen == null)
+            mc.thePlayer.motionY -= speed.value();
 
         Movement.setSpeed(
                 mc.thePlayer.movementInput.moveForward != 0 || mc.thePlayer.movementInput.moveStrafe != 0
