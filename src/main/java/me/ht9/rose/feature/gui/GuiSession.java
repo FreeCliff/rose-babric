@@ -28,7 +28,7 @@ public final class GuiSession extends GuiScreen
 
         this.textField = new GuiTextField(this, this.fontRenderer, this.width / 2 - 100, this.height / 2 - 32, 200, 20, mc.session.username);
         textField.isFocused = true;
-        textField.setMaxStringLength(30);
+        textField.setMaxStringLength(16);
     }
 
     @Override
