@@ -22,6 +22,7 @@ import java.util.function.Supplier;
 public abstract class Module extends Feature
 {
     private boolean enabled = false;
+    protected boolean runInMainMenu = false;
 
     private final Category category;
     private final String description;
@@ -116,7 +117,7 @@ public abstract class Module extends Feature
             {
                 Rose.bus().post(new ModuleEvent(this, ModuleEvent.Type.ENABLE));
             }
-            if (mc.thePlayer != null && mc.theWorld != null)
+            if (runInMainMenu || (mc.thePlayer != null && mc.theWorld != null))
             {
                 this.onEnable();
             }
@@ -133,7 +134,7 @@ public abstract class Module extends Feature
                 Rose.bus().post(new ModuleEvent(this, ModuleEvent.Type.DISABLE));
             }
             Rose.bus().unregister(this);
-            if (mc.thePlayer != null && mc.theWorld != null)
+            if (runInMainMenu || (mc.thePlayer != null && mc.theWorld != null))
             {
                 this.onDisable();
             }

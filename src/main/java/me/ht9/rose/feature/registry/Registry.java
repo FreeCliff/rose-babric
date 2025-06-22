@@ -26,6 +26,7 @@ import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
 import me.ht9.rose.feature.module.modules.misc.autoreconnect.AutoReconnect;
 import me.ht9.rose.feature.module.modules.misc.autosign.AutoSign;
 import me.ht9.rose.feature.module.modules.misc.autotnt.AutoTNT;
+import me.ht9.rose.feature.module.modules.misc.discordrpc.DiscordRPC;
 import me.ht9.rose.feature.module.modules.misc.fastplace.FastPlace;
 import me.ht9.rose.feature.module.modules.misc.inventorytweaks.InventoryTweaks;
 import me.ht9.rose.feature.module.modules.misc.mcf.MCF;
@@ -100,6 +101,7 @@ public final class Registry
         modules.add(AutoReconnect.instance());
         modules.add(AutoSign.instance());
         modules.add(AutoTNT.instance());
+        modules.add(DiscordRPC.instance());
         modules.add(FastPlace.instance());
         modules.add(InventoryTweaks.instance());
         modules.add(MCF.instance());

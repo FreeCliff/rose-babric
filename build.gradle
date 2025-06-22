@@ -40,6 +40,7 @@ repositories {
 	maven { url = 'https://maven.glass-launcher.net/babric' }
 	maven { url = 'https://jitpack.io' }
 	maven { url = 'https://maven.nathatpas.tel/releases' }
+	maven { url = 'https://maven.meteordev.org/releases' }
 	exclusiveContent {
 		forRepository {
 			//noinspection ForeignDelegate
@@ -69,6 +70,7 @@ dependencies {
 	include implementation('com.google.code.gson:gson:2.8.9')
 	include implementation('javax.vecmath:vecmath:1.5.2')
 	include implementation('commons-io:commons-io:2.14.0')
+	include implementation('meteordevelopment:discord-ipc:1.1')
 
 	modImplementation('me.howard:multiproto-nostapi:0.4.1') {
 		transitive false

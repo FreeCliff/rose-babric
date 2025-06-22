@@ -7,7 +7,6 @@ import me.ht9.rose.feature.module.modules.misc.fastplace.FastPlace;
 import me.ht9.rose.feature.module.modules.render.cameratweaks.CameraTweaks;
 import me.ht9.rose.mixinterface.IMinecraft;
 import me.ht9.rose.util.render.shader.Framebuffer;
-import me.ht9.rose.util.render.shader.GlStateManager;
 import me.ht9.rose.util.render.shader.renderer.OpenGlHelper;
 import net.minecraft.client.Minecraft;
 import net.minecraft.src.*;
@@ -177,6 +176,7 @@ public abstract class MixinMinecraft implements IMinecraft
         {
             instance.displayGuiScreen(screen);
         }
+        Rose.bus().post(new OpenScreenEvent());
     }
 
     @Redirect(method = "run", at = @At(value = "FIELD", target = "Lnet/minecraft/src/GameSettings;thirdPersonView:Z", opcode = Opcodes.PUTFIELD))
