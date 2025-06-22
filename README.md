@@ -2,6 +2,8 @@
 
 An evil and malicious cheat for Minecraft Beta 1.7.3
 
+[Subscribe to this YouTube channel btw](https://www.youtube.com/channel/UCXgiHb9Q4kiSzs3ueAS6LYw)
+
 ---
 
 ## 📖 Getting Started
