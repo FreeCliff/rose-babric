@@ -1,6 +1,8 @@
 # 🌹 Rose b1.7.3
 
-An evil and malicious cheat for Minecraft Beta 1.7.3
+> **Warning** Many modules do not work in singleplayer, make sure to use in multiplayer
+
+An evil and malicious cheat for Minecraft Beta 1.7.3.
 
 [Subscribe to this YouTube channel btw](https://www.youtube.com/channel/UCXgiHb9Q4kiSzs3ueAS6LYw)
 
