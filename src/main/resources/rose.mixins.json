@@ -11,6 +11,7 @@
     "accessors.EntityRendererAccessor",
     "accessors.GuiChatAccessor",
     "accessors.ItemBlockAccessor",
+    "accessors.ItemFoodAccessor",
     "accessors.MinecraftAccessor",
     "accessors.NetClientHandlerAccessor",
     "mixins.MixinBlock",

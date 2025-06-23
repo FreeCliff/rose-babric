@@ -23,6 +23,7 @@ import me.ht9.rose.feature.module.modules.exploit.nuker.Nuker;
 import me.ht9.rose.feature.module.modules.exploit.packetlogger.PacketLogger;
 import me.ht9.rose.feature.module.modules.exploit.packetmine.PacketMine;
 import me.ht9.rose.feature.module.modules.exploit.sneak.Sneak;
+import me.ht9.rose.feature.module.modules.misc.autoeat.AutoEat;
 import me.ht9.rose.feature.module.modules.misc.autoreconnect.AutoReconnect;
 import me.ht9.rose.feature.module.modules.misc.autosign.AutoSign;
 import me.ht9.rose.feature.module.modules.misc.autotnt.AutoTNT;
@@ -98,6 +99,7 @@ public final class Registry
         modules.add(PacketMine.instance());
         modules.add(Sneak.instance());
 
+        modules.add(AutoEat.instance());
         modules.add(AutoReconnect.instance());
         modules.add(AutoSign.instance());
         modules.add(AutoTNT.instance());
