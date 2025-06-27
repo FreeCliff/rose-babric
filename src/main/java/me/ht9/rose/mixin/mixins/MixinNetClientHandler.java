@@ -1,23 +1,37 @@
 package me.ht9.rose.mixin.mixins;
 
 import me.ht9.rose.feature.gui.GuiProxy;
+import me.ht9.rose.feature.module.modules.misc.tcpnodelay.TcpNoDelay;
+import net.minecraft.client.Minecraft;
 import net.minecraft.src.NetClientHandler;
 import net.minecraft.src.NetworkManager;
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
+import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.Redirect;
+import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
+import org.spongepowered.asm.mixin.injection.callback.LocalCapture;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.net.InetSocketAddress;
-import java.net.Proxy;
-import java.net.Socket;
+import java.net.*;
 
 @Mixin(NetClientHandler.class)
 public class MixinNetClientHandler
 {
     @Shadow private NetworkManager netManager;
+
+    @Inject(method = "<init>", at = @At(value = "INVOKE", target = "Lnet/minecraft/src/NetworkManager;<init>(Ljava/net/Socket;Ljava/lang/String;Lnet/minecraft/src/NetHandler;)V"), locals = LocalCapture.CAPTURE_FAILSOFT)
+    private void initTcpNoDelay(Minecraft string, String i, int par3, CallbackInfo ci, Socket socket)
+    {
+        if (TcpNoDelay.instance().enabled())
+        {
+            try
+            {
+                socket.setTcpNoDelay(true);
+            } catch (SocketException ignored) {}
+        }
+    }
 
     @Redirect(
             method = "<init>",

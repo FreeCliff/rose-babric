@@ -33,6 +33,7 @@ import me.ht9.rose.feature.module.modules.misc.inventorytweaks.InventoryTweaks;
 import me.ht9.rose.feature.module.modules.misc.mcf.MCF;
 import me.ht9.rose.feature.module.modules.misc.portals.Portals;
 import me.ht9.rose.feature.module.modules.misc.retard.Retard;
+import me.ht9.rose.feature.module.modules.misc.tcpnodelay.TcpNoDelay;
 import me.ht9.rose.feature.module.modules.misc.timer.Timer;
 import me.ht9.rose.feature.module.modules.misc.spammer.Spammer;
 import me.ht9.rose.feature.module.modules.misc.visualrange.VisualRange;
@@ -110,6 +111,7 @@ public final class Registry
         modules.add(Portals.instance());
         modules.add(Spammer.instance());
         modules.add(Retard.instance());
+        modules.add(TcpNoDelay.instance());
         modules.add(Timer.instance());
         modules.add(VisualRange.instance());
 
