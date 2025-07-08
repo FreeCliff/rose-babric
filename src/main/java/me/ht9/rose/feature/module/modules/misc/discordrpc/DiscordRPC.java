@@ -115,13 +115,13 @@ public final class DiscordRPC extends Module
         return switch (line)
         {
             case Username -> mc.session.username;
-            case Health -> mc.thePlayer.health + " hp";
+            case Health -> mc.thePlayer == null ? "N/A" : (mc.thePlayer.health + " hp");
             case Version -> Rose.version();
-            case World -> mc.theWorld.multiplayerWorld ? "multiplayer" : "singleplayer";
-            case IP -> Factory.instance().ip + (Factory.instance().port != 25565 ? ":" + Factory.instance().port : "");
-            case Dimension -> mc.thePlayer.dimension == 0 ? "overworld" : "nether";
-            case CurrentItem -> StringTranslate.getInstance().translateNamedKey(mc.thePlayer.inventory.getCurrentItem().getItemName());
-            case Coords -> (mc.thePlayer != null && allowCoords.value()) ? this.roundDouble(mc.thePlayer.posX, 1) + ", " + this.roundDouble(mc.thePlayer.posY, 1) + ", " + this.roundDouble(mc.thePlayer.posZ, 1) : "no coords";
+            case World -> mc.theWorld == null ? "N/A" : (mc.theWorld.multiplayerWorld ? "multiplayer" : "singleplayer");
+            case IP -> mc.theWorld == null ? "N/A" : (Factory.instance().ip + (Factory.instance().port != 25565 ? ":" + Factory.instance().port : ""));
+            case Dimension -> mc.thePlayer == null ? "N/A" : (mc.thePlayer.dimension == 0 ? "overworld" : "nether");
+            case CurrentItem -> mc.thePlayer == null || mc.thePlayer.inventory.getCurrentItem() == null ? "N/A" : (StringTranslate.getInstance().translateNamedKey(mc.thePlayer.inventory.getCurrentItem().getItemName()));
+            case Coords -> (mc.thePlayer != null && allowCoords.value()) ? this.roundDouble(mc.thePlayer.posX, 1) + ", " + this.roundDouble(mc.thePlayer.posY, 1) + ", " + this.roundDouble(mc.thePlayer.posZ, 1) : "N/A";
             case None -> "";
         };
     }
