@@ -35,7 +35,7 @@ Or you can build it yourself by cloning this repo and running `./gradlew build`.
    👉 [Download MojangFix](https://modrinth.com/mod/mojangfix)
 3. **MultiProto No StAPI**  
    *Allows you to connect to any server version from Beta 1.0 to Beta 1.7.3*  
-   👉 [Download MultiProto No StAPI](https://git.nathatpas.tel/skibidiware/multiproto-nostapi)
+   👉 [Download MultiProto No StAPI](https://github.com/FreeCliff/multiproto-nostapi)
 4. **Brickmatica**  
    *Lets you save and load schematic files in-game.*  
    👉 [Download Brickmatica](https://github.com/GameHerobrine/Brickmatica#precompiled-version)
