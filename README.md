@@ -16,12 +16,12 @@ An evil and malicious cheat for Minecraft Beta 1.7.3.
 
 > **Suggestion? Bug?** Join our Discord server [here](https://discord.gg/4xJ4XQYHZJ).
 
-Gitea actions aren't set up on here and I don't feel like setting them up so you're gonna have to build this yourself.
-
 1. Set up a Babric instance.
-2. Clone this repository with ``git clone https://git.nathatpas.tel/skibidiware/rose-babric.git``, or download and extract the [source code](https://git.nathatpas.tel/skibidiware/rose-babric/archive/master.zip).
-3. Open a terminal in the `rose-babric` folder and run `./gradlew build`, then wait for it to finish
-4. Look for the `.jar` in the new `build/libs` folder and add it to your fabric mods.
+2. Go to [this page](https://nightly.link/FreeCliff/rose-babric/workflows/gradle/master).
+3. Download the `.zip` using the first download link on the page.
+4. Extract the mod jar from the `.zip` and add it to your mods.
+
+Or you can build it yourself by cloning this repo and running `./gradlew build`. The compiled jar will be in the `build/libs` folder.
 
 ---
 
