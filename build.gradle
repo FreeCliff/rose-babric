@@ -58,7 +58,7 @@ repositories {
 
 dependencies {
 	minecraft("com.mojang:minecraft:${project.minecraft_version}")
-	mappings("org.wksh:mcp:${project.mcp_mappings}:v2")
+	mappings("org.wksh:mcp:${project.mcp_mappings}")
 	modImplementation("babric:fabric-loader:${project.loader_version}")
 
 	implementation 'blue.endless:jankson:1.2.1'
