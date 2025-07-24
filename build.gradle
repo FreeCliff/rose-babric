@@ -39,7 +39,7 @@ loom {
 repositories {
 	maven { url = 'https://maven.glass-launcher.net/babric' }
 	maven { url = 'https://jitpack.io' }
-	maven { url = 'https://github.com/FreeCliff/maven/raw/main' }
+	maven { url = 'https://github.com/FreeCliff/maven/raw/master' }
 	maven { url = 'https://maven.meteordev.org/releases' }
 	exclusiveContent {
 		forRepository {
