@@ -41,6 +41,7 @@
     "mixins.MixinRenderList",
     "mixins.MixinRenderLiving",
     "mixins.MixinRenderPlayer",
+    "mixins.MixinTileEntityRenderer",
     "mixins.MixinWorld"
   ],
   "injectors": {

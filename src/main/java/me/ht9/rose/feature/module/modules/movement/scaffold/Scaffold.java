@@ -12,11 +12,13 @@ import me.ht9.rose.mixin.accessors.ItemBlockAccessor;
 import net.minecraft.src.*;
 import org.lwjgl.input.Keyboard;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 @Description(value = "Automatically place blocks under your feet.")
-public class Scaffold extends Module
+public final class Scaffold extends Module
 {
     private static final Scaffold instance = new Scaffold();
 
@@ -52,8 +54,22 @@ public class Scaffold extends Module
     @SubscribeEvent
     public void onPositionRotationUpdate(PosRotUpdateEvent event)
     {
-        BlockPair placement = getPlacement();
-        if (placement == null) return;
+        double posY = mc.thePlayer.boundingBox.minY - 1;
+
+        List<BlockPair> placements = new ArrayList<>();
+
+        int realSize = size.value() - 1;
+        for (int x = -realSize; x <= realSize; x++) {
+            for (int z = -realSize; z <= realSize; z++) {
+                double posX = Math.floor(mc.thePlayer.posX) + x;
+                double posZ = Math.floor(mc.thePlayer.posZ) + z;
+                BlockPair placement = getPlacement(posX, posY, posZ, x == 0 && z == 0);
+                if (placement != null)
+                    placements.add(placement);
+            }
+        }
+
+        if (placements.isEmpty()) return;
 
         slot = -1;
         switch (swap.value())
@@ -89,68 +105,47 @@ public class Scaffold extends Module
 
         if (slot == -1) return;
 
-        float[] rotations = calculateRotations(placement.pos);
-        event.setYaw(rotations[0]);
-        event.setPitch(rotations[1]);
-        event.setModelRotations();
+        AtomicBoolean result = new AtomicBoolean(false);
+        placements.forEach(placement -> {
+            float[] rotations = calculateRotations(placement.pos);
+            event.setYaw(rotations[0]);
+            event.setPitch(rotations[1]);
+            event.setModelRotations();
 
-        boolean result = mc.playerController.sendPlaceBlock(mc.thePlayer,
-                mc.theWorld,
-                mc.thePlayer.inventory.getStackInSlot(slot),
-                (int) placement.pos.xCoord,
-                (int) placement.pos.yCoord,
-                (int) placement.pos.zCoord,
-                placement.facing.ordinal());
-        if (!result) return;
+            boolean temp = mc.playerController.sendPlaceBlock(mc.thePlayer,
+                    mc.theWorld,
+                    mc.thePlayer.inventory.getStackInSlot(slot),
+                    (int) placement.pos.xCoord,
+                    (int) placement.pos.yCoord,
+                    (int) placement.pos.zCoord,
+                    placement.facing.ordinal());
 
-        if (this.towerMode.value().equals(Tower.Motion) && Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode))
-        {
-            mc.thePlayer.motionY = 0.42f;
-        }
+            if (temp)
+            {
+                if (swing.value())
+                {
+                    mc.thePlayer.swingItem();
+                } else
+                {
+                    mc.getSendQueue().addToSendQueue(
+                            new Packet18Animation(mc.thePlayer, 1));
+                }
 
-        if (swing.value())
+                result.set(true);
+            }
+        });
+        if (result.get())
         {
-            mc.thePlayer.swingItem();
-        } else
-        {
-            mc.getSendQueue().addToSendQueue(
-                    new Packet18Animation(mc.thePlayer, 1));
+            if (this.towerMode.value().equals(Tower.Motion) && Keyboard.isKeyDown(mc.gameSettings.keyBindJump.keyCode))
+            {
+                mc.thePlayer.motionY = 0.42f;
+            }
         }
 
         if (swap.value() == Swap.Server)
         {
             mc.getSendQueue().addToSendQueue(
                     new Packet16BlockItemSwitch(mc.thePlayer.inventory.currentItem));
-        }
-
-        if (size.value() > 1)
-        {
-            int size = this.size.value() - 1;
-            for (int x = -size; x <= size; x++)
-            {
-                for (int z = -size; z <= size; z++)
-                {
-                    if (x == 0 && z == 0) continue;
-                    Vec3D pos = Vec3D.createVectorHelper(placement.pos.xCoord + x, mc.thePlayer.boundingBox.minY - 1, placement.pos.zCoord + z);
-                    if (isReplaceable(pos))
-                    {
-                        for (Facing direction : Facing.values())
-                        {
-                            Vec3D neighbor = offset(pos, direction);
-                            if (!isReplaceable(neighbor))
-                            {
-                                mc.playerController.sendPlaceBlock(mc.thePlayer,
-                                        mc.theWorld,
-                                        mc.thePlayer.inventory.getStackInSlot(slot),
-                                        (int) neighbor.xCoord,
-                                        (int) neighbor.yCoord,
-                                        (int) neighbor.zCoord,
-                                        opposite(direction).ordinal());
-                            }
-                        }
-                    }
-                }
-            }
         }
     }
 
@@ -293,11 +288,12 @@ public class Scaffold extends Module
         return mc.thePlayer.inventory.getCurrentItem();
     }
 
-    private BlockPair getPlacement()
+    private BlockPair getPlacement(double posX, double posY, double posZ, boolean b)
     {
-        Vec3D pos = Vec3D.createVectorHelper(Math.floor(mc.thePlayer.posX),
-                mc.thePlayer.boundingBox.minY - 1,
-                Math.floor(mc.thePlayer.posZ));
+        Vec3D pos = Vec3D.createVectorHelper(posX, posY, posZ);
+
+        if (!b && !isReplaceable(pos))
+            return null;
 
         for (Facing facing : Facing.values())
         {
@@ -306,16 +302,19 @@ public class Scaffold extends Module
                     neighbor, opposite(facing));
         }
 
-        for (Facing facing : Facing.values())
+        if (b)
         {
-            Vec3D neighbor = offset(pos, facing);
-            if (isReplaceable(neighbor))
+            for (Facing facing : Facing.values())
             {
-                for (Facing direction : Facing.values())
+                Vec3D neighbor = offset(pos, facing);
+                if (isReplaceable(neighbor))
                 {
-                    Vec3D otherNeighbor = offset(neighbor, direction);
-                    if (!isReplaceable(otherNeighbor)) return new BlockPair(
-                            otherNeighbor, opposite(direction));
+                    for (Facing direction : Facing.values())
+                    {
+                        Vec3D otherNeighbor = offset(neighbor, direction);
+                        if (!isReplaceable(otherNeighbor)) return new BlockPair(
+                                otherNeighbor, opposite(direction));
+                    }
                 }
             }
         }

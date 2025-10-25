@@ -19,6 +19,7 @@ public class NoRender extends Module
     private final Setting<Boolean> portal = new Setting<>("Portal", false);
     private final Setting<Boolean> entities = new Setting<>("Entities", false);
     private final Setting<Boolean> particles = new Setting<>("Particles", false);
+    public final Setting<Boolean> tileEntities = new Setting<>("TileEntities", false);
 
     @Override
     public void onRender2d(float partialTicks)

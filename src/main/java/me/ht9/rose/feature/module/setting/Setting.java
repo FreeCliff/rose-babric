@@ -15,6 +15,7 @@ public final class Setting<V>
     private int enumIndex = 0;
     private final int roundingScale;
     private Consumer<V> onChange;
+    private boolean alwaysCallOnChange = false;
 
     public <N extends Number> Setting(String name, N min, V value, N max, int roundingScale, Supplier<Boolean> visibility)
     {
@@ -55,7 +56,13 @@ public final class Setting<V>
 
     public Setting<V> withOnChange(Consumer<V> action)
     {
+        return this.withOnChange(action, false);
+    }
+
+    public Setting<V> withOnChange(Consumer<V> action, boolean alwaysCallOnChange)
+    {
         this.onChange = action;
+        this.alwaysCallOnChange = alwaysCallOnChange;
         return this;
     }
 
@@ -112,7 +119,7 @@ public final class Setting<V>
     {
         this.value = value;
         this.checkEnums();
-        if (callOnChange && this.onChange != null)
+        if ((callOnChange || this.alwaysCallOnChange) && this.onChange != null)
         {
             this.onChange.accept(value);
         }

@@ -33,15 +33,13 @@ public final class Spammer extends Module
             .withOnChange(value ->
             {
                 if (value.equals(Mode.File))
-                {
                     updateMessages();
-                }
-            });
+            }, true);
 
     private final Setting<Integer> randomLength = new Setting<>("Length", 1, 100, 100, () -> mode.value().equals(Mode.Random));
 
     private final Setting<String> fileName = new Setting<>("File", "spam.txt", () -> mode.value().equals(Mode.File))
-            .withOnChange(value -> updateMessages());
+            .withOnChange(value -> updateMessages(), true);
     private final Setting<Boolean> fillRest = new Setting<>("Fill Rest", false, () -> mode.value().equals(Mode.File));
 
     private final Setting<Double> delay = new Setting<>("Delay", 0.0, 0.0, 2.0, 3);
