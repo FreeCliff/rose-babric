@@ -4,11 +4,12 @@ import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.PacketEvent;
 import me.ht9.rose.event.events.PlayerMoveEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
+import me.ht9.rose.event.events.PosRotUpdateFinishEvent;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.annotation.Description;
-import me.ht9.rose.util.world.Facing;
 import me.ht9.rose.feature.module.setting.Setting;
 import me.ht9.rose.mixin.accessors.ItemBlockAccessor;
+import me.ht9.rose.util.world.Facing;
 import net.minecraft.src.*;
 import org.lwjgl.input.Keyboard;
 
@@ -32,6 +33,7 @@ public final class Scaffold extends Module
     private final Setting<Boolean> safeWalk = new Setting<>("SafeWalk", false);
 
     private int clientSlot = -1, slot = -1;
+    private List<BlockPair> placements;
 
     @Override
     public void onDisable()
@@ -56,11 +58,13 @@ public final class Scaffold extends Module
     {
         double posY = mc.thePlayer.boundingBox.minY - 1;
 
-        List<BlockPair> placements = new ArrayList<>();
+        placements = new ArrayList<>();
 
         int realSize = size.value() - 1;
-        for (int x = -realSize; x <= realSize; x++) {
-            for (int z = -realSize; z <= realSize; z++) {
+        for (int x = -realSize; x <= realSize; x++)
+        {
+            for (int z = -realSize; z <= realSize; z++)
+            {
                 double posX = Math.floor(mc.thePlayer.posX) + x;
                 double posZ = Math.floor(mc.thePlayer.posZ) + z;
                 BlockPair placement = getPlacement(posX, posY, posZ, x == 0 && z == 0);
@@ -70,6 +74,23 @@ public final class Scaffold extends Module
         }
 
         if (placements.isEmpty()) return;
+
+        placements.sort((a, b) ->
+        {
+            Vec3D aPos = a.pos();
+            double aDeltaX = aPos.xCoord + 0.5 - mc.thePlayer.posX;
+            double aDeltaY = aPos.yCoord + 0.5 - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
+            double aDeltaZ = aPos.zCoord + 0.5 - mc.thePlayer.posZ;
+            double aDistanceSq = aDeltaX * aDeltaX + aDeltaY * aDeltaY + aDeltaZ * aDeltaZ;
+
+            Vec3D bPos = b.pos();
+            double bDeltaX = bPos.xCoord + 0.5 - mc.thePlayer.posX;
+            double bDeltaY = bPos.yCoord + 0.5 - (mc.thePlayer.posY + mc.thePlayer.getEyeHeight());
+            double bDeltaZ = bPos.zCoord + 0.5 - mc.thePlayer.posZ;
+            double bDistanceSq = bDeltaX * bDeltaX + bDeltaY * bDeltaY + bDeltaZ * bDeltaZ;
+
+            return Double.compare(aDistanceSq, bDistanceSq);
+        });
 
         slot = -1;
         switch (swap.value())
@@ -105,13 +126,22 @@ public final class Scaffold extends Module
 
         if (slot == -1) return;
 
-        AtomicBoolean result = new AtomicBoolean(false);
-        placements.forEach(placement -> {
-            float[] rotations = calculateRotations(placement.pos);
-            event.setYaw(rotations[0]);
-            event.setPitch(rotations[1]);
-            event.setModelRotations();
+        BlockPair placement = placements.get(0);
+        float[] rotations = calculateRotations(placement.pos);
+        event.setYaw(rotations[0]);
+        event.setPitch(rotations[1]);
+        event.setModelRotations();
+    }
 
+    @SubscribeEvent
+    public void onPositionRotationUpdateFinish(PosRotUpdateFinishEvent event)
+    {
+        if (placements.isEmpty()) return;
+        if (slot == -1) return;
+
+        AtomicBoolean result = new AtomicBoolean(false);
+        placements.forEach(placement ->
+        {
             boolean temp = mc.playerController.sendPlaceBlock(mc.thePlayer,
                     mc.theWorld,
                     mc.thePlayer.inventory.getStackInSlot(slot),
@@ -147,6 +177,8 @@ public final class Scaffold extends Module
             mc.getSendQueue().addToSendQueue(
                     new Packet16BlockItemSwitch(mc.thePlayer.inventory.currentItem));
         }
+
+        placements.clear();
     }
 
     @SubscribeEvent
@@ -236,7 +268,8 @@ public final class Scaffold extends Module
             return mc.thePlayer.inventory.currentItem;
 
         int slot = -1, count = 0;
-        for (int i = 0; i < 9; ++i) {
+        for (int i = 0; i < 9; ++i)
+        {
             ItemStack itemStack = mc.thePlayer.inventory.getStackInSlot(i);
             if (isValidBlockStack(itemStack))
             {
@@ -266,7 +299,7 @@ public final class Scaffold extends Module
         float yaw = (float) (Math.atan2(deltaZ, deltaX) * 180 / Math.PI) - 90;
         float pitch = (float) -(Math.atan2(deltaY, distance) * 180 / Math.PI);
 
-        return new float[] { yaw, pitch };
+        return new float[]{yaw, pitch};
     }
 
     private boolean isUnderstacked(ItemStack itemStack)

@@ -3,6 +3,7 @@ package me.ht9.rose.mixin.mixins;
 import me.ht9.rose.Rose;
 import me.ht9.rose.event.events.ChatEvent;
 import me.ht9.rose.event.events.PosRotUpdateEvent;
+import me.ht9.rose.event.events.PosRotUpdateFinishEvent;
 import me.ht9.rose.event.factory.Factory;
 import me.ht9.rose.feature.module.modules.movement.speed.Speed;
 import net.minecraft.src.EntityClientPlayerMP;
@@ -18,7 +19,8 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(value = EntityClientPlayerMP.class)
 public abstract class MixinEntityClientPlayerMP extends EntityPlayer
 {
-    @Shadow public abstract void func_4056_N();
+    @Shadow
+    public abstract void func_4056_N();
 
     @Unique private double oldX;
     @Unique private double oldY;
@@ -32,12 +34,7 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         super(world);
     }
 
-    @Inject(
-            method = "func_4056_N",
-            at = @At(
-                    value = "HEAD"
-            )
-    )
+    @Inject(method = "func_4056_N", at = @At(value = "HEAD"))
     public void onUpdate$Head(CallbackInfo ci)
     {
         this.oldX = this.posX;
@@ -47,14 +44,7 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         this.oldPitch = this.rotationPitch;
         this.oldOnGround = this.onGround;
 
-        PosRotUpdateEvent event = new PosRotUpdateEvent(
-                this.posX,
-                this.posY,
-                this.posZ,
-                this.rotationYaw,
-                this.rotationPitch,
-                this.onGround
-        );
+        PosRotUpdateEvent event = new PosRotUpdateEvent(this.posX, this.posY, this.posZ, this.rotationYaw, this.rotationPitch, this.onGround);
 
         Rose.bus().post(event);
 
@@ -74,12 +64,7 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         Factory.instance().doSetModelRotations = event.isSetModelRotations();
     }
 
-    @Inject(
-            method = "func_4056_N",
-            at = @At(
-                    value = "RETURN"
-            )
-    )
+    @Inject(method = "func_4056_N", at = @At(value = "RETURN"))
     public void onUpdate$Return(CallbackInfo ci)
     {
         this.posX = this.oldX;
@@ -88,14 +73,11 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         this.rotationYaw = this.oldYaw;
         this.rotationPitch = this.oldPitch;
         this.onGround = this.oldOnGround;
+
+        Rose.bus().post(new PosRotUpdateFinishEvent());
     }
 
-    @Inject(
-            method = "onUpdate",
-            at = @At(
-                    value = "TAIL"
-            )
-    )
+    @Inject(method = "onUpdate", at = @At(value = "TAIL"))
     public void onUpdate$Tick(CallbackInfo ci)
     {
         if (Speed.instance().enabled() && Speed.instance().type.value() == Speed.Type.NoCheat)
@@ -131,16 +113,11 @@ public abstract class MixinEntityClientPlayerMP extends EntityPlayer
         }
     }
 
-    @Inject(
-            method = "sendChatMessage",
-            at = @At("HEAD"),
-            cancellable = true
-    )
+    @Inject(method = "sendChatMessage", at = @At("HEAD"), cancellable = true)
     public void sendChatMessage(String message, CallbackInfo ci)
     {
         ChatEvent event = new ChatEvent(message);
         Rose.bus().post(event);
-        if (event.cancelled())
-            ci.cancel();
+        if (event.cancelled()) ci.cancel();
     }
 }

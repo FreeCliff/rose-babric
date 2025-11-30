@@ -1,6 +1,5 @@
 package me.ht9.rose.feature.module.modules.render.cameratweaks;
 
-import me.ht9.rose.Rose;
 import me.ht9.rose.event.bus.annotation.SubscribeEvent;
 import me.ht9.rose.event.events.InputEvent;
 import me.ht9.rose.feature.module.Module;
@@ -56,7 +55,6 @@ public final class CameraTweaks extends Module
         int value = Mouse.getEventDWheel();
         if (value != 0)
         {
-            Rose.logger().info("value: {}", value);
             float dist = ((EntityRendererAccessor) mc.entityRenderer).cameraDistance();
             dist -= value * 0.05f * scrollingSensitivity.value();
             dist = Math.max(dist, 0.0f);

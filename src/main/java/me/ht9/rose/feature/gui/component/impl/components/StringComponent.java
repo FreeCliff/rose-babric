@@ -7,6 +7,8 @@ import me.ht9.rose.util.render.Render2d;
 import org.lwjgl.input.Keyboard;
 
 import java.awt.*;
+import java.awt.datatransfer.DataFlavor;
+import java.awt.datatransfer.Transferable;
 
 @SuppressWarnings("all")
 public final class StringComponent extends SettingComponent<String>
@@ -128,10 +130,16 @@ public final class StringComponent extends SettingComponent<String>
                 {
                     this.textBoxText = this.textBoxText.substring(0, this.textBoxText.length() - 1);
                 }
-            } else if (keyCode == Keyboard.KEY_RETURN)
+            } else if (typedChar == '\r')
             {
                 this.textBoxFocused = false;
                 this.setting().setValue(this.textBoxText);
+            } else if (typedChar == 22)
+            {
+                String clipboard = clipboardString();
+                if (clipboard == null) clipboard = "";
+
+                this.textBoxText = this.textBoxText + clipboard;
             } else if (Character.isDefined(typedChar))
             {
                 this.textBoxText += typedChar;
@@ -147,5 +155,22 @@ public final class StringComponent extends SettingComponent<String>
         int textBoxHeight = 12;
 
         return new int[]{textBoxX, textBoxY, textBoxWidth, textBoxHeight};
+    }
+
+    private static String clipboardString()
+    {
+        try
+        {
+            Transferable var0 = Toolkit.getDefaultToolkit().getSystemClipboard().getContents((Object) null);
+            if (var0 != null && var0.isDataFlavorSupported(DataFlavor.stringFlavor))
+            {
+                String var1 = (String) var0.getTransferData(DataFlavor.stringFlavor);
+                return var1;
+            }
+        } catch (Exception var2)
+        {
+        }
+
+        return null;
     }
 }

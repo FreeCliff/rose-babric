@@ -49,7 +49,8 @@ public final class AutoEat extends Module
     private int getFoodSlot()
     {
         for (int i = 0; i < 9; i++)
-            if (mc.thePlayer.inventory.mainInventory[i].getItem() instanceof ItemFood) return i;
+            if (mc.thePlayer.inventory.mainInventory[i] != null && mc.thePlayer.inventory.mainInventory[i].getItem() instanceof ItemFood)
+                return i;
         return -1;
     }
 
