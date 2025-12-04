@@ -19,7 +19,7 @@ An evil and malicious cheat for Minecraft Beta 1.7.3.
 1. Set up a Babric instance.
 2. Go to [this page](https://nightly.link/FreeCliff/rose-babric/workflows/gradle/master).
 3. Download the `.zip` using the first download link on the page.
-4. Extract the mod jar from the `.zip` and add it to your mods.
+4. Extract the mod jar from the `.zip` and add it to your **[LOADER MODS](https://files.catbox.moe/5qzyda.png)**.
 
 Or you can build it yourself by cloning this repo and running `./gradlew build`. The compiled jar will be in the `build/libs` folder.
 
