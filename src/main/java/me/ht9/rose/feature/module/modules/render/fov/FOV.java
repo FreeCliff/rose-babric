@@ -9,7 +9,7 @@ public final class FOV extends Module
 {
     private static final FOV instance = new FOV();
 
-    private final Setting<Integer> fov = new Setting<>("FOV", 30, 90, 125);
+    public final Setting<Integer> fov = new Setting<>("FOV", 30, 90, 125);
 
     private FOV()
     {

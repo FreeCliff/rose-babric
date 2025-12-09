@@ -16,6 +16,7 @@
     "accessors.NetClientHandlerAccessor",
     "mixins.MixinBlock",
     "mixins.MixinBlockFluid",
+    "mixins.MixinBlockSnow",
     "mixins.MixinEffectRenderer",
     "mixins.MixinEntity",
     "mixins.MixinEntityClientPlayerMP",
