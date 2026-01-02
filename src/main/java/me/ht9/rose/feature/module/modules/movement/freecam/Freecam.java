@@ -47,6 +47,9 @@ public class Freecam extends Module
         entity.posY -= mc.thePlayer.yOffset;
         this.entity = entity;
         mc.theWorld.joinEntityInSurroundings(entity);
+
+        entity.skinUrl = mc.thePlayer.skinUrl;
+        entity.cloakUrl = mc.thePlayer.cloakUrl;
     }
 
     @Override
@@ -61,6 +64,8 @@ public class Freecam extends Module
         mc.thePlayer.rotationYaw = yaw;
         mc.thePlayer.rotationPitch = pitch;
         mc.thePlayer.noClip = false;
+        entity.skinUrl = null;
+        entity.cloakUrl = null;
     }
 
     @SuppressWarnings("unused")
