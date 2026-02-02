@@ -14,7 +14,7 @@ public final class MixinPlugin implements IMixinConfigPlugin
 
     public static boolean isModMenuLoaded()
     {
-        return FabricLoader.getInstance().isModLoaded("modmenu");
+        return FabricLoader.getInstance().isModLoaded("modmenu"); // i needed an excuse for this to build the jar on the actions tab i don't want to redownload the repo k thanks <3
     }
 
     @Override
