@@ -46,6 +46,7 @@ public final class Rose implements ClientModInitializer, Globals
 		FileUtils.loadModules();
 		FileUtils.loadClickGUI();
 		FileUtils.loadFriends();
+		FileUtils.loadProxies();
 
 		if (MixinPlugin.isModMenuLoaded())
 			ModMenuIntegrationHelper.addLegacyConfigScreenTask("rose", () -> RoseGui.instance().openGuiInMenu());
@@ -55,6 +56,7 @@ public final class Rose implements ClientModInitializer, Globals
 			FileUtils.saveModules();
 			FileUtils.saveClickGUI();
 			FileUtils.saveFriends();
+			FileUtils.saveProxies();
 		}));
 
 		double elapsedTime = (System.nanoTime() - startTime) / 1000000000.0;

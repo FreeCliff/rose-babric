@@ -1,7 +1,7 @@
 package me.ht9.rose.mixin.mixins;
 
-import me.ht9.rose.feature.gui.GuiProxy;
 import me.ht9.rose.feature.gui.GuiSession;
+import me.ht9.rose.feature.gui.proxy.GuiProxies;
 import net.minecraft.src.GuiButton;
 import net.minecraft.src.GuiMainMenu;
 import net.minecraft.src.GuiScreen;
@@ -23,7 +23,7 @@ public class MixinGuiMainMenu extends GuiScreen
     public void initGui(CallbackInfo ci)
     {
         controlList.add(new GuiButton(421, this.width - 75 - 2, 2, 75, 20, "Session"));
-        controlList.add(new GuiButton(422, this.width - 75 - 2, 2 + 20 + 2, 75, 20, "Proxy"));
+        controlList.add(new GuiButton(422, this.width - 75 - 2, 2 + 20 + 2, 75, 20, "Proxies"));
     }
 
     @Inject(
@@ -39,7 +39,7 @@ public class MixinGuiMainMenu extends GuiScreen
             switch (button.id)
             {
                 case 421 -> mc.displayGuiScreen(new GuiSession(this));
-                case 422 -> mc.displayGuiScreen(new GuiProxy(this));
+                case 422 -> mc.displayGuiScreen(new GuiProxies(this));
             }
         }
     }

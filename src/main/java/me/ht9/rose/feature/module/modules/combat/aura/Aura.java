@@ -63,7 +63,7 @@ public final class Aura extends Module
                 if (mc.thePlayer.getDistanceToEntity(entity) > range.value()) continue;
 
                 if (
-                        (entity instanceof EntityPlayer player && players.value() && !Registry.friends().contains(player.username))
+                        (entity instanceof EntityPlayer player && players.value() && !Registry.friends().contains(player.username) && !player.username.equals(mc.thePlayer.username))
                                 || ((entity instanceof EntityAnimal || entity instanceof EntityWaterMob) && animals.value())
                                 || ((entity instanceof EntityMob || entity instanceof EntityFlying || entity instanceof EntitySlime) && mobs.value())
                 )

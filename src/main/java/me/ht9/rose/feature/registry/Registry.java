@@ -5,6 +5,7 @@ import me.ht9.rose.feature.Feature;
 import me.ht9.rose.feature.command.Command;
 import me.ht9.rose.feature.command.commands.*;
 import me.ht9.rose.feature.command.impl.CommandBuilder;
+import me.ht9.rose.feature.gui.proxy.ProxyData;
 import me.ht9.rose.feature.module.Module;
 import me.ht9.rose.feature.module.modules.client.background.Background;
 import me.ht9.rose.feature.module.modules.client.clickgui.ClickGUI;
@@ -64,6 +65,7 @@ import me.ht9.rose.feature.module.modules.render.xray.Xray;
 import me.ht9.rose.feature.module.setting.Setting;
 
 import java.lang.reflect.Field;
+import java.net.Proxy;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.List;
@@ -75,6 +77,8 @@ public final class Registry
     private static final List<Command> commands = new ArrayList<>();
 
     private static final List<String> friends = new CopyOnWriteArrayList<>();
+
+    private static final List<ProxyData> proxies = new CopyOnWriteArrayList<>(List.of(new ProxyData("None", null, null, Proxy.Type.DIRECT)));
 
     private static final String prefix = String.valueOf('.');
 
@@ -223,5 +227,10 @@ public final class Registry
     public static List<String> friends()
     {
         return friends;
+    }
+
+    public static List<ProxyData> proxies()
+    {
+        return proxies;
     }
 }

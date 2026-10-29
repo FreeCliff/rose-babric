@@ -4,12 +4,14 @@ import com.google.gson.*;
 import me.ht9.rose.Rose;
 import me.ht9.rose.feature.gui.clickgui.RoseGui;
 import me.ht9.rose.feature.gui.component.impl.windows.ModuleWindow;
+import me.ht9.rose.feature.gui.proxy.ProxyData;
 import me.ht9.rose.feature.registry.Registry;
 
 import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.net.Proxy;
 
 @SuppressWarnings("ResultOfMethodCallIgnored")
 public final class FileUtils
@@ -139,8 +141,7 @@ public final class FileUtils
                     .toJson(JsonParser.parseString(friends.toString()))
             );
             bw.close();
-        }
-        catch (Throwable t)
+        } catch (Throwable t)
         {
             Rose.logger().error("Failed to save friends: ", t);
         }
@@ -157,10 +158,62 @@ public final class FileUtils
                 JsonArray friendsArray = friends.get("friends").getAsJsonArray();
                 friendsArray.forEach(element -> Registry.friends().add(element.getAsString()));
             }
-        }
-        catch (Throwable t)
+        } catch (Throwable t)
         {
             Rose.logger().error("Failed to load friends: ", t);
+        }
+    }
+
+    public static void saveProxies()
+    {
+        try
+        {
+            JsonObject proxies = new JsonObject();
+            JsonArray proxyArray = new JsonArray();
+            for (ProxyData proxyData : Registry.proxies())
+            {
+                if (proxyData.ip() == null) continue;
+
+                JsonObject proxy = new JsonObject();
+                proxy.addProperty("name", proxyData.name());
+                proxy.addProperty("ip", proxyData.ip());
+                proxy.addProperty("auth", proxyData.auth());
+                proxy.addProperty("type", proxyData.type().ordinal());
+                proxyArray.add(proxy);
+            }
+            proxies.add("proxies", proxyArray);
+
+            BufferedWriter bw = new BufferedWriter(new FileWriter(new File(MAIN_FOLDER, "proxies.json")));
+            bw.write(new GsonBuilder()
+                    .setPrettyPrinting()
+                    .create()
+                    .toJson(JsonParser.parseString(proxies.toString()))
+            );
+            bw.close();
+        } catch (Throwable t)
+        {
+            Rose.logger().error("Failed to save proxies: ", t);
+        }
+    }
+
+    public static void loadProxies()
+    {
+        try
+        {
+            File proxiesFile = new File(MAIN_FOLDER, "proxies.json");
+            if (proxiesFile.exists())
+            {
+                JsonObject proxies = JsonParser.parseReader(new FileReader(proxiesFile)).getAsJsonObject();
+                JsonArray proxyArray = proxies.get("proxies").getAsJsonArray();
+                proxyArray.forEach(element ->
+                {
+                    JsonObject object = element.getAsJsonObject();
+                    Registry.proxies().add(new ProxyData(object.get("name").getAsString(), object.get("ip").getAsString(), object.get("auth").getAsString(), Proxy.Type.values()[object.get("type").getAsInt()]));
+                });
+            }
+        } catch (Throwable t)
+        {
+            Rose.logger().error("Failed to load proxies: ", t);
         }
     }
 }
