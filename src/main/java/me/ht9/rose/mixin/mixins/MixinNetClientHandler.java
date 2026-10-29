@@ -68,6 +68,29 @@ public class MixinNetClientHandler
             return null;
         }
 
+        String auth = GuiProxy.proxyAuth.trim();
+
+        if (!auth.isEmpty()) {
+            String[] creds = auth.split(":", 2);
+
+            if (creds.length != 2) {
+                this.netManager.networkShutdown("Invalid proxy auth!");
+                return null;
+            }
+
+            final String user = creds[0];
+            final char[] pass = creds[1].toCharArray();
+
+            Authenticator.setDefault(new Authenticator() {
+                @Override
+                protected PasswordAuthentication getPasswordAuthentication() {
+                    if (proxyIp.equalsIgnoreCase(getRequestingHost()) && getRequestingPort() == proxyPort)
+                        return new PasswordAuthentication(user, pass);
+                    return super.getPasswordAuthentication();
+                }
+            });
+        } else Authenticator.setDefault(null);
+
         Proxy proxy = new Proxy(GuiProxy.type, new InetSocketAddress(proxyIp, proxyPort));
         Socket socket = new Socket(proxy);
         socket.connect(new InetSocketAddress(address, port));
