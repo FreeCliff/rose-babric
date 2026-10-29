@@ -14,7 +14,7 @@ public final class MixinPlugin implements IMixinConfigPlugin
 
     public static boolean isModMenuLoaded()
     {
-        return FabricLoader.getInstance().isModLoaded("modmenu");
+        return FabricLoader.getInstance().isModLoaded("modmenu"); // hi
     }
 
     @Override
